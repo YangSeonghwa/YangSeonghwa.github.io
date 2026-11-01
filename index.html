@@ -104,10 +104,9 @@ footer{text-align:center;color:var(--sub);font-size:13px;padding:24px 10px 40px}
 <footer>© <span id="y"></span> Beflower · AI와 함께 만드는 과학 수업</footer>
 
 <script>
-/* 새 시뮬레이션을 올린 뒤 아래 배열에 한 줄만 추가하면 됩니다.
-   { grade:1, area:"물리", title:"제목", desc:"한 줄 설명", url:"grade1/force/index.html" } */
-const SIMS = [
-];
+/* 새 시뮬레이션은 sims.json 에 한 줄만 추가하면 됩니다.
+   { "grade":1, "area":"물리", "title":"제목", "desc":"한 줄 설명", "url":"grade1/force/index.html" } */
+let SIMS = [];
 const AREAS = ["물리","화학","생명","지구과학"];
 const ICON = {"물리":"⚡","화학":"⚗️","생명":"🌱","지구과학":"🪐"};
 let g = 0, a = "전체";
@@ -144,6 +143,7 @@ function render(){
 document.querySelectorAll(".grade").forEach(el => el.addEventListener("click", () => { g = +el.dataset.grade; a = "전체"; render(); }));
 $("y").textContent = new Date().getFullYear();
 render();
+fetch("sims.json", {cache: "no-cache"}).then(r => r.json()).then(d => { SIMS = d; render(); }).catch(() => {});
 </script>
 </body>
 </html>

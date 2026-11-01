@@ -1,0 +1,5 @@
+[
+  { "grade": 1, "area": "화학", "title": "① 온도와 입자 1개의 충돌", "desc": "온도가 높아지면 입자 1개가 벽을 미는 힘이 커지는 모습 관찰", "url": "grade1/charles-law/index.html#1" },
+  { "grade": 1, "area": "화학", "title": "② 부피와 충돌 횟수", "desc": "부피가 줄면 벽에 부딪히는 횟수가 늘어나는 모습 관찰", "url": "grade1/charles-law/index.html#2" },
+  { "grade": 1, "area": "화학", "title": "③ 샤를의 법칙 (혼합 + 그래프)", "desc": "압력이 일정할 때 온도와 부피의 관계를 그래프로 확인", "url": "grade1/charles-law/index.html#3" }
+]

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>샤를의 법칙 시뮬레이션 | Beflower</title>
+<style>
+:root{--bg:#f4f9f6;--ink:#1d2a30;--sub:#5a6b72;--main:#1f8a70;--line:#dbe7e2;--hot:#e5484d}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Pretendard","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+header{background:linear-gradient(135deg,#0f2a44,#1f8a70);color:#fff;padding:16px 20px}
+header a{color:#cfeee4;font-size:14px;text-decoration:none}
+header h1{margin:4px 0 0;font-size:clamp(20px,4vw,28px)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;max-width:1120px;margin:14px auto 0;padding:0 14px}
+.tabs button{flex:1;min-width:150px;padding:11px 12px;border:1px solid var(--line);background:#fff;border-radius:12px;cursor:pointer;font:inherit;font-weight:600}
+.tabs button.on{background:var(--main);color:#fff;border-color:var(--main)}
+.wrap{max-width:1120px;margin:12px auto;padding:0 14px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:14px}
+@media(max-width:860px){.wrap{grid-template-columns:1fr}}
+.card{background:#fff;border-radius:16px;padding:14px;box-shadow:0 4px 16px rgba(20,60,50,.07)}
+canvas{width:100%;height:auto;display:block;border-radius:10px}
+.ctrl{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin-top:10px}
+.ctrl label{font-size:14px;display:flex;flex-direction:column;gap:2px;flex:1;min-width:200px}
+.ctrl input[type=range]{width:100%}
+button.b{padding:8px 14px;border:1px solid var(--main);background:#fff;color:var(--main);border-radius:10px;cursor:pointer;font:inherit;font-weight:600}
+button.b.f{background:var(--main);color:#fff}
+select{padding:6px;border-radius:8px;border:1px solid var(--line);font:inherit}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.stat{background:var(--bg);border-radius:10px;padding:8px 10px;font-size:13px;color:var(--sub)}
+.stat b{display:block;font-size:19px;color:var(--ink)}
+#msg{min-height:22px;font-size:13px;color:var(--hot);margin-top:6px}
+.info{max-width:1120px;margin:0 auto 40px;padding:0 14px}
+.info .card{font-size:15px}
+.info h3{margin:0 0 6px;color:var(--main)}
+.info li{margin:4px 0}
+</style>
+</head>
+<body>
+<header><a href="../../index.html">← Beflower 과학 시뮬레이션 랩</a><h1>🎈 샤를의 법칙, 입자 눈으로 확인하기</h1></header>
+<div class="tabs" id="tabs"></div>
+<div class="wrap">
+  <div class="card">
+    <canvas id="cv" width="640" height="340"></canvas>
+    <div class="ctrl" id="ctrl"></div>
+    <div id="msg"></div>
+  </div>
+  <div class="card">
+    <div class="stats" id="stats"></div>
+    <canvas id="gr" width="420" height="320"></canvas>
+    <div class="ctrl">
+      <button class="b f" id="bRec">📍 그래프에 기록</button>
+      <button class="b" id="bClr">지우기</button>
+      <button class="b" id="bAuto" style="display:none">⏱ 자동 측정</button>
+    </div>
+  </div>
+</div>
+<div class="info"><div class="card" id="info"></div></div>
+
+<script>
+const KB=80,H=300,R=4,OX=20,OY=20,PM=60,DAMP=2.0,DT=1/240;
+const $=id=>document.getElementById(id);
+const cv=$('cv'),cx=cv.getContext('2d'),gr=$('gr'),gx=gr.getContext('2d');
+let mode=1,N=60,L=400,Lt=400,Tt=300,t=0,u=0,Fext=0,speed=2,Lema=220,flash=0,auto=null,WIN=3;
+let uf=0,px=[],py=[],pvx=[],pvy=[],ev=[],rec=[],trail=[];
+const NAMES=['① 온도와 입자 1개의 충돌','② 부피와 충돌 횟수','③ 샤를의 법칙 (혼합)'];
+const INFO=[
+`<h3>① 온도가 높아지면 입자 1개의 충돌은 어떻게 달라질까?</h3><ul><li>부피(상자 크기)는 그대로 두고 <b>온도</b>만 바꿉니다.</li><li>온도가 높을수록 입자가 빨라지고(빨간색), 벽에 부딪힐 때 <b>충돌 1회가 벽을 미는 힘(충격량)</b>이 커집니다.</li><li>그래프에 여러 온도에서 점을 기록해 보세요. 온도와 충돌 1회의 힘이 어떤 관계인지 말해 봅시다.</li></ul>`,
+`<h3>② 부피가 줄면 충돌 횟수는 어떻게 달라질까?</h3><ul><li>온도는 300 K로 고정하고 <b>부피</b>만 바꿉니다. 입자의 속력은 그대로입니다.</li><li>부피가 작을수록 입자가 벽까지 가는 거리가 짧아서, 오른쪽 벽에 <b>1초 동안 부딪히는 횟수</b>가 늘어납니다.</li><li>부피를 여러 값으로 바꾸며 기록해 보세요. 부피가 절반이 되면 충돌 횟수는 어떻게 될까요? (측정값은 약 4초 평균이라 조금씩 흔들립니다.)</li></ul>`,
+`<h3>③ ①과 ②를 합치면: 압력이 일정할 때 부피 변화</h3><ul><li>오른쪽 피스톤을 <b>일정한 힘</b>(추)이 누르고 있습니다. 즉 압력이 일정합니다.</li><li>온도 ↑ → 충돌 1회의 힘 ↑ → 피스톤이 밀려나 부피 ↑ → 벽에 부딪히는 횟수 ↓ … 이 둘이 균형을 이룰 때까지 피스톤이 움직입니다.</li><li>피스톤이 멈춘 뒤 기록하거나 <b>자동 측정</b>을 눌러 보세요. 온도(℃)와 부피 그래프는 직선이 되고, 점선을 연장하면 부피가 0이 되는 온도는 약 −273 ℃ 근처입니다. 이것이 샤를의 법칙입니다.</li></ul><p>※ 입자끼리의 충돌과 크기는 단순화한 이상 기체 모형입니다.</p>`];
+
+function gauss(){let a=0;while(!a)a=Math.random();return Math.sqrt(-2*Math.log(a))*Math.cos(2*Math.PI*Math.random());}
+function init(md){
+  mode=md;t=0;u=0;uf=0;ev=[];rec=[];trail=[];auto=null;Tt=300;N=md==2?80:md==3?100:60;WIN=md==2?4:3;
+  L=md==3?220:400;Lt=L;Lema=L;Fext=N*KB*300/220;
+  px=[];py=[];pvx=[];pvy=[];
+  const s=Math.sqrt(KB*Tt);
+  for(let i=0;i<N;i++){px.push(Math.random()*L);py.push(Math.random()*H);pvx.push(gauss()*s);pvy.push(gauss()*s);}
+  buildUI();
+}
+function hit(imp,side){ev.push([t,imp,side]);if(side)flash=1;}
+function step(dt){
+  t+=dt;
+  if(mode==2){const d=Lt-L;L+=Math.sign(d)*Math.min(Math.abs(d),200*dt);}
+  for(let i=0;i<N;i++){
+    px[i]+=pvx[i]*dt;py[i]+=pvy[i]*dt;
+    if(px[i]<0){px[i]=-px[i];pvx[i]=Math.abs(pvx[i]);hit(2*pvx[i],0);}
+    else if(px[i]>L){
+      const v=pvx[i];
+      if(mode==3){
+        if(v>u){const nv=((1-PM)*v+2*PM*u)/(1+PM),nu=((PM-1)*u+2*v)/(1+PM);hit(Math.abs(nv-v),1);pvx[i]=nv;u=nu;}
+      }else{pvx[i]=-Math.abs(v);hit(2*Math.abs(v),1);}
+      px[i]=2*L-px[i];
+    }
+    if(py[i]<0){py[i]=-py[i];pvy[i]=Math.abs(pvy[i]);hit(2*pvy[i],0);}
+    else if(py[i]>H){py[i]=2*H-py[i];pvy[i]=-Math.abs(pvy[i]);hit(2*Math.abs(pvy[i]),0);}
+    px[i]=Math.min(Math.max(px[i],0),L);py[i]=Math.min(Math.max(py[i],0),H);
+  }
+  let sx=0,sy=0;for(let i=0;i<N;i++){sx+=pvx[i]*pvx[i];sy+=pvy[i]*pvy[i];}
+  const k=Math.min(1,4*dt),fx=1+(Math.sqrt(Tt*KB*N/Math.max(sx,1))-1)*k,fy=1+(Math.sqrt(Tt*KB*N/Math.max(sy,1))-1)*k;
+  for(let i=0;i<N;i++){pvx[i]*=fx;pvy[i]*=fy;}
+  if(mode==3){
+    u+=-Fext/PM*dt;uf+=(u-uf)*dt/0.4;u-=DAMP*uf*dt;L+=u*dt;
+    if(L<60){L=60;u=Math.max(u,0);}if(L>540){L=540;u=Math.min(u,0);}
+    Lema+=(L-Lema)*dt/2;
+    if(auto&&t-auto.t0>12){record();auto.i++;if(auto.i>=auto.seq.length){auto=null;$('bAuto').textContent='⏱ 자동 측정';msg('자동 측정 완료! 점들이 한 직선 위에 있나요?',1);}else{Tt=auto.seq[auto.i];auto.t0=t;syncSlider();}}
+  }
+  while(ev.length&&ev[0][0]<t-WIN)ev.shift();
+  flash*=Math.pow(0.02,dt);
+  trail.push([px[0],py[0]]);if(trail.length>40)trail.shift();
+}
+function avgImp(){if(ev.length<5)return null;let s=0;for(const e of ev)s+=e[1];return s/ev.length;}
+function rate(){if(t<1.5)return null;let c=0;for(const e of ev)if(e[2])c++;return c/Math.min(t,WIN);}
+function vol(){return (mode==3?Lema:L)*H/1000;}
+function curT(){let s2=0;for(let i=0;i<N;i++)s2+=pvx[i]*pvx[i]+pvy[i]*pvy[i];return s2/N/(2*KB);}
+function msg(s,ok){const m=$('msg');m.textContent=s||'';m.style.color=ok?'#1f8a70':'#e5484d';}
+function record(){
+  if(mode==1){const a=avgImp();if(a==null)return msg('측정값이 아직 부족해요. 잠시 후 다시 눌러 주세요.');rec.push([Tt,a]);}
+  else if(mode==2){const r=rate();if(r==null)return msg('측정 중입니다. 2초 정도 기다려 주세요.');rec.push([L*H/1000,r]);}
+  else{if(!auto&&(Math.abs(u)>2||Math.abs(Lema-L)>1.5))return msg('피스톤이 아직 움직이는 중이에요. 멈춘 뒤 기록하세요.');rec.push([Tt-273.15,Lema*H/1000]);}
+  msg('기록했어요! ('+rec.length+'개)',1);
+}
+function buildUI(){
+  $('tabs').innerHTML=NAMES.map((n,i)=>`<button class="${i+1==mode?'on':''}" onclick="location.hash=${i+1}">${n}</button>`).join('');
+  $('info').innerHTML=INFO[mode-1];
+  const sl=mode==2?`<label>부피 조절: <b id="lv"></b><input type="range" id="sl" min="100" max="560" step="10" value="${L}"></label>`
+    :`<label>온도 조절: <b id="lv"></b><input type="range" id="sl" min="100" max="600" step="10" value="${Tt}"></label>`;
+  $('ctrl').innerHTML=sl+`<label style="flex:0 0 auto;min-width:0">속도<select id="sp"><option value="1">1배</option><option value="2" selected>2배</option><option value="4">4배</option></select></label>`;
+  $('sl').oninput=e=>{const v=+e.target.value;if(mode==2)Lt=v;else{Tt=v;auto=null;$('bAuto').textContent='⏱ 자동 측정';}lbl();};
+  $('sp').onchange=e=>speed=+e.target.value;$('sp').value=speed;
+  $('bAuto').style.display=mode==3?'':'none';
+  msg('');lbl();
+}
+function lbl(){$('lv').textContent=mode==2?'부피 '+(Lt*H/1000).toFixed(0)+' 칸':Tt.toFixed(0)+' K ('+(Tt-273.15).toFixed(0)+' ℃)';}
+function syncSlider(){$('sl').value=Tt;lbl();}
+$('bRec').onclick=record;
+$('bClr').onclick=()=>{rec=[];msg('');};
+$('bAuto').onclick=()=>{
+  if(auto){auto=null;$('bAuto').textContent='⏱ 자동 측정';return;}
+  rec=[];auto={seq:[100,200,300,400,500,600],i:0,t0:t};Tt=100;syncSlider();$('bAuto').textContent='■ 중지';msg('온도를 바꿔 가며 자동으로 기록합니다…',1);
+};
+function drawSim(){
+  cx.clearRect(0,0,640,340);cx.fillStyle='#eef6ff';cx.fillRect(OX,OY,L,H);
+  cx.strokeStyle='#40566b';cx.lineWidth=3;cx.strokeRect(OX,OY,L,H);
+  const rx=OX+L;
+  cx.fillStyle=mode==3?'#7a8a96':`rgba(229,72,77,${0.25+0.75*flash})`;
+  if(mode==3){cx.fillStyle='#6b7c88';cx.fillRect(rx-2,OY,12,H);
+    if(rx+50<640){cx.strokeStyle='#e5484d';cx.fillStyle='#e5484d';cx.lineWidth=3;for(const y of [OY+50,OY+150,OY+250]){cx.beginPath();cx.moveTo(rx+40,y);cx.lineTo(rx+14,y);cx.stroke();cx.beginPath();cx.moveTo(rx+10,y);cx.lineTo(rx+18,y-5);cx.lineTo(rx+18,y+5);cx.fill();}}}
+  else{cx.fillRect(rx-3,OY,7,H);}
+  cx.strokeStyle='rgba(230,60,60,.45)';cx.lineWidth=1.5;cx.beginPath();
+  trail.forEach((p,i)=>i?cx.lineTo(OX+p[0],OY+p[1]):cx.moveTo(OX+p[0],OY+p[1]));cx.stroke();
+  for(let i=0;i<N;i++){
+    const sp=Math.hypot(pvx[i],pvy[i]),fr=Math.min(1,sp/520);
+    cx.fillStyle=`hsl(${215-215*fr},85%,52%)`;cx.beginPath();cx.arc(OX+px[i],OY+py[i],i==0?R+2:R,0,7);cx.fill();
+    if(i==0){cx.strokeStyle='#111';cx.lineWidth=1.5;cx.stroke();}
+  }
+  cx.fillStyle='#40566b';cx.font='12px sans-serif';
+  cx.fillText('빨강=빠른 입자, 파랑=느린 입자 (테두리 입자 1개를 따라가 보세요)',OX,334);
+}
+function setStats(){
+  const T=curT(),s=[];
+  s.push(['온도',Tt.toFixed(0)+' K ('+(Tt-273.15).toFixed(0)+' ℃)']);
+  s.push(['부피',vol().toFixed(0)+' 칸']);
+  if(mode==1){const a=avgImp();s.push(['입자 평균 속력',Math.sqrt(2*KB*T*Math.PI/4).toFixed(0)]);s.push(['충돌 1회 평균 힘(충격량)',a==null?'-':a.toFixed(0)]);}
+  else if(mode==2){const r=rate();s.push(['오른쪽 벽 충돌 횟수','-']);s[2][1]=r==null?'측정 중':r.toFixed(1)+' 회/초';s.push(['입자 수',N+'개']);}
+  else{const a=avgImp();let c=0;for(const e of ev)if(e[2])c++;s.push(['충돌 1회 평균 힘',a==null?'-':a.toFixed(0)]);s.push(['피스톤 충돌 횟수',(t<1.5?'-':(c/Math.min(t,WIN)).toFixed(0)+' 회/초')]);}
+  $('stats').innerHTML=s.map(a=>`<div class="stat">${a[0]}<b>${a[1]}</b></div>`).join('');
+}
+function drawGraph(){
+  const W=420,Hh=320,m={l:56,r:14,t:26,b:46};
+  const C=[{x0:0,x1:650,y0:0,y1:350,xl:'온도 (K)',yl:'충돌 1회 평균 힘'},{x0:20,x1:180,y0:0,y1:60,xl:'부피 (칸)',yl:'벽 충돌 횟수 (회/초)'},{x0:-300,x1:350,y0:0,y1:170,xl:'온도 (℃)',yl:'부피 (칸)'}][mode-1];
+  const X=v=>m.l+(v-C.x0)/(C.x1-C.x0)*(W-m.l-m.r),Y=v=>Hh-m.b-(v-C.y0)/(C.y1-C.y0)*(Hh-m.t-m.b);
+  gx.clearRect(0,0,W,Hh);gx.font='11px sans-serif';gx.lineWidth=1;
+  for(let i=0;i<=5;i++){
+    const xv=C.x0+(C.x1-C.x0)*i/5,yv=C.y0+(C.y1-C.y0)*i/5;
+    gx.strokeStyle='#e3ece8';gx.beginPath();gx.moveTo(X(xv),m.t);gx.lineTo(X(xv),Hh-m.b);gx.moveTo(m.l,Y(yv));gx.lineTo(W-m.r,Y(yv));gx.stroke();
+    gx.fillStyle='#5a6b72';gx.textAlign='center';gx.fillText(Math.round(xv),X(xv),Hh-m.b+14);gx.textAlign='right';gx.fillText(Math.round(yv),m.l-5,Y(yv)+4);
+  }
+  gx.strokeStyle='#40566b';gx.lineWidth=1.5;gx.beginPath();gx.moveTo(m.l,m.t);gx.lineTo(m.l,Hh-m.b);gx.lineTo(W-m.r,Hh-m.b);gx.stroke();
+  gx.fillStyle='#1d2a30';gx.font='12px sans-serif';gx.textAlign='center';gx.fillText(C.xl,(m.l+W-m.r)/2,Hh-8);
+  gx.save();gx.translate(13,(m.t+Hh-m.b)/2);gx.rotate(-Math.PI/2);gx.fillText(C.yl,0,0);gx.restore();
+  if(mode==3){gx.strokeStyle='#e5484d';gx.setLineDash([4,4]);gx.beginPath();gx.moveTo(X(-273.15),m.t);gx.lineTo(X(-273.15),Hh-m.b);gx.stroke();gx.setLineDash([]);gx.fillStyle='#e5484d';gx.textAlign='left';gx.fillText('-273 ℃',X(-273.15)+3,m.t+10);}
+  if(mode==3&&rec.length>=2){
+    const n=rec.length,sx=rec.reduce((a,p)=>a+p[0],0),sy=rec.reduce((a,p)=>a+p[1],0),sxx=rec.reduce((a,p)=>a+p[0]*p[0],0),sxy=rec.reduce((a,p)=>a+p[0]*p[1],0);
+    const d=n*sxx-sx*sx;
+    if(Math.abs(d)>1e-6){
+      const b=(n*sxy-sx*sy)/d,a=(sy-b*sx)/n,x0=-a/b,xs=rec.map(p=>p[0]);
+      gx.strokeStyle='#1f8a70';gx.lineWidth=2;gx.setLineDash([6,4]);gx.beginPath();
+      const xa=Math.max(C.x0,Math.min(x0,Math.min(...xs))),xb=Math.max(...xs);
+      gx.moveTo(X(xa),Y(a+b*xa));gx.lineTo(X(Math.min(C.x1,Math.max(xb,350))),Y(a+b*Math.min(C.x1,Math.max(xb,350))));gx.stroke();gx.setLineDash([]);
+      gx.beginPath();gx.moveTo(X(Math.min(...xs)),Y(a+b*Math.min(...xs)));gx.lineTo(X(xb),Y(a+b*xb));gx.stroke();
+      gx.fillStyle='#1f8a70';gx.textAlign='left';gx.fillText('부피 0 → 약 '+x0.toFixed(0)+' ℃',m.l+8,m.t+(n>0?24:10));
+    }
+  }
+  rec.forEach(p=>{gx.fillStyle='#e5484d';gx.beginPath();gx.arc(X(p[0]),Y(Math.min(p[1],C.y1)),5,0,7);gx.fill();});
+}
+let last=performance.now();
+function loop(now){
+  const dt=Math.min(0.1,(now-last)/1000);last=now;
+  const n=Math.min(200,Math.round(dt*speed*240));
+  for(let i=0;i<n;i++)step(DT);
+  drawSim();setStats();drawGraph();requestAnimationFrame(loop);
+}
+function route(){const h=parseInt(location.hash.slice(1));init(h>=1&&h<=3?h:1);}
+window.addEventListener('hashchange',route);
+route();requestAnimationFrame(loop);
+</script>
+</body>
+</html>
