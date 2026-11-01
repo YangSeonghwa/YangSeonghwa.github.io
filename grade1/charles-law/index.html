@@ -4,38 +4,69 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>샤를의 법칙 시뮬레이션 | Beflower</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f4f9f6;--ink:#1d2a30;--sub:#5a6b72;--main:#1f8a70;--line:#dbe7e2;--hot:#e5484d}
+:root{--bg:#fff8f0;--ink:#3b2f4a;--sub:#7d6f8c;--main:#ff7aa8;--mint:#3cc3a6;--sky:#6bb8ff;--line:#ffd9e6;--hot:#ff5a7a;--sun:#ffd86b}
 *{box-sizing:border-box}
-body{margin:0;font-family:"Pretendard","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
-header{background:linear-gradient(135deg,#0f2a44,#1f8a70);color:#fff;padding:16px 20px}
-header a{color:#cfeee4;font-size:14px;text-decoration:none}
-header h1{margin:4px 0 0;font-size:clamp(20px,4vw,28px)}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;max-width:1120px;margin:14px auto 0;padding:0 14px}
-.tabs button{flex:1;min-width:150px;padding:11px 12px;border:1px solid var(--line);background:#fff;border-radius:12px;cursor:pointer;font:inherit;font-weight:600}
-.tabs button.on{background:var(--main);color:#fff;border-color:var(--main)}
-.wrap{max-width:1120px;margin:12px auto;padding:0 14px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:14px}
+body{margin:0;font-family:"Jua","Pretendard","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;background:var(--bg);background-image:radial-gradient(#ffe3ee 2px,transparent 2px);background-size:26px 26px;color:var(--ink);line-height:1.6}
+header{position:relative;overflow:hidden;background:linear-gradient(135deg,#ffb3d1,#ffd6a5 55%,#fff1a8);color:#4a2c4f;padding:16px 20px 20px;border-radius:0 0 28px 28px;box-shadow:0 6px 18px rgba(255,122,168,.25)}
+header a{color:#8a3f6b;font-size:14px;text-decoration:none;background:rgba(255,255,255,.65);padding:3px 10px;border-radius:999px}
+header h1{margin:8px 0 0;font-size:clamp(22px,4.6vw,32px);font-weight:400}
+header p{margin:2px 0 0;font-size:14px;color:#7a4a6d}
+.fl{position:absolute;font-size:30px;opacity:.85;animation:fly 6s ease-in-out infinite}
+.fl:nth-of-type(1){right:6%;top:14px}.fl:nth-of-type(2){right:16%;top:34px;font-size:22px;animation-delay:-2s}.fl:nth-of-type(3){right:26%;top:10px;font-size:18px;animation-delay:-4s}
+@keyframes fly{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-10px) rotate(6deg)}}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;max-width:1120px;margin:16px auto 0;padding:0 14px}
+.tabs button{flex:1;min-width:150px;padding:11px 12px;border:2px solid var(--line);background:#fff;border-radius:999px;cursor:pointer;font:inherit;color:var(--sub);transition:.15s}
+.tabs button:hover{transform:translateY(-2px)}
+.tabs button.on{background:var(--main);color:#fff;border-color:var(--main);box-shadow:0 4px 0 #e0558a}
+.wrap{max-width:1120px;margin:14px auto;padding:0 14px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:14px}
 @media(max-width:860px){.wrap{grid-template-columns:1fr}}
-.card{background:#fff;border-radius:16px;padding:14px;box-shadow:0 4px 16px rgba(20,60,50,.07)}
-canvas{width:100%;height:auto;display:block;border-radius:10px}
+.card{background:#fff;border-radius:24px;padding:16px;border:3px solid var(--line);box-shadow:0 6px 0 var(--line)}
+canvas{width:100%;height:auto;display:block;border-radius:16px}
 .ctrl{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin-top:10px}
-.ctrl label{font-size:14px;display:flex;flex-direction:column;gap:2px;flex:1;min-width:200px}
-.ctrl input[type=range]{width:100%}
-button.b{padding:8px 14px;border:1px solid var(--main);background:#fff;color:var(--main);border-radius:10px;cursor:pointer;font:inherit;font-weight:600}
-button.b.f{background:var(--main);color:#fff}
-select{padding:6px;border-radius:8px;border:1px solid var(--line);font:inherit}
+.ctrl label{font-size:15px;display:flex;flex-direction:column;gap:2px;flex:1;min-width:200px}
+.ctrl input[type=range]{width:100%;accent-color:var(--main)}
+button.b{padding:8px 16px;border:2px solid var(--main);background:#fff;color:var(--main);border-radius:999px;cursor:pointer;font:inherit}
+button.b.f{background:var(--main);color:#fff;box-shadow:0 3px 0 #e0558a}
+button.b:active{transform:translateY(2px)}
+select{padding:6px 10px;border-radius:999px;border:2px solid var(--line);font:inherit;background:#fff}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.stat{background:var(--bg);border-radius:10px;padding:8px 10px;font-size:13px;color:var(--sub)}
-.stat b{display:block;font-size:19px;color:var(--ink)}
-#msg{min-height:22px;font-size:13px;color:var(--hot);margin-top:6px}
-.info{max-width:1120px;margin:0 auto 40px;padding:0 14px}
-.info .card{font-size:15px}
-.info h3{margin:0 0 6px;color:var(--main)}
+.stat{background:#fff3f8;border-radius:16px;padding:8px 12px;font-size:13px;color:var(--sub)}
+.stat:nth-child(2n){background:#eefaf6}
+.stat b{display:block;font-size:20px;font-weight:400;color:var(--ink)}
+#msg{min-height:22px;font-size:14px;color:var(--hot);margin-top:6px}
+.info{max-width:1120px;margin:0 auto 14px;padding:0 14px}
+.info .card{font-size:16px;background:#fffdf3;border-color:#ffe9a8;box-shadow:0 6px 0 #ffe9a8}
+.info h3,.ex h2{margin:0 0 6px;color:#e0558a;font-weight:400}
 .info li{margin:4px 0}
+.ex{max-width:1120px;margin:20px auto 40px;padding:0 14px}
+.ex h2{font-size:clamp(20px,4vw,26px);text-align:center;margin-bottom:4px}
+.ex .lead{text-align:center;color:var(--sub);margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.ec{background:#fff;border-radius:24px;padding:16px;border:3px solid var(--c,#ffd9e6);box-shadow:0 6px 0 var(--c,#ffd9e6);transition:.15s}
+.ec:hover{transform:translateY(-4px) rotate(-.6deg)}
+.ec .em{font-size:42px;line-height:1}
+.ec h4{margin:6px 0 4px;font-size:18px;font-weight:400}
+.ec p{margin:0 0 6px;font-size:14.5px;font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;color:#51465c}
+.ec .tag{display:inline-block;font-size:12.5px;background:var(--c,#ffd9e6);padding:2px 10px;border-radius:999px;color:#4a2c4f}
+.mini{margin-top:16px;background:linear-gradient(135deg,#e8f6ff,#fff0f6);border-color:#bfe3ff;box-shadow:0 6px 0 #bfe3ff;text-align:center}
+.mini h3{margin:0;font-weight:400;color:#3b7fc4}
+.mini .stage{height:190px;display:flex;align-items:center;justify-content:center}
+#bal{position:relative;border-radius:50%;background:radial-gradient(circle at 32% 28%,#fff 0 8%,#ff9ec4 9% 60%,#ff6f9f);width:100px;height:100px;transition:width .15s,height:.15s;box-shadow:inset -8px -10px 0 rgba(0,0,0,.06)}
+#bal .eye{position:absolute;top:42%;width:8%;height:10%;background:#3b2f4a;border-radius:50%}
+#bal .e1{left:32%}#bal .e2{right:32%}
+#bal .mo{position:absolute;left:50%;top:60%;width:16%;height:8%;transform:translateX(-50%);border-bottom:3px solid #3b2f4a;border-radius:0 0 40px 40px}
+#bal .bl{position:absolute;top:56%;width:11%;height:7%;background:rgba(255,255,255,.55);border-radius:50%}
+#bal .b1{left:18%}#bal .b2{right:18%}
+.mini input{width:min(420px,90%);accent-color:var(--sky)}
+.mini .rd{font-size:17px}
+.note{font-size:13.5px;color:var(--sub);font-family:"Pretendard","Noto Sans KR",sans-serif;margin-top:14px;background:#fff;border-radius:16px;padding:10px 14px;border:2px dashed var(--line)}
 </style>
 </head>
 <body>
-<header><a href="../../index.html">← Beflower 과학 시뮬레이션 랩</a><h1>🎈 샤를의 법칙, 입자 눈으로 확인하기</h1></header>
+<header><span class="fl">🎈</span><span class="fl">☁️</span><span class="fl">🎈</span><a href="../../index.html">← Beflower 과학 시뮬레이션 랩</a><h1>🎈 샤를의 법칙, 입자 친구들과 알아보기</h1><p>따뜻해지면 신나서 빨라지는 입자들! 어떻게 부피가 달라질까요? ✨</p></header>
 <div class="tabs" id="tabs"></div>
 <div class="wrap">
   <div class="card">
@@ -54,6 +85,29 @@ select{padding:6px;border-radius:8px;border:1px solid var(--line);font:inherit}
   </div>
 </div>
 <div class="info"><div class="card" id="info"></div></div>
+
+<section class="ex">
+  <h2>🌍 우리 주변에서 만나는 샤를의 법칙</h2>
+  <p class="lead">압력이 거의 일정하고 기체가 자유롭게 늘어날 수 있을 때, 온도가 오르면 부피도 커져요!</p>
+  <div class="grid">
+    <div class="ec" style="--c:#ffd0e0"><div class="em">🎈</div><h4>열기구가 둥실 떠올라요</h4><p>버너로 풍선 속 공기를 데우면 공기가 팽창해 일부가 아래 입구로 빠져나가요. 남은 공기는 바깥 찬 공기보다 밀도가 작아져서 열기구가 떠오릅니다.</p><span class="tag">온도 ↑ → 부피 ↑ → 밀도 ↓</span></div>
+    <div class="ec" style="--c:#c9e8ff"><div class="em">🥶</div><h4>추운 날 쭈글쭈글해진 풍선</h4><p>따뜻한 방에서 불어 둔 풍선을 추운 밖이나 차가운 차 안에 두면 속 기체가 줄어들어 쭈글해져요. 다시 따뜻한 곳으로 가져오면 원래대로 부풀어요.</p><span class="tag">온도 ↓ → 부피 ↓</span></div>
+    <div class="ec" style="--c:#d4f3e6"><div class="em">🏓</div><h4>찌그러진 탁구공 살리기</h4><p>살짝 찌그러진(깨지지 않은) 탁구공을 뜨거운 물에 넣으면 속 공기가 팽창해 안쪽에서 밀어 주어 다시 동그랗게 펴져요.</p><span class="tag">밀폐된 공기 + 가열</span></div>
+    <div class="ec" style="--c:#ffe9a8"><div class="em">🧪</div><h4>병 입구 풍선 실험</h4><p>빈 병 입구에 풍선을 씌우고 뜨거운 물에 담그면 풍선이 저절로 부풀고, 얼음물에 담그면 쪼그라들어요. 교실에서 바로 해 볼 수 있어요!</p><span class="tag">교실 실험 추천</span></div>
+    <div class="ec" style="--c:#e3d9ff"><div class="em">🏀</div><h4>겨울 농구공이 말랑해요</h4><p>따뜻한 체육관에서 바람을 넣은 공을 추운 야외로 가져가면 속 공기가 줄어 공이 조금 물렁하게 느껴져요.</p><span class="tag">온도 ↓ → 부피(압력) ↓</span></div>
+    <div class="ec" style="--c:#ffd8c2"><div class="em">🍞</div><h4>오븐 속에서 부푸는 빵</h4><p>반죽 속 작은 기포가 오븐에서 가열되면 팽창해 빵이 부풀어 올라요. (실제로는 발효 가스와 수증기도 함께 작용해요.)</p><span class="tag">기포의 열팽창</span></div>
+  </div>
+
+  <div class="card mini">
+    <h3>🎈 미니 체험: 온도를 바꿔서 풍선 크기 보기</h3>
+    <div class="stage"><div id="bal"><i class="eye e1"></i><i class="eye e2"></i><i class="bl b1"></i><i class="bl b2"></i><i class="mo"></i></div></div>
+    <input type="range" id="bt" min="-30" max="100" step="1" value="20">
+    <div class="rd" id="brd"></div>
+    <div class="note">20 ℃에서 1.0 L였던 풍선 속 기체의 부피를 \(V_2 = V_1 \times T_2 / T_1\) (T는 켈빈 온도)으로 계산한 값이에요. 풍선 그림은 부피에 맞춰 크기가 변해요.</div>
+  </div>
+
+  <div class="note">💡 생각해 보기: 햇볕에 놓인 자동차 타이어나 냉동실의 캔 음료도 샤를의 법칙 예시일까요? 타이어와 캔은 단단해서 부피가 거의 변하지 않기 때문에, 온도가 오르면 부피 대신 <b>압력</b>이 달라져요. 샤를의 법칙은 "압력이 일정하고 부피가 자유롭게 변할 때"만 적용돼요.</div>
+</section>
 
 <script>
 const KB=80,H=300,R=4,OX=20,OY=20,PM=60,DAMP=2.0,DT=1/240;
@@ -101,7 +155,7 @@ function step(dt){
     u+=-Fext/PM*dt;uf+=(u-uf)*dt/0.4;u-=DAMP*uf*dt;L+=u*dt;
     if(L<60){L=60;u=Math.max(u,0);}if(L>540){L=540;u=Math.min(u,0);}
     Lema+=(L-Lema)*dt/2;
-    if(auto&&t-auto.t0>12){record();auto.i++;if(auto.i>=auto.seq.length){auto=null;$('bAuto').textContent='⏱ 자동 측정';msg('자동 측정 완료! 점들이 한 직선 위에 있나요?',1);}else{Tt=auto.seq[auto.i];auto.t0=t;syncSlider();}}
+    if(auto&&t-auto.t0>12){record();auto.i++;if(auto.i>=auto.seq.length){auto=null;$('bAuto').textContent='⏱ 자동 측정';msg('자동 측정 완료! 점들이 한 직선 위에 있나요? 🎉',1);}else{Tt=auto.seq[auto.i];auto.t0=t;syncSlider();}}
   }
   while(ev.length&&ev[0][0]<t-WIN)ev.shift();
   flash*=Math.pow(0.02,dt);
@@ -111,12 +165,12 @@ function avgImp(){if(ev.length<5)return null;let s=0;for(const e of ev)s+=e[1];r
 function rate(){if(t<1.5)return null;let c=0;for(const e of ev)if(e[2])c++;return c/Math.min(t,WIN);}
 function vol(){return (mode==3?Lema:L)*H/1000;}
 function curT(){let s2=0;for(let i=0;i<N;i++)s2+=pvx[i]*pvx[i]+pvy[i]*pvy[i];return s2/N/(2*KB);}
-function msg(s,ok){const m=$('msg');m.textContent=s||'';m.style.color=ok?'#1f8a70':'#e5484d';}
+function msg(s,ok){const m=$('msg');m.textContent=s||'';m.style.color=ok?'#2fae93':'#ff5a7a';}
 function record(){
   if(mode==1){const a=avgImp();if(a==null)return msg('측정값이 아직 부족해요. 잠시 후 다시 눌러 주세요.');rec.push([Tt,a]);}
   else if(mode==2){const r=rate();if(r==null)return msg('측정 중입니다. 2초 정도 기다려 주세요.');rec.push([L*H/1000,r]);}
   else{if(!auto&&(Math.abs(u)>2||Math.abs(Lema-L)>1.5))return msg('피스톤이 아직 움직이는 중이에요. 멈춘 뒤 기록하세요.');rec.push([Tt-273.15,Lema*H/1000]);}
-  msg('기록했어요! ('+rec.length+'개)',1);
+  msg('기록했어요! ('+rec.length+'개) 📍',1);
 }
 function buildUI(){
   $('tabs').innerHTML=NAMES.map((n,i)=>`<button class="${i+1==mode?'on':''}" onclick="location.hash=${i+1}">${n}</button>`).join('');
@@ -137,31 +191,41 @@ $('bAuto').onclick=()=>{
   if(auto){auto=null;$('bAuto').textContent='⏱ 자동 측정';return;}
   rec=[];auto={seq:[100,200,300,400,500,600],i:0,t0:t};Tt=100;syncSlider();$('bAuto').textContent='■ 중지';msg('온도를 바꿔 가며 자동으로 기록합니다…',1);
 };
+function drawFace(x,y,r,fr,col){
+  cx.fillStyle=col;cx.beginPath();cx.arc(x,y,r,0,7);cx.fill();
+  cx.strokeStyle='#fff';cx.lineWidth=2.5;cx.stroke();
+  cx.fillStyle='rgba(255,255,255,.55)';cx.beginPath();cx.arc(x-r*.35,y-r*.4,r*.22,0,7);cx.fill();
+  cx.fillStyle='#3b2f4a';cx.beginPath();cx.arc(x-r*.35,y-r*.1,r*.13,0,7);cx.arc(x+r*.35,y-r*.1,r*.13,0,7);cx.fill();
+  cx.fillStyle='rgba(255,90,122,.35)';cx.beginPath();cx.arc(x-r*.6,y+r*.25,r*.17,0,7);cx.arc(x+r*.6,y+r*.25,r*.17,0,7);cx.fill();
+  cx.strokeStyle='#3b2f4a';cx.fillStyle='#3b2f4a';cx.lineWidth=1.6;cx.beginPath();
+  if(fr>.6){cx.arc(x,y+r*.35,r*.2,0,7);cx.fill();}else{cx.arc(x,y+r*.15,r*.3,.15*Math.PI,.85*Math.PI);cx.stroke();}
+}
 function drawSim(){
-  cx.clearRect(0,0,640,340);cx.fillStyle='#eef6ff';cx.fillRect(OX,OY,L,H);
-  cx.strokeStyle='#40566b';cx.lineWidth=3;cx.strokeRect(OX,OY,L,H);
+  cx.clearRect(0,0,640,340);
+  cx.fillStyle='#f3fbff';cx.fillRect(OX,OY,L,H);
+  cx.fillStyle='rgba(255,122,168,.07)';for(let x=OX+20;x<OX+L;x+=40)for(let y=OY+20;y<OY+H;y+=40){cx.beginPath();cx.arc(x,y,2,0,7);cx.fill();}
+  cx.strokeStyle='#ff9ec4';cx.lineWidth=4;cx.lineJoin='round';cx.strokeRect(OX,OY,L,H);
   const rx=OX+L;
-  cx.fillStyle=mode==3?'#7a8a96':`rgba(229,72,77,${0.25+0.75*flash})`;
-  if(mode==3){cx.fillStyle='#6b7c88';cx.fillRect(rx-2,OY,12,H);
-    if(rx+50<640){cx.strokeStyle='#e5484d';cx.fillStyle='#e5484d';cx.lineWidth=3;for(const y of [OY+50,OY+150,OY+250]){cx.beginPath();cx.moveTo(rx+40,y);cx.lineTo(rx+14,y);cx.stroke();cx.beginPath();cx.moveTo(rx+10,y);cx.lineTo(rx+18,y-5);cx.lineTo(rx+18,y+5);cx.fill();}}}
-  else{cx.fillRect(rx-3,OY,7,H);}
-  cx.strokeStyle='rgba(230,60,60,.45)';cx.lineWidth=1.5;cx.beginPath();
-  trail.forEach((p,i)=>i?cx.lineTo(OX+p[0],OY+p[1]):cx.moveTo(OX+p[0],OY+p[1]));cx.stroke();
-  for(let i=0;i<N;i++){
+  if(mode==3){cx.fillStyle='#b7a4f0';cx.fillRect(rx-2,OY,12,H);
+    if(rx+50<640){cx.strokeStyle='#ff6b8b';cx.fillStyle='#ff6b8b';cx.lineWidth=3;for(const y of [OY+50,OY+150,OY+250]){cx.beginPath();cx.moveTo(rx+40,y);cx.lineTo(rx+14,y);cx.stroke();cx.beginPath();cx.moveTo(rx+10,y);cx.lineTo(rx+18,y-5);cx.lineTo(rx+18,y+5);cx.fill();}}}
+  else{cx.fillStyle=`rgba(255,90,122,${0.25+0.75*flash})`;cx.fillRect(rx-3,OY,7,H);}
+  cx.strokeStyle='rgba(255,122,168,.5)';cx.lineWidth=2;cx.setLineDash([3,4]);cx.beginPath();
+  trail.forEach((p,i)=>i?cx.lineTo(OX+p[0],OY+p[1]):cx.moveTo(OX+p[0],OY+p[1]));cx.stroke();cx.setLineDash([]);
+  for(let i=1;i<N;i++){
     const sp=Math.hypot(pvx[i],pvy[i]),fr=Math.min(1,sp/520);
-    cx.fillStyle=`hsl(${215-215*fr},85%,52%)`;cx.beginPath();cx.arc(OX+px[i],OY+py[i],i==0?R+2:R,0,7);cx.fill();
-    if(i==0){cx.strokeStyle='#111';cx.lineWidth=1.5;cx.stroke();}
+    cx.fillStyle=`hsl(${215-215*fr},90%,68%)`;cx.beginPath();cx.arc(OX+px[i],OY+py[i],R+1,0,7);cx.fill();
   }
-  cx.fillStyle='#40566b';cx.font='12px sans-serif';
-  cx.fillText('빨강=빠른 입자, 파랑=느린 입자 (테두리 입자 1개를 따라가 보세요)',OX,334);
+  {const sp=Math.hypot(pvx[0],pvy[0]),fr=Math.min(1,sp/520);drawFace(OX+px[0],OY+py[0],10,fr,`hsl(${215-215*fr},90%,68%)`);}
+  cx.fillStyle='#7d6f8c';cx.font='12px sans-serif';
+  cx.fillText('빨강=빠른 입자, 파랑=느린 입자 (얼굴 있는 친구를 따라가 보세요 😊)',OX,334);
 }
 function setStats(){
   const T=curT(),s=[];
-  s.push(['온도',Tt.toFixed(0)+' K ('+(Tt-273.15).toFixed(0)+' ℃)']);
-  s.push(['부피',vol().toFixed(0)+' 칸']);
-  if(mode==1){const a=avgImp();s.push(['입자 평균 속력',Math.sqrt(2*KB*T*Math.PI/4).toFixed(0)]);s.push(['충돌 1회 평균 힘(충격량)',a==null?'-':a.toFixed(0)]);}
-  else if(mode==2){const r=rate();s.push(['오른쪽 벽 충돌 횟수','-']);s[2][1]=r==null?'측정 중':r.toFixed(1)+' 회/초';s.push(['입자 수',N+'개']);}
-  else{const a=avgImp();let c=0;for(const e of ev)if(e[2])c++;s.push(['충돌 1회 평균 힘',a==null?'-':a.toFixed(0)]);s.push(['피스톤 충돌 횟수',(t<1.5?'-':(c/Math.min(t,WIN)).toFixed(0)+' 회/초')]);}
+  s.push(['🌡️ 온도',Tt.toFixed(0)+' K ('+(Tt-273.15).toFixed(0)+' ℃)']);
+  s.push(['📦 부피',vol().toFixed(0)+' 칸']);
+  if(mode==1){const a=avgImp();s.push(['💨 입자 평균 속력',Math.sqrt(2*KB*T*Math.PI/4).toFixed(0)]);s.push(['💥 충돌 1회 평균 힘',a==null?'-':a.toFixed(0)]);}
+  else if(mode==2){const r=rate();s.push(['💥 오른쪽 벽 충돌 횟수','-']);s[2][1]=r==null?'측정 중':r.toFixed(1)+' 회/초';s.push(['⚪ 입자 수',N+'개']);}
+  else{const a=avgImp();let c=0;for(const e of ev)if(e[2])c++;s.push(['💥 충돌 1회 평균 힘',a==null?'-':a.toFixed(0)]);s.push(['🔁 피스톤 충돌 횟수',(t<1.5?'-':(c/Math.min(t,WIN)).toFixed(0)+' 회/초')]);}
   $('stats').innerHTML=s.map(a=>`<div class="stat">${a[0]}<b>${a[1]}</b></div>`).join('');
 }
 function drawGraph(){
@@ -171,26 +235,26 @@ function drawGraph(){
   gx.clearRect(0,0,W,Hh);gx.font='11px sans-serif';gx.lineWidth=1;
   for(let i=0;i<=5;i++){
     const xv=C.x0+(C.x1-C.x0)*i/5,yv=C.y0+(C.y1-C.y0)*i/5;
-    gx.strokeStyle='#e3ece8';gx.beginPath();gx.moveTo(X(xv),m.t);gx.lineTo(X(xv),Hh-m.b);gx.moveTo(m.l,Y(yv));gx.lineTo(W-m.r,Y(yv));gx.stroke();
-    gx.fillStyle='#5a6b72';gx.textAlign='center';gx.fillText(Math.round(xv),X(xv),Hh-m.b+14);gx.textAlign='right';gx.fillText(Math.round(yv),m.l-5,Y(yv)+4);
+    gx.strokeStyle='#ffe3ee';gx.beginPath();gx.moveTo(X(xv),m.t);gx.lineTo(X(xv),Hh-m.b);gx.moveTo(m.l,Y(yv));gx.lineTo(W-m.r,Y(yv));gx.stroke();
+    gx.fillStyle='#7d6f8c';gx.textAlign='center';gx.fillText(Math.round(xv),X(xv),Hh-m.b+14);gx.textAlign='right';gx.fillText(Math.round(yv),m.l-5,Y(yv)+4);
   }
-  gx.strokeStyle='#40566b';gx.lineWidth=1.5;gx.beginPath();gx.moveTo(m.l,m.t);gx.lineTo(m.l,Hh-m.b);gx.lineTo(W-m.r,Hh-m.b);gx.stroke();
-  gx.fillStyle='#1d2a30';gx.font='12px sans-serif';gx.textAlign='center';gx.fillText(C.xl,(m.l+W-m.r)/2,Hh-8);
+  gx.strokeStyle='#8a7a9b';gx.lineWidth=2;gx.beginPath();gx.moveTo(m.l,m.t);gx.lineTo(m.l,Hh-m.b);gx.lineTo(W-m.r,Hh-m.b);gx.stroke();
+  gx.fillStyle='#3b2f4a';gx.font='12px sans-serif';gx.textAlign='center';gx.fillText(C.xl,(m.l+W-m.r)/2,Hh-8);
   gx.save();gx.translate(13,(m.t+Hh-m.b)/2);gx.rotate(-Math.PI/2);gx.fillText(C.yl,0,0);gx.restore();
-  if(mode==3){gx.strokeStyle='#e5484d';gx.setLineDash([4,4]);gx.beginPath();gx.moveTo(X(-273.15),m.t);gx.lineTo(X(-273.15),Hh-m.b);gx.stroke();gx.setLineDash([]);gx.fillStyle='#e5484d';gx.textAlign='left';gx.fillText('-273 ℃',X(-273.15)+3,m.t+10);}
+  if(mode==3){gx.strokeStyle='#6bb8ff';gx.lineWidth=1.5;gx.setLineDash([4,4]);gx.beginPath();gx.moveTo(X(-273.15),m.t);gx.lineTo(X(-273.15),Hh-m.b);gx.stroke();gx.setLineDash([]);gx.fillStyle='#3b7fc4';gx.textAlign='left';gx.fillText('❄️ -273 ℃',X(-273.15)+3,m.t+10);}
   if(mode==3&&rec.length>=2){
     const n=rec.length,sx=rec.reduce((a,p)=>a+p[0],0),sy=rec.reduce((a,p)=>a+p[1],0),sxx=rec.reduce((a,p)=>a+p[0]*p[0],0),sxy=rec.reduce((a,p)=>a+p[0]*p[1],0);
     const d=n*sxx-sx*sx;
     if(Math.abs(d)>1e-6){
       const b=(n*sxy-sx*sy)/d,a=(sy-b*sx)/n,x0=-a/b,xs=rec.map(p=>p[0]);
-      gx.strokeStyle='#1f8a70';gx.lineWidth=2;gx.setLineDash([6,4]);gx.beginPath();
+      gx.strokeStyle='#3cc3a6';gx.lineWidth=2.5;gx.setLineDash([6,4]);gx.beginPath();
       const xa=Math.max(C.x0,Math.min(x0,Math.min(...xs))),xb=Math.max(...xs);
       gx.moveTo(X(xa),Y(a+b*xa));gx.lineTo(X(Math.min(C.x1,Math.max(xb,350))),Y(a+b*Math.min(C.x1,Math.max(xb,350))));gx.stroke();gx.setLineDash([]);
       gx.beginPath();gx.moveTo(X(Math.min(...xs)),Y(a+b*Math.min(...xs)));gx.lineTo(X(xb),Y(a+b*xb));gx.stroke();
-      gx.fillStyle='#1f8a70';gx.textAlign='left';gx.fillText('부피 0 → 약 '+x0.toFixed(0)+' ℃',m.l+8,m.t+(n>0?24:10));
+      gx.fillStyle='#2fae93';gx.textAlign='left';gx.fillText('부피 0 → 약 '+x0.toFixed(0)+' ℃',m.l+8,m.t+(n>0?24:10));
     }
   }
-  rec.forEach(p=>{gx.fillStyle='#e5484d';gx.beginPath();gx.arc(X(p[0]),Y(Math.min(p[1],C.y1)),5,0,7);gx.fill();});
+  rec.forEach(p=>{gx.fillStyle='#ff6b8b';gx.beginPath();gx.arc(X(p[0]),Y(Math.min(p[1],C.y1)),6,0,7);gx.fill();gx.strokeStyle='#fff';gx.lineWidth=2;gx.stroke();});
 }
 let last=performance.now();
 function loop(now){
@@ -202,6 +266,14 @@ function loop(now){
 function route(){const h=parseInt(location.hash.slice(1));init(h>=1&&h<=3?h:1);}
 window.addEventListener('hashchange',route);
 route();requestAnimationFrame(loop);
+
+function balloon(){
+  const c=+$('bt').value,V=1.0*(c+273.15)/293.15,s=100*Math.cbrt(V);
+  $('bal').style.width=$('bal').style.height=s.toFixed(0)+'px';
+  const mood=c<0?'🥶 추워서 쪼그라들어요':c>60?'🥵 뜨거워서 빵빵해요':'😊 적당해요';
+  $('brd').innerHTML='온도 <b>'+c+' ℃</b> ('+(c+273.15).toFixed(0)+' K) → 부피 <b>'+V.toFixed(2)+' L</b> · '+mood;
+}
+$('bt').oninput=balloon;balloon();
 </script>
 </body>
 </html>
