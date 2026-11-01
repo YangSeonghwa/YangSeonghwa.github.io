@@ -5,58 +5,76 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Beflower의 과학 시뮬레이션 랩</title>
 <meta name="description" content="과학 교사 Beflower가 만드는 중학교 학년별 과학 웹 시뮬레이션 모음">
+<meta property="og:title" content="Beflower의 과학 시뮬레이션 랩">
+<meta property="og:image" content="images/hero.png">
 <style>
-:root{--bg:#f6faf5;--card:#fff;--ink:#1f2a24;--sub:#5b6b62;--main:#2e8b57;--accent:#f4a6c0;--line:#e1ebe3;--p:#e8f3ff;--c:#fff1e0;--b:#e6f7e9;--e:#f1e9ff}
+:root{--bg:#f4f9f6;--card:#fff;--ink:#1d2a30;--sub:#5a6b72;--main:#1f8a70;--pink:#f08fb0;--line:#e0ebe6;--p:#e3f0ff;--c:#fff0dc;--b:#e2f6e6;--e:#efe6ff}
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{margin:0;font-family:"Pretendard","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
 a{color:inherit;text-decoration:none}
-header.hero{background:linear-gradient(135deg,#2e8b57,#7bc88f 60%,#f4a6c0);color:#fff;padding:72px 20px 84px;text-align:center}
-.hero .logo{font-size:56px}
-.hero h1{margin:8px 0 6px;font-size:clamp(28px,5vw,44px)}
-.hero p{margin:4px auto;max-width:620px;opacity:.95}
-.badge{display:inline-block;margin-top:14px;padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.22);font-size:14px}
-main{max-width:1000px;margin:-40px auto 0;padding:0 16px 60px}
-section{background:var(--card);border-radius:18px;padding:26px;margin-bottom:22px;box-shadow:0 4px 18px rgba(0,0,0,.06)}
-h2{margin:0 0 14px;font-size:22px;color:var(--main)}
+.hero{position:relative;min-height:440px;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;padding:70px 20px 110px;background:linear-gradient(135deg,#0f2a44,#1f8a70 65%,#f08fb0);overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:url(images/hero.png) center/cover no-repeat}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,20,40,.35),rgba(8,20,40,.55))}
+.hero-inner{position:relative;z-index:2;max-width:720px}
+.hero h1{margin:0 0 10px;font-size:clamp(30px,6vw,52px);letter-spacing:-.5px;text-shadow:0 3px 18px rgba(0,0,0,.45)}
+.hero p{margin:6px 0;font-size:clamp(15px,2.4vw,19px);text-shadow:0 2px 10px rgba(0,0,0,.5)}
+.badge{display:inline-block;margin-top:16px;padding:7px 16px;border-radius:999px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.45);backdrop-filter:blur(6px);font-size:14px}
+.cta{display:inline-block;margin:18px 6px 0;padding:11px 24px;border-radius:999px;background:var(--pink);color:#fff;font-weight:700;box-shadow:0 6px 18px rgba(240,143,176,.5);transition:.2s}
+.cta:hover{transform:translateY(-2px)}
+.wave{position:absolute;bottom:-1px;left:0;width:100%;height:70px;z-index:3}
+main{max-width:1000px;margin:0 auto;padding:10px 16px 60px}
+section{background:var(--card);border-radius:20px;padding:28px;margin-bottom:22px;box-shadow:0 6px 22px rgba(20,60,50,.07)}
+h2{margin:0 0 16px;font-size:22px;color:var(--main)}
 .grades{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
-.grade{border:1px solid var(--line);border-radius:14px;padding:20px;transition:.2s;display:block}
-.grade:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(46,139,87,.18);border-color:var(--main)}
-.grade .num{font-size:34px;font-weight:800;color:var(--main)}
-.grade h3{margin:2px 0 6px}
+.grade{position:relative;border:1px solid var(--line);border-radius:16px;padding:22px;transition:.25s;display:block;overflow:hidden}
+.grade::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:var(--gc)}
+.grade:nth-child(1){--gc:linear-gradient(90deg,#4fc3f7,#1f8a70)}
+.grade:nth-child(2){--gc:linear-gradient(90deg,#ffb74d,#f08fb0)}
+.grade:nth-child(3){--gc:linear-gradient(90deg,#9575cd,#4fc3f7)}
+.grade:hover{transform:translateY(-5px);box-shadow:0 10px 24px rgba(31,138,112,.2);border-color:var(--main)}
+.grade .icon{font-size:30px}
+.grade .num{font-size:15px;color:var(--main);font-weight:700;margin-top:4px}
+.grade h3{margin:2px 0 6px;font-size:20px}
 .grade small{color:var(--sub)}
-.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.filters button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;font:inherit;font-size:14px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.filters button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 15px;cursor:pointer;font:inherit;font-size:14px;transition:.15s}
+.filters button:hover{border-color:var(--main)}
 .filters button.on{background:var(--main);color:#fff;border-color:var(--main)}
 .sims{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
 .sim{border:1px solid var(--line);border-radius:14px;padding:16px;display:block;transition:.2s}
-.sim:hover{box-shadow:0 6px 16px rgba(0,0,0,.1)}
-.tag{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;margin-right:4px}
+.sim:hover{box-shadow:0 8px 18px rgba(0,0,0,.1);transform:translateY(-3px)}
+.tag{display:inline-block;font-size:12px;padding:2px 10px;border-radius:999px;margin-right:4px}
 .물리{background:var(--p)}.화학{background:var(--c)}.생명{background:var(--b)}.지구과학{background:var(--e)}
 .sim h4{margin:8px 0 4px}.sim p{margin:0;color:var(--sub);font-size:14px}
-.empty{text-align:center;color:var(--sub);padding:28px 8px;border:2px dashed var(--line);border-radius:14px}
-.about{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.empty{text-align:center;color:var(--sub);padding:32px 8px;border:2px dashed var(--line);border-radius:14px}
+.about{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
 .about .avatar{font-size:64px}
 .about p{margin:4px 0;color:var(--sub)}
-.links a{display:inline-block;margin:6px 8px 0 0;padding:8px 14px;border-radius:10px;background:var(--bg);border:1px solid var(--line);font-size:14px}
+.links a{display:inline-block;margin:6px 8px 0 0;padding:8px 14px;border-radius:10px;background:var(--bg);border:1px solid var(--line);font-size:14px;transition:.15s}
 .links a:hover{border-color:var(--main)}
 footer{text-align:center;color:var(--sub);font-size:13px;padding:24px 10px 40px}
 </style>
 </head>
 <body>
 <header class="hero">
-  <div class="logo">🌸🔬</div>
-  <h1>Beflower의 과학 시뮬레이션 랩</h1>
-  <p>눈으로 보고, 손으로 만져 보며 배우는 중학교 과학.<br>학년별 웹 시뮬레이션을 한곳에 모았습니다.</p>
-  <span class="badge">전주 · 중학교 과학 교사 Beflower</span>
+  <div class="hero-inner">
+    <h1>Beflower의 과학 시뮬레이션 랩</h1>
+    <p>눈으로 보고, 손으로 만져 보며 배우는 중학교 과학</p>
+    <p>학년별 웹 시뮬레이션을 한곳에 모았습니다.</p>
+    <span class="badge">🌸 전주 · 중학교 과학 교사 Beflower</span><br>
+    <a class="cta" href="#sims">시뮬레이션 보러 가기 →</a>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none"><path fill="#f4f9f6" d="M0,40 C240,80 480,0 720,30 C960,60 1200,70 1440,25 L1440,70 L0,70 Z"/></svg>
 </header>
 
 <main>
   <section>
     <h2>📚 학년별 바로가기</h2>
     <div class="grades">
-      <a class="grade" href="#sims" data-grade="1"><div class="num">1</div><h3>중학교 1학년</h3><small>시뮬레이션 <span class="cnt">0</span>개</small></a>
-      <a class="grade" href="#sims" data-grade="2"><div class="num">2</div><h3>중학교 2학년</h3><small>시뮬레이션 <span class="cnt">0</span>개</small></a>
-      <a class="grade" href="#sims" data-grade="3"><div class="num">3</div><h3>중학교 3학년</h3><small>시뮬레이션 <span class="cnt">0</span>개</small></a>
+      <a class="grade" href="#sims" data-grade="1"><div class="icon">🌍</div><div class="num">GRADE 1</div><h3>중학교 1학년</h3><small>시뮬레이션 <span class="cnt">0</span>개</small></a>
+      <a class="grade" href="#sims" data-grade="2"><div class="icon">⚡</div><div class="num">GRADE 2</div><h3>중학교 2학년</h3><small>시뮬레이션 <span class="cnt">0</span>개</small></a>
+      <a class="grade" href="#sims" data-grade="3"><div class="icon">🧬</div><div class="num">GRADE 3</div><h3>중학교 3학년</h3><small>시뮬레이션 <span class="cnt">0</span>개</small></a>
     </div>
   </section>
 
@@ -91,6 +109,7 @@ footer{text-align:center;color:var(--sub);font-size:13px;padding:24px 10px 40px}
 const SIMS = [
 ];
 const AREAS = ["물리","화학","생명","지구과학"];
+const ICON = {"물리":"⚡","화학":"⚗️","생명":"🌱","지구과학":"🪐"};
 let g = 0, a = "전체";
 const $ = id => document.getElementById(id);
 
@@ -101,7 +120,7 @@ function chip(parent, label, on, fn){
 function render(){
   $("gradeFilter").innerHTML = ""; $("areaFilter").innerHTML = "";
   [[0,"전체 학년"],[1,"1학년"],[2,"2학년"],[3,"3학년"]].forEach(([v,l]) => chip($("gradeFilter"), l, g===v, () => {g=v;render();}));
-  ["전체",...AREAS].forEach(v => chip($("areaFilter"), v, a===v, () => {a=v;render();}));
+  ["전체",...AREAS].forEach(v => chip($("areaFilter"), (ICON[v]||"✨")+" "+v, a===v, () => {a=v;render();}));
   const list = SIMS.filter(s => (!g || s.grade===g) && (a==="전체" || s.area===a));
   const box = $("simList"); box.innerHTML = "";
   if(!list.length){
@@ -112,7 +131,7 @@ function render(){
     list.forEach(s => {
       const el = document.createElement("a");
       el.className = "sim"; el.href = s.url;
-      el.innerHTML = '<span class="tag '+s.area+'">'+s.area+'</span><span class="tag" style="background:#eee">중'+s.grade+'</span><h4></h4><p></p>';
+      el.innerHTML = '<span class="tag '+s.area+'">'+(ICON[s.area]||"")+" "+s.area+'</span><span class="tag" style="background:#eee">중'+s.grade+'</span><h4></h4><p></p>';
       el.querySelector("h4").textContent = s.title;
       el.querySelector("p").textContent = s.desc || "";
       box.appendChild(el);
