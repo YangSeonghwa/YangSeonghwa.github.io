@@ -5,26 +5,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>주지운 일어나라</title>
 <style>
-body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff8e7;font-family:sans-serif;}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff8e7;font-family:sans-serif;user-select:none;}
 h1{color:#444;margin:0 0 10px;}
 svg{width:min(90vw,380px);height:auto;}
+#head{cursor:pointer;transform-origin:130px 200px;}
+.wobble{animation:wob .35s;}
+@keyframes wob{0%,100%{transform:rotate(0)}25%{transform:rotate(-7deg)}75%{transform:rotate(7deg)}}
 .clock{animation:shake .5s infinite;transform-origin:300px 190px;}
+.awake .clock{animation:none;}
 @keyframes shake{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
 .zzz{animation:float 2s infinite ease-in-out;}
+.awake .zzz{display:none;}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.awake #body{animation:jump .6s 2;}
+@keyframes jump{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+#eyesOpen,#mouthOpen{display:none;}
+.awake #eyesOpen,.awake #mouthOpen{display:block;}
+.awake #eyesClosed,.awake #mouthClosed{display:none;}
+#msg{color:#666;min-height:1.5em;margin:8px 0;}
+button{padding:8px 18px;border:0;border-radius:20px;background:#6a7fdb;color:#fff;font-size:15px;cursor:pointer;}
+#bar{width:200px;height:10px;background:#eee;border-radius:5px;overflow:hidden;margin-bottom:6px;}
+#fill{height:100%;width:0;background:#ffb347;transition:width .2s;}
 </style>
 </head>
 <body>
 <h1>주지운 일어나라!</h1>
-<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="졸고 있는 귀여운 캐릭터와 알람시계">
+<div id="bar"><div id="fill"></div></div>
+<svg id="scene" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="졸고 있는 귀여운 캐릭터와 알람시계">
 <rect x="20" y="170" width="220" height="90" rx="25" fill="#9ad0f5"/>
+<g id="body"><g id="head">
 <circle cx="130" cy="140" r="65" fill="#ffe0bd"/>
 <path d="M68 125 Q130 40 192 125 Q160 90 130 95 Q100 90 68 125Z" fill="#5b3a29"/>
-<path d="M105 140 Q115 148 125 140" stroke="#333" stroke-width="4" fill="none" stroke-linecap="round"/>
-<path d="M140 140 Q150 148 160 140" stroke="#333" stroke-width="4" fill="none" stroke-linecap="round"/>
+<g id="eyesClosed" stroke="#333" stroke-width="4" fill="none" stroke-linecap="round"><path d="M105 140 Q115 148 125 140"/><path d="M140 140 Q150 148 160 140"/></g>
+<g id="eyesOpen"><circle cx="115" cy="140" r="8" fill="#333"/><circle cx="150" cy="140" r="8" fill="#333"/><circle cx="118" cy="137" r="3" fill="#fff"/><circle cx="153" cy="137" r="3" fill="#fff"/></g>
 <circle cx="100" cy="158" r="9" fill="#ffb3b3" opacity=".7"/>
 <circle cx="165" cy="158" r="9" fill="#ffb3b3" opacity=".7"/>
-<ellipse cx="132" cy="172" rx="7" ry="5" fill="#d66"/>
+<ellipse id="mouthClosed" cx="132" cy="172" rx="7" ry="5" fill="#d66"/>
+<path id="mouthOpen" d="M120 166 Q132 184 144 166Z" fill="#d66"/>
+</g></g>
 <g class="zzz" fill="#6a7fdb" font-weight="bold"><text x="205" y="80" font-size="26">Z</text><text x="230" y="55" font-size="20">z</text><text x="250" y="35" font-size="15">z</text></g>
 <g class="clock">
 <circle cx="300" cy="190" r="45" fill="#ff7b7b"/>
@@ -34,6 +52,22 @@ svg{width:min(90vw,380px);height:auto;}
 <path d="M285 240 L275 258 M315 240 L325 258" stroke="#555" stroke-width="5" stroke-linecap="round"/>
 </g>
 </svg>
-<p style="color:#666">딩동댕! 아침이에요 ☀️</p>
+<p id="msg">캐릭터를 톡톡 눌러 깨워 보세요! (0/5)</p>
+<button id="reset">다시 재우기</button>
+<script>
+var NEED=5,taps=0,scene=document.getElementById('scene'),head=document.getElementById('head'),msg=document.getElementById('msg'),fill=document.getElementById('fill');
+var lines=['음냐... 💤','으음... 조금만 더...','응? 누가 불러...','눈이 떠지려고 해...'];
+head.addEventListener('click',function(){
+ if(taps>=NEED)return;
+ taps++;
+ head.classList.remove('wobble');void head.getBoundingClientRect();head.classList.add('wobble');
+ fill.style.width=(taps/NEED*100)+'%';
+ if(taps<NEED){msg.textContent=lines[taps-1]+' ('+taps+'/'+NEED+')';}
+ else{scene.classList.add('awake');msg.textContent='좋은 아침! 일어났어요 ☀️';}
+});
+document.getElementById('reset').addEventListener('click',function(){
+ taps=0;scene.classList.remove('awake');fill.style.width='0';msg.textContent='캐릭터를 톡톡 눌러 깨워 보세요! (0/5)';
+});
+</script>
 </body>
 </html>
