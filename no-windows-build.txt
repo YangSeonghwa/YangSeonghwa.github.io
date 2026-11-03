@@ -1,0 +1,1 @@
+이 프로젝트는 GitHub Pages로 공개하는 정적 웹페이지(HTML/CSS/JS)만 있는 Pages 전용 프로젝트라 Windows exe를 만들 수 없고 만들 필요도 없다. main에 푸시하면 GitHub Pages가 그대로 공개한다. (AGENTS.md 0번, auto-build 규칙의 예외, D-009)

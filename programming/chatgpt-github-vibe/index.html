@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>ChatGPT와 GitHub로 내 홈페이지 바이브 코딩하기 | 프로그램 수업</title>
+<meta name='description' content='ChatGPT에 GitHub를 연결해 말로 설명하며 홈페이지를 만들고 GitHub Pages로 공개하는 프로그램 수업 발표 자료'>
+<style>
+:root{--ink:#1d2a30;--sub:#5a6b72;--main:#1f8a70;--pink:#f08fb0;--line:#e0ebe6;--card:#fff;--soft:#f4f9f6}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:'Pretendard','Noto Sans KR','Malgun Gothic',system-ui,sans-serif;background:linear-gradient(135deg,#0f2a44,#1f8a70 70%);color:var(--ink);overflow:hidden}
+.deck{position:relative;height:100%;display:flex;align-items:center;justify-content:center;padding:18px 18px 70px}
+.slide{display:none;width:min(1100px,100%);max-height:100%;overflow:auto;background:var(--card);border-radius:24px;padding:clamp(20px,4vw,48px);box-shadow:0 20px 60px rgba(0,0,0,.35);animation:in .35s ease}
+.slide.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.kicker{display:inline-block;padding:4px 14px;border-radius:999px;background:var(--soft);border:1px solid var(--line);color:var(--main);font-weight:700;font-size:clamp(12px,1.6vw,15px)}
+h1{font-size:clamp(28px,5.4vw,54px);margin:14px 0 10px;line-height:1.25;letter-spacing:-.5px}
+h2{font-size:clamp(22px,3.6vw,36px);margin:12px 0 14px;color:var(--main);line-height:1.3}
+p,li{font-size:clamp(15px,2.1vw,22px);line-height:1.7}
+ul,ol{padding-left:1.3em;margin:8px 0}
+li{margin:6px 0}
+.lead{color:var(--sub)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:14px}
+.box{border:1px solid var(--line);border-radius:16px;padding:16px 18px;background:var(--soft)}
+.box h3{margin:0 0 6px;font-size:clamp(17px,2.4vw,24px)}
+.box p,.box li{font-size:clamp(14px,1.9vw,19px);margin:4px 0}
+.step{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:var(--main);color:#fff;font-weight:800;margin-right:8px}
+.flow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin:18px 0}
+.node{padding:14px 18px;border-radius:14px;background:var(--soft);border:2px solid var(--main);font-weight:700;text-align:center;font-size:clamp(14px,2vw,20px)}
+.arrow{font-size:28px;color:var(--pink)}
+.prompt{white-space:pre-wrap;background:#14222c;color:#e6f4ee;border-radius:14px;padding:16px 18px;font-size:clamp(13px,1.8vw,18px);line-height:1.65;border-left:6px solid var(--pink);margin:12px 0}
+.warn{border-left:6px solid #ffb74d;background:#fff8ec;border-radius:12px;padding:4px 16px;margin:12px 0}
+.ok{border-left:6px solid var(--main);background:#eefaf5;border-radius:12px;padding:4px 16px;margin:12px 0}
+.note{display:none;margin-top:16px;padding:12px 16px;border-radius:12px;background:#fffbe6;border:1px dashed #e0c36a;font-size:clamp(13px,1.7vw,17px)}
+body.notes .note{display:block}
+table{border-collapse:collapse;width:100%;font-size:clamp(13px,1.8vw,18px);margin-top:10px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--soft);color:var(--main)}
+.bar{position:fixed;left:0;right:0;bottom:0;height:54px;display:flex;align-items:center;gap:10px;padding:0 14px;background:rgba(8,20,40,.55);backdrop-filter:blur(8px);color:#fff}
+.bar button{border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:7px 14px;font:inherit;cursor:pointer}
+.bar button:hover{background:rgba(255,255,255,.28)}
+.prog{flex:1;height:6px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--pink);transition:width .3s}
+.cnt{min-width:64px;text-align:center;font-weight:700}
+a{color:var(--main)}
+.back{color:#fff;text-decoration:none;font-size:14px;white-space:nowrap}
+.src{font-size:13px;color:var(--sub);margin-top:14px}
+@media (max-width:640px){.bar{gap:6px;padding:0 8px}.bar button{padding:6px 9px;font-size:13px}.cnt{min-width:48px;font-size:13px}.back{font-size:12px}}
+@media print{body{overflow:visible;background:#fff}.deck{display:block;padding:0;height:auto}.slide{display:block!important;box-shadow:none;border-radius:0;page-break-after:always;max-height:none;animation:none}.bar{display:none}.note{display:block}}
+</style>
+</head>
+<body>
+<div class='deck'>
+
+<section class='slide'>
+<span class='kicker'>프로그램 수업 · Beflower</span>
+<h1>ChatGPT와 GitHub로<br>내 홈페이지 바이브 코딩하기</h1>
+<p class='lead'>코드를 외우지 않아도 괜찮아요. 만들고 싶은 것을 말로 설명하고, AI가 만든 결과를 확인하며 고쳐 가는 수업입니다.</p>
+<div class='grid'>
+<div class='box'><h3>⏱ 수업 시간</h3><p>2차시(약 90분) 권장</p></div>
+<div class='box'><h3>🎯 결과물</h3><p>인터넷 주소로 공개된 나만의 한 쪽짜리 홈페이지</p></div>
+<div class='box'><h3>🧰 도구</h3><p>ChatGPT, GitHub, GitHub Pages</p></div>
+</div>
+<div class='note'>도입: 수업 전에 완성 예시 홈페이지 주소를 스마트폰으로 열어 보여 주면 동기 유발에 좋습니다. 화면 아래의 이전·다음 버튼이나 방향키로 넘기고, N 키로 이 교사 메모를 켜고 끕니다. F 키는 전체화면입니다.</div>
+</section>
+
+<section class='slide'>
+<span class='kicker'>오늘의 목표</span>
+<h2>이 수업이 끝나면 할 수 있어요</h2>
+<div class='grid'>
+<div class='box'><h3><span class='step'>1</span>연결하기</h3><p>ChatGPT에 GitHub 저장소를 안전하게 연결한다.</p></div>
+<div class='box'><h3><span class='step'>2</span>말로 만들기</h3><p>원하는 홈페이지를 말로 설명해 AI와 함께 만든다.</p></div>
+<div class='box'><h3><span class='step'>3</span>공개하기</h3><p>GitHub에 올려 인터넷 주소로 공개하고 확인한다.</p></div>
+</div>
+<p class='lead'>성취 확인: 내가 쓴 설명(프롬프트)과 AI가 만든 결과를 견주어 보고, 무엇을 고쳐 달라고 했는지 말할 수 있다.</p>
+<div class='note'>목표를 칠판에 한 줄로 적어 두고, 수업 끝에 학생이 스스로 체크하게 하면 좋습니다.</div>
+</section>
+
+<section class='slide'>
+<span class='kicker'>개념</span>
+<h2>바이브 코딩이란?</h2>
+<div class='grid'>
+<div class='box'><h3>🗣 말하기</h3><p>만들고 싶은 모습을 우리말로 자세히 설명한다.</p></div>
+<div class='box'><h3>🤖 만들기</h3><p>AI가 HTML, CSS, JavaScript 코드를 써 준다.</p></div>
+<div class='box'><h3>👀 확인하기</h3><p>결과를 직접 보고 마음에 안 드는 점을 다시 말한다.</p></div>
+</div>
+<div class='ok'><p>나는 코드를 한 줄씩 치는 사람이 아니라, AI에게 방향을 알려 주는 <b>지휘자</b>예요.</p></div>
+<div class='warn'><p>AI가 만든 결과는 틀릴 수 있어요. 반드시 내 눈으로 확인하고, 모르는 부분은 설명해 달라고 요청해요.</p></div>
+<div class='note'>코딩 지식이 없어도 시작할 수 있다는 점을 강조하되, 결과를 검증하는 습관이 핵심 역량임을 짚어 주세요.</div>
+</section>
+
+<section class='slide'>
+<span class='kicker'>시작 전에</span>
+<h2>준비물과 안전 약속</h2>
+<div class='grid'>
+<div class='box'><h3>🧰 준비물</h3>
+<ul><li>GitHub 계정 (학교 규정과 나이 기준 확인)</li><li>ChatGPT 계정 (연결 기능은 요금제·계정 종류·학교 정책에 따라 다를 수 있어요)</li><li>크롬 같은 웹 브라우저</li><li>만들고 싶은 페이지를 적은 메모</li></ul></div>
+<div class='box'><h3>🛡 안전 약속</h3>
+<ul><li>비밀번호와 API 키는 채팅창에 쓰지 않기</li><li>친구 얼굴 사진·이름·연락처는 허락 없이 올리지 않기</li><li>공개 저장소에 올린 것은 누구나 볼 수 있어요</li></ul></div>
+</div>
+<div class='note'>학교 계정 정책과 학생 나이 기준(서비스 이용 약관)은 수업 전에 확인하세요. 계정이 없는 학생은 모둠 시연으로 대체할 수 있습니다.</div>
+</section>
+
+<section class='slide'>
+<span class='kicker'>한눈에 보기</span>
+<h2>전체 흐름</h2>
+<div class='flow'>
+<div class='node'>🧑 나<br>말로 설명</div><div class='arrow'>→</div>
+<div class='node'>💬 ChatGPT<br>코드 작성</div><div class='arrow'>→</div>
+<div class='node'>📄 index.html<br>내가 확인</div><div class='arrow'>→</div>
+<div class='node'>🐙 GitHub 저장소<br>저장(커밋)</div><div class='arrow'>→</div>
+<div class='node'>🌐 GitHub Pages<br>내 홈페이지</div>
+</div>
+<p class='lead'>ChatGPT와 GitHub 저장소를 연결하면, ChatGPT가 내 저장소의 파일을 참고해 더 알맞은 코드를 만들어 줄 수 있어요.</p>
+<div class='note'>연결로 할 수 있는 일(읽기·참고)과 학생이 직접 하는 일(복사·커밋)을 구분해서 설명해 주세요.</div>
+</section>
+
+<section class='slide'>
+<span class='kicker'>1단계</span>
+<h2>GitHub 저장소 만들고 Pages 켜기</h2>
+<table>
+<tr><th>순서</th><th>할 일</th></tr>
+<tr><td>1</td><td>GitHub에 로그인 → 오른쪽 위 <b>+</b> → <b>New repository</b></td></tr>
+<tr><td>2</td><td>저장소 이름: <b>내아이디.github.io</b> (아이디와 똑같이)</td></tr>
+<tr><td>3</td><td><b>Public</b> 선택, <b>Add a README file</b> 체크 → <b>Create repository</b></td></tr>
+<tr><td>4</td><td><b>Settings → Pages</b> → Source: <b>Deploy from a branch</b> → Branch: <b>main</b>, 폴더 <b>/ (root)</b> → Save</td></tr>
+<tr><td>5</td><td>입구 파일은 저장소 맨 위 폴더의 <b>index.html</b></td></tr>
+</table>
+<p class='src'>화면 글자는 한국어/영어로 다르게 보일 수 있어요. 참고: GitHub Pages 공식 문서 (docs.github.com, pages.github.com)</p>
+<div class='note'>Pages는 branch의 최상위 폴더에서 index.html을 찾아 첫 화면으로 씁니다. 저장소 이름이 사용자이름.github.io여야 https://사용자이름.github.io 주소가 됩니다.</div>
+</section>
+
+<section class='slide'>
+<span class='kicker'>2단계</span>
+<h2>ChatGPT에 GitHub 연결하기</h2>
+<ol>
+<li>ChatGPT 입력창 옆의 <b>+</b> (또는 클립) 메뉴에서 <b>GitHub</b> 연결을 찾아요.</li>
+<li>GitHub 로그인 화면에서 <b>허용(Authorize)</b>을 눌러요.</li>
+<li>ChatGPT가 볼 수 있는 <b>저장소를 직접 고릅니다</b> (다음 쪽 참고).</li>
+<li>새 채팅에서 GitHub를 켜고 「내 저장소 목록에서 내아이디.github.io가 보이니?」라고 물어 확인해요.</li>
+</ol>
+<div class='warn'><p>메뉴 이름과 위치는 업데이트와 요금제에 따라 달라질 수 있어요. 예전에 「플러그인」이라고 부르던 기능은 지금은 주로 「앱/커넥터」라는 이름으로 보여요.</p></div>
+<div class='note'>수업 직전에 교사 계정으로 실제 화면을 한 번 확인하고 캡처를 보조 자료로 준비하세요. 연결 기능이 보이지 않는 학생은 2단계를 건너뛰고 저장소 내용을 붙여 넣어 대화하는 방법으로 진행해도 3~5단계는 그대로 할 수 있습니다.</div>
+</section>
+
+<section class='slide'>
+<span class='kicker'>안전하게</span>
+<h2>연결 권한은 꼭 필요한 만큼만</h2>
+<div class='grid'>
+<div class='box'><h3>✅ 이렇게</h3><ul><li>접근 저장소는 <b>선택한 저장소만(Only select repositories)</b></li><li>이 수업용 저장소 하나만 고르기</li><li>수업이 끝나면 GitHub 설정의 <b>Applications</b>에서 연결 해제</li></ul></div>
+<div class='box'><h3>⚠ 이렇게는 안 돼요</h3><ul><li>모든 저장소(All repositories) 허용</li><li>비밀번호·키·학생 정보가 든 저장소를 연결</li><li>모르는 사이트에 GitHub 로그인</li></ul></div>
+</div>
+<p class='src'>모든 저장소를 허용하면 계정이 접근할 수 있는 공개·비공개 저장소가 모두 범위에 들어갈 수 있어서, 선택한 저장소만 허용하라는 안내가 있습니다.</p>
+<div class='note'>이 쪽은 시간을 충분히 쓰세요. 학생이 허용 화면을 대충 넘기지 않도록, 저장소 선택 화면에서 한 번 멈추고 모둠별로 확인하게 합니다.</div>
+</section>
+
+<section class='slide'>
+<span class='kicker'>3단계</span>
+<h2>좋은 설명(프롬프트) 만들기</h2>
+<p><b>누가 볼까 + 무엇을 담을까 + 어떤 분위기 + 지켜야 할 조건</b> 을 함께 말해요.</p>
+<div class='prompt'>나는 중학교 과학 시간에 만든 발표를 소개하는 홈페이지가 필요해.
+- 보는 사람: 친구들과 선생님
+- 구성: 제목 영역, 내 소개, 좋아하는 과학 주제 카드 3개, 응원 한마디 영역
+- 분위기: 밝은 파스텔 색, 둥근 모서리
+- 조건: index.html 한 파일, 외부 라이브러리 없이, 휴대폰에서도 잘 보이게
+- 마지막에 내가 글자를 바꿀 수 있는 부분을 알려 줘.</div>
+<div class='note'>학생에게 먼저 자기 설명을 써 보게 한 뒤, 이 예시와 견주어 빠진 항목을 찾게 하면 좋습니다.</div>
+</section>
+
+<section class='slide'>
+<span class='kicker'>4단계</span>
+<h2>한 번에 하나씩 고쳐 달라고 해요</h2>
+<table>
+<tr><th>이럴 때</th><th>이렇게 말해요</th></tr>
+<tr><td>글자가 작아요</td><td>「본문 글자를 지금보다 1.3배 크게 해 줘」</td></tr>
+<tr><td>색이 마음에 안 들어요</td><td>「배경은 연한 하늘색, 제목은 진한 남색으로 바꿔 줘」</td></tr>
+<tr><td>휴대폰에서 깨져요</td><td>「폭 360px 휴대폰 화면에서도 가로로 밀리지 않게 해 줘」</td></tr>
+<tr><td>코드를 모르겠어요</td><td>「이 부분이 무슨 일을 하는지 중학생에게 설명해 줘」</td></tr>
+</table>
+<div class='ok'><p>확인 체크: 휴대폰에서도 보이나요? 글자가 읽기 쉬운가요? 링크가 눌리나요? 내 정보가 너무 많이 드러나지 않나요?</p></div>
+<div class='note'>여러 가지를 한꺼번에 요청하면 무엇이 바뀌었는지 알기 어렵습니다. 한 번에 하나, 바뀐 것 확인, 다음 요청의 리듬을 강조하세요.</div>
+</section>
+
+<section class='slide'>
+<span class='kicker'>5단계</span>
+<h2>GitHub에 저장하고 공개하기</h2>
+<ol>
+<li>ChatGPT가 준 코드를 <b>전체</b> 복사해요 (일부만 복사하면 화면이 깨져요).</li>
+<li>저장소에서 <b>Add file → Create new file</b> (이미 있으면 index.html을 열고 연필 아이콘으로 편집)</li>
+<li>파일 이름을 <b>index.html</b>로 쓰고 코드를 붙여 넣어요.</li>
+<li><b>Commit changes</b> → 메시지(예: 첫 홈페이지 만들기) → <b>Commit</b></li>
+<li>1~2분 뒤 <b>https://내아이디.github.io</b> 를 열고 새로고침(Ctrl+F5)해요.</li>
+</ol>
+<div class='ok'><p>이 수업에서는 학생이 직접 커밋하는 방법을 기본으로 해요. 무엇이 바뀌는지 눈으로 확인하는 연습이에요.</p></div>
+<div class='note'>연결 기능으로 ChatGPT가 저장소에 직접 쓸 수 있는지는 계정과 시기에 따라 다릅니다. 가능하더라도 변경 내용을 학생이 확인하고 승인하는 흐름을 지키게 하세요.</div>
+</section>
+
+<section class='slide'>
+<span class='kicker'>막혔을 때</span>
+<h2>문제 해결 표</h2>
+<table>
+<tr><th>증상</th><th>확인할 것</th></tr>
+<tr><td>주소가 404예요</td><td>파일 이름이 index.html인지, Pages 설정이 main / (root)인지 확인</td></tr>
+<tr><td>고쳤는데 그대로예요</td><td>1~2분 기다린 뒤 Ctrl+F5 로 새로고침</td></tr>
+<tr><td>화면이 깨져요</td><td>코드를 처음부터 끝까지 전부 붙여 넣었는지 확인</td></tr>
+<tr><td>ChatGPT가 내 저장소를 못 읽어요</td><td>연결 때 그 저장소를 선택했는지, 새 채팅에서 GitHub를 켰는지 확인</td></tr>
+<tr><td>어떻게 되돌려요?</td><td>GitHub의 History에서 이전 커밋을 보고 그 내용으로 다시 저장</td></tr>
+</table>
+<div class='note'>학생이 직접 증상을 읽고 표에서 원인을 찾아보게 하면 질문 대기 시간이 줄어듭니다.</div>
+</section>
+
+<section class='slide'>
+<span class='kicker'>활동과 평가</span>
+<h2>미션과 평가 기준</h2>
+<table>
+<tr><th>영역</th><th>잘함</th><th>보통</th><th>도전해요</th></tr>
+<tr><td>의도 전하기</td><td>대상·구성·분위기·조건을 모두 말함</td><td>구성만 말함</td><td>한 줄로만 말함</td></tr>
+<tr><td>확인하고 고치기</td><td>결과를 보고 한 번에 하나씩 3번 이상 수정</td><td>1~2번 수정</td><td>수정 없이 사용</td></tr>
+<tr><td>공개하기</td><td>직접 커밋하고 주소로 확인</td><td>도움을 받아 공개</td><td>공개하지 못함</td></tr>
+<tr><td>안전하게 쓰기</td><td>권한 선택·개인정보 기준을 지킴</td><td>일부 놓침</td><td>기준을 몰랐음</td></tr>
+</table>
+<p>미션: 내 홈페이지에 「좋아하는 과학 주제」 카드 3개를 만들고, 친구에게 주소를 보내 피드백 한 줄 받기</p>
+<div class='note'>평가는 결과물의 화려함보다 의도를 전달하고 검증하는 과정에 두세요. 과정 기록으로 프롬프트 변경 내역을 캡처해 제출하게 할 수 있습니다.</div>
+</section>
+
+<section class='slide'>
+<span class='kicker'>정리</span>
+<h2>오늘 배운 5단계</h2>
+<div class='grid'>
+<div class='box'><h3><span class='step'>1</span>저장소</h3><p>내아이디.github.io 만들기</p></div>
+<div class='box'><h3><span class='step'>2</span>연결</h3><p>필요한 저장소만 연결</p></div>
+<div class='box'><h3><span class='step'>3</span>설명</h3><p>대상·구성·분위기·조건</p></div>
+<div class='box'><h3><span class='step'>4</span>수정</h3><p>한 번에 하나씩 확인</p></div>
+<div class='box'><h3><span class='step'>5</span>공개</h3><p>커밋하고 주소 확인</p></div>
+</div>
+<p class='lead'>이 홈페이지도 AI와 함께 바이브 코딩으로 만들었어요. 다음 시간에는 우리 반 과학 시뮬레이션 링크를 내 홈페이지에 걸어 봐요.</p>
+<p><a href='../../index.html#coding'>← 프로그램 수업 목록으로 돌아가기</a></p>
+<div class='note'>다음 차시 예고: 시뮬레이션 목록을 JSON 파일로 관리하는 방법, 링크 걸기, 학급 갤러리 만들기.</div>
+</section>
+
+</div>
+
+<div class='bar'>
+<a class='back' href='../../index.html#coding'>← 홈으로</a>
+<button id='prev' type='button'>이전</button>
+<div class='prog'><i id='pi'></i></div>
+<span class='cnt' id='cnt'>1 / 1</span>
+<button id='next' type='button'>다음</button>
+<button id='fs' type='button'>전체화면</button>
+<button id='nt' type='button'>교사 메모</button>
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+let cur = 0;
+function show(n) {
+  cur = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, k) => s.classList.toggle('on', k === cur));
+  document.getElementById('cnt').textContent = (cur + 1) + ' / ' + slides.length;
+  document.getElementById('pi').style.width = ((cur + 1) / slides.length * 100) + '%';
+  history.replaceState(null, '', '#' + (cur + 1));
+}
+document.getElementById('next').onclick = () => show(cur + 1);
+document.getElementById('prev').onclick = () => show(cur - 1);
+document.getElementById('nt').onclick = () => document.body.classList.toggle('notes');
+document.getElementById('fs').onclick = () => {
+  if (document.fullscreenElement) { document.exitFullscreen(); }
+  else if (document.documentElement.requestFullscreen) { document.documentElement.requestFullscreen(); }
+};
+document.addEventListener('keydown', e => {
+  const k = e.key;
+  if ((k === ' ' || k === 'Enter') && e.target.tagName === 'BUTTON') return;
+  if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); show(cur + 1); }
+  else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); show(cur - 1); }
+  else if (k === 'Home') { show(0); }
+  else if (k === 'End') { show(slides.length - 1); }
+  else if (k === 'f' || k === 'F') { document.getElementById('fs').click(); }
+  else if (k === 'n' || k === 'N') { document.body.classList.toggle('notes'); }
+});
+let startX = null;
+document.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', e => {
+  if (startX === null) return;
+  const dx = e.changedTouches[0].clientX - startX;
+  if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1));
+  startX = null;
+});
+show((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>
