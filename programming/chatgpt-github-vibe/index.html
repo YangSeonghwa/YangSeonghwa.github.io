@@ -56,11 +56,11 @@ a{color:var(--main)}
 <section class='slide'>
 <span class='kicker'>프로그램 수업 · Beflower</span>
 <h1>ChatGPT와 GitHub로<br>내 홈페이지 바이브 코딩하기</h1>
-<p class='lead'>코드를 외우지 않아도 괜찮아요. 만들고 싶은 것을 말로 설명하고, AI가 만든 결과를 확인하며 고쳐 가는 수업입니다.</p>
+<p class='lead'>코드를 외우지 않아도 괜찮아요. 만들고 싶은 것을 말로 설명하고, AI가 제안한 코드를 확인해 GitHub에 직접 저장하는 수업입니다.</p>
 <div class='grid'>
-<div class='box'><h3>⏱ 수업 시간</h3><p>2차시(약 90분) 권장</p></div>
+<div class='box'><h3>⏱ 수업 시간</h3><p>2차시(약 90분) 권장 · 교사 시연 포함</p></div>
 <div class='box'><h3>🎯 결과물</h3><p>인터넷 주소로 공개된 나만의 한 쪽짜리 홈페이지</p></div>
-<div class='box'><h3>🧰 도구</h3><p>ChatGPT, GitHub, GitHub Pages</p></div>
+<div class='box'><h3>🧰 도구</h3><p>ChatGPT, GitHub, GitHub Pages (무료 기능·학교 정책 확인)</p></div>
 </div>
 <div class='note'>도입: 수업 전에 완성 예시 홈페이지 주소를 스마트폰으로 열어 보여 주면 동기 유발에 좋습니다. 화면 아래의 이전·다음 버튼이나 방향키로 넘기고, N 키로 이 교사 메모를 켜고 끕니다. F 키는 전체화면입니다.</div>
 </section>
@@ -95,11 +95,11 @@ a{color:var(--main)}
 <h2>준비물과 안전 약속</h2>
 <div class='grid'>
 <div class='box'><h3>🧰 준비물</h3>
-<ul><li>GitHub 계정 (학교 규정과 나이 기준 확인)</li><li>ChatGPT 계정 (연결 기능은 요금제·계정 종류·학교 정책에 따라 다를 수 있어요)</li><li>크롬 같은 웹 브라우저</li><li>만들고 싶은 페이지를 적은 메모</li></ul></div>
+<ul><li>GitHub 계정 (만 13세 이상, 학교 규정과 보호자 안내 확인)</li><li>ChatGPT 계정 (13세 미만은 교사가 직접 시연, 13~17세는 보호자 동의와 학교 방침 확인)</li><li>크롬 같은 웹 브라우저</li><li>만들고 싶은 페이지를 적은 메모</li></ul></div>
 <div class='box'><h3>🛡 안전 약속</h3>
-<ul><li>비밀번호와 API 키는 채팅창에 쓰지 않기</li><li>친구 얼굴 사진·이름·연락처는 허락 없이 올리지 않기</li><li>공개 저장소에 올린 것은 누구나 볼 수 있어요</li></ul></div>
+<ul><li>비밀번호와 API 키는 채팅창에 쓰지 않기</li><li>친구 얼굴 사진·이름·연락처는 허락 없이 올리지 않기</li><li>공개 저장소와 GitHub 사용자 이름은 누구나 볼 수 있어요. 실명·학교명·학번은 쓰지 않아요</li></ul></div>
 </div>
-<div class='note'>학교 계정 정책과 학생 나이 기준(서비스 이용 약관)은 수업 전에 확인하세요. 계정이 없는 학생은 모둠 시연으로 대체할 수 있습니다.</div>
+<div class='note'>ChatGPT는 만 13세 미만 아동용 서비스가 아니며, 13~17세는 사용 전 보호자 동의가 필요합니다. 만 13세 미만 학생을 대상으로 수업할 때 ChatGPT와의 실제 상호작용은 교사가 수행하세요. GitHub도 만 13세 이상이어야 합니다. 학교의 계정·개인정보·AI 활용 지침을 먼저 확인하고, 학생 계정 사용이 어렵다면 교사 화면 시연과 모둠 활동으로 진행하세요.</div>
 </section>
 
 <section class='slide'>
@@ -107,12 +107,12 @@ a{color:var(--main)}
 <h2>전체 흐름</h2>
 <div class='flow'>
 <div class='node'>🧑 나<br>말로 설명</div><div class='arrow'>→</div>
-<div class='node'>💬 ChatGPT<br>코드 작성</div><div class='arrow'>→</div>
+<div class='node'>💬 ChatGPT<br>코드 제안</div><div class='arrow'>→</div>
 <div class='node'>📄 index.html<br>내가 확인</div><div class='arrow'>→</div>
 <div class='node'>🐙 GitHub 저장소<br>저장(커밋)</div><div class='arrow'>→</div>
 <div class='node'>🌐 GitHub Pages<br>내 홈페이지</div>
 </div>
-<p class='lead'>ChatGPT와 GitHub 저장소를 연결하면, ChatGPT가 내 저장소의 파일을 참고해 더 알맞은 코드를 만들어 줄 수 있어요.</p>
+<p class='lead'>GitHub 앱은 저장소 파일을 읽고 분석해요. ChatGPT가 만든 코드는 학생이 복사해 GitHub에 붙여 넣고 직접 저장합니다.</p>
 <div class='note'>연결로 할 수 있는 일(읽기·참고)과 학생이 직접 하는 일(복사·커밋)을 구분해서 설명해 주세요.</div>
 </section>
 
@@ -135,13 +135,13 @@ a{color:var(--main)}
 <span class='kicker'>2단계</span>
 <h2>ChatGPT에 GitHub 연결하기</h2>
 <ol>
-<li>ChatGPT 입력창 옆의 <b>+</b> (또는 클립) 메뉴에서 <b>GitHub</b> 연결을 찾아요.</li>
-<li>GitHub 로그인 화면에서 <b>허용(Authorize)</b>을 눌러요.</li>
+<li>ChatGPT의 <b>설정 → 앱 또는 플러그인</b>에서 <b>GitHub</b>를 찾아 연결해요. 메뉴 이름은 계정과 화면에 따라 다를 수 있어요.</li>
+<li>GitHub로 이동하면 로그인하고 ChatGPT 앱 설치·권한 요청 내용을 확인한 뒤 승인해요.</li>
 <li>ChatGPT가 볼 수 있는 <b>저장소를 직접 고릅니다</b> (다음 쪽 참고).</li>
-<li>새 채팅에서 GitHub를 켜고 「내 저장소 목록에서 내아이디.github.io가 보이니?」라고 물어 확인해요.</li>
+<li>대화에서 <b>+</b> 또는 <b>@</b> 메뉴로 GitHub를 선택할 수 있으면 선택하고, 「내 저장소의 index.html을 찾아 어떤 내용인지 요약해 줘」라고 요청해 확인해요.</li>
 </ol>
-<div class='warn'><p>메뉴 이름과 위치는 업데이트와 요금제에 따라 달라질 수 있어요. 예전에 「플러그인」이라고 부르던 기능은 지금은 주로 「앱/커넥터」라는 이름으로 보여요.</p></div>
-<div class='note'>수업 직전에 교사 계정으로 실제 화면을 한 번 확인하고 캡처를 보조 자료로 준비하세요. 연결 기능이 보이지 않는 학생은 2단계를 건너뛰고 저장소 내용을 붙여 넣어 대화하는 방법으로 진행해도 3~5단계는 그대로 할 수 있습니다.</div>
+<div class='warn'><p>GitHub 연결 가능 여부와 메뉴 위치는 요금제·워크스페이스·화면에 따라 달라질 수 있어요. 연결 메뉴가 보이지 않으면 교사 시연 또는 코드 복사·붙여넣기 방식으로 진행해요.</p></div>
+<div class='note'>수업 전 교사 계정으로 실제 연결 화면을 확인하세요. ChatGPT의 GitHub 앱은 저장소를 읽고 검색·분석하는 용도이며, 직접 파일을 수정하거나 커밋·푸시하지 않습니다. 연결 기능이 없는 학생은 교사가 저장소 파일을 보여 주거나 필요한 코드를 대화에 붙여 넣는 방식으로 같은 학습 목표를 달성할 수 있습니다.</div>
 </section>
 
 <section class='slide'>
@@ -151,7 +151,7 @@ a{color:var(--main)}
 <div class='box'><h3>✅ 이렇게</h3><ul><li>접근 저장소는 <b>선택한 저장소만(Only select repositories)</b></li><li>이 수업용 저장소 하나만 고르기</li><li>수업이 끝나면 GitHub 설정의 <b>Applications</b>에서 연결 해제</li></ul></div>
 <div class='box'><h3>⚠ 이렇게는 안 돼요</h3><ul><li>모든 저장소(All repositories) 허용</li><li>비밀번호·키·학생 정보가 든 저장소를 연결</li><li>모르는 사이트에 GitHub 로그인</li></ul></div>
 </div>
-<p class='src'>모든 저장소를 허용하면 계정이 접근할 수 있는 공개·비공개 저장소가 모두 범위에 들어갈 수 있어서, 선택한 저장소만 허용하라는 안내가 있습니다.</p>
+<p class='src'>이 수업용 저장소 하나만 선택하세요. GitHub 앱의 권한은 GitHub에서 관리하며, 연결 후에도 필요 없는 저장소는 선택하지 않습니다.</p>
 <div class='note'>이 쪽은 시간을 충분히 쓰세요. 학생이 허용 화면을 대충 넘기지 않도록, 저장소 선택 화면에서 한 번 멈추고 모둠별로 확인하게 합니다.</div>
 </section>
 
@@ -190,10 +190,10 @@ a{color:var(--main)}
 <li>저장소에서 <b>Add file → Create new file</b> (이미 있으면 index.html을 열고 연필 아이콘으로 편집)</li>
 <li>파일 이름을 <b>index.html</b>로 쓰고 코드를 붙여 넣어요.</li>
 <li><b>Commit changes</b> → 메시지(예: 첫 홈페이지 만들기) → <b>Commit</b></li>
-<li>1~2분 뒤 <b>https://내아이디.github.io</b> 를 열고 새로고침(Ctrl+F5)해요.</li>
+<li>배포가 끝날 때까지 기다려요(최대 약 10분 걸릴 수 있어요). <b>https://내아이디.github.io</b> 를 열고 새로고침해요.</li>
 </ol>
 <div class='ok'><p>이 수업에서는 학생이 직접 커밋하는 방법을 기본으로 해요. 무엇이 바뀌는지 눈으로 확인하는 연습이에요.</p></div>
-<div class='note'>연결 기능으로 ChatGPT가 저장소에 직접 쓸 수 있는지는 계정과 시기에 따라 다릅니다. 가능하더라도 변경 내용을 학생이 확인하고 승인하는 흐름을 지키게 하세요.</div>
+<div class='note'>ChatGPT의 GitHub 앱은 읽기 전용입니다. 코드를 생성·수정하는 대화와 GitHub에 파일을 저장하는 작업은 구분하세요. 학생이 코드를 검토한 뒤 GitHub에서 직접 붙여 넣고 커밋합니다.</div>
 </section>
 
 <section class='slide'>
@@ -202,10 +202,10 @@ a{color:var(--main)}
 <table>
 <tr><th>증상</th><th>확인할 것</th></tr>
 <tr><td>주소가 404예요</td><td>파일 이름이 index.html인지, Pages 설정이 main / (root)인지 확인</td></tr>
-<tr><td>고쳤는데 그대로예요</td><td>1~2분 기다린 뒤 Ctrl+F5 로 새로고침</td></tr>
+<tr><td>고쳤는데 그대로예요</td><td>최대 10분 정도 기다린 뒤 새로고침. GitHub 저장소의 Settings → Pages에서 배포 상태 확인</td></tr>
 <tr><td>화면이 깨져요</td><td>코드를 처음부터 끝까지 전부 붙여 넣었는지 확인</td></tr>
-<tr><td>ChatGPT가 내 저장소를 못 읽어요</td><td>연결 때 그 저장소를 선택했는지, 새 채팅에서 GitHub를 켰는지 확인</td></tr>
-<tr><td>어떻게 되돌려요?</td><td>GitHub의 History에서 이전 커밋을 보고 그 내용으로 다시 저장</td></tr>
+<tr><td>ChatGPT가 내 저장소를 못 읽어요</td><td>올바른 GitHub 계정인지, 해당 저장소 접근을 허용했는지, 현재 대화에서 GitHub 앱을 선택했는지 확인</td></tr>
+<tr><td>ChatGPT가 직접 저장하지 않아요</td><td>정상이에요. GitHub 앱은 읽기 전용이므로 코드를 복사해 GitHub에서 직접 붙여 넣고 커밋해요.</td></tr>
 </table>
 <div class='note'>학생이 직접 증상을 읽고 표에서 원인을 찾아보게 하면 질문 대기 시간이 줄어듭니다.</div>
 </section>
@@ -234,8 +234,9 @@ a{color:var(--main)}
 <div class='box'><h3><span class='step'>4</span>수정</h3><p>한 번에 하나씩 확인</p></div>
 <div class='box'><h3><span class='step'>5</span>공개</h3><p>커밋하고 주소 확인</p></div>
 </div>
-<p class='lead'>이 홈페이지도 AI와 함께 바이브 코딩으로 만들었어요. 다음 시간에는 우리 반 과학 시뮬레이션 링크를 내 홈페이지에 걸어 봐요.</p>
+<p class='lead'>AI가 제안한 코드를 내가 확인하고 GitHub에 저장해 홈페이지로 공개했어요. 다음 시간에는 우리 반 과학 시뮬레이션 링크를 내 홈페이지에 걸어 봐요.</p>
 <p><a href='../../index.html#coding'>← 프로그램 수업 목록으로 돌아가기</a></p>
+<p class='src'>더 알아보기: <a href='https://help.openai.com/ko-kr/articles/11145903-connecting-github-to-chatgpt' target='_blank' rel='noopener'>ChatGPT에 GitHub 연결하기</a> · <a href='https://docs.github.com/ko/pages/getting-started-with-github-pages/creating-a-github-pages-site' target='_blank' rel='noopener'>GitHub Pages 공식 안내</a></p>
 <div class='note'>다음 차시 예고: 시뮬레이션 목록을 JSON 파일로 관리하는 방법, 링크 걸기, 학급 갤러리 만들기.</div>
 </section>
 
