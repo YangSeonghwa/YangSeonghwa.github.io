@@ -4,8 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>주지운 일어나라</title>
+<style>
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff8e7;font-family:sans-serif;}
+h1{color:#444;margin:0 0 10px;}
+svg{width:min(90vw,380px);height:auto;}
+.clock{animation:shake .5s infinite;transform-origin:300px 190px;}
+@keyframes shake{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+.zzz{animation:float 2s infinite ease-in-out;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+</style>
 </head>
-<body style="display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:sans-serif;">
+<body>
 <h1>주지운 일어나라!</h1>
+<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="졸고 있는 귀여운 캐릭터와 알람시계">
+<rect x="20" y="170" width="220" height="90" rx="25" fill="#9ad0f5"/>
+<circle cx="130" cy="140" r="65" fill="#ffe0bd"/>
+<path d="M68 125 Q130 40 192 125 Q160 90 130 95 Q100 90 68 125Z" fill="#5b3a29"/>
+<path d="M105 140 Q115 148 125 140" stroke="#333" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M140 140 Q150 148 160 140" stroke="#333" stroke-width="4" fill="none" stroke-linecap="round"/>
+<circle cx="100" cy="158" r="9" fill="#ffb3b3" opacity=".7"/>
+<circle cx="165" cy="158" r="9" fill="#ffb3b3" opacity=".7"/>
+<ellipse cx="132" cy="172" rx="7" ry="5" fill="#d66"/>
+<g class="zzz" fill="#6a7fdb" font-weight="bold"><text x="205" y="80" font-size="26">Z</text><text x="230" y="55" font-size="20">z</text><text x="250" y="35" font-size="15">z</text></g>
+<g class="clock">
+<circle cx="300" cy="190" r="45" fill="#ff7b7b"/>
+<circle cx="300" cy="190" r="33" fill="#fff"/>
+<path d="M300 190 L300 168 M300 190 L316 198" stroke="#333" stroke-width="4" stroke-linecap="round"/>
+<circle cx="270" cy="150" r="12" fill="#ffd24d"/><circle cx="330" cy="150" r="12" fill="#ffd24d"/>
+<path d="M285 240 L275 258 M315 240 L325 258" stroke="#555" stroke-width="5" stroke-linecap="round"/>
+</g>
+</svg>
+<p style="color:#666">딩동댕! 아침이에요 ☀️</p>
 </body>
 </html>
