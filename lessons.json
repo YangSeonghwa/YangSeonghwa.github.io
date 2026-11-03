@@ -1,9 +1,16 @@
 [
   {
     "type": "발표 자료",
-    "level": "공통",
+    "level": "중학교 1학년",
     "title": "ChatGPT와 GitHub로 내 홈페이지 바이브 코딩하기",
-    "desc": "ChatGPT에 GitHub를 연결해 말로 설명하며 홈페이지를 만들고 GitHub Pages로 공개하는 수업 (슬라이드 14장, 교사 메모 포함)",
+    "desc": "2차시 90분 발표 자료(15장), 교사 메모와 계정·공개 안전 안내 포함",
     "url": "programming/chatgpt-github-vibe/index.html"
+  },
+  {
+    "type": "학생 활동지",
+    "level": "중학교 1학년",
+    "title": "내 홈페이지 바이브 코딩 활동지",
+    "desc": "홈페이지 구상, 프롬프트 작성, 수정 기록, 공개 전 점검과 자기 평가",
+    "url": "programming/chatgpt-github-vibe/worksheet.html"
   }
 ]
