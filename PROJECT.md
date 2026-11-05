@@ -6,8 +6,8 @@ Beflower(중학교 과학 교사)의 GitHub Pages 홈페이지. 학년별 과학
 ## 현재 상태
 - 진행도: 운영 중 (https://yangseonghwa.github.io/)
 - 마지막 갱신: 2026-11-05 by gemini
-- 지금 되는 것: 과학 시뮬레이션 목록(sims.json, 중1·중2·중3), 프로그램 수업 목록(lessons.json), 프로그램 수업 발표 페이지(15장), 학생용 인쇄 활동지(worksheet.html), 중학교 3학년 「별의 밝기와 등급」 발표 자료 및 역제곱 법칙 시뮬레이션(grade3/star-brightness/), 게임 탭(games.json, 수박 터뜨리기)
-- 아직 안 되는 것: 바이브 코딩 수업의 실제 학생별 배포 실습 검증
+- 지금 되는 것: 과학 시뮬레이션 목록(sims.json, 중1·중2), 프로그램 수업 목록(lessons.json), 프로그램 수업 발표 페이지(15장), 학생용 인쇄 활동지(worksheet.html), 중학교 2학년 「별의 밝기와 등급」 발표 자료 및 역제곱 법칙 시뮬레이션(grade2/star-brightness/), 게임 탭(games.json, 수박 터뜨리기)
+- 아직 안 되는 것: 중학교 3학년 시뮬레이션, 바이브 코딩 수업의 실제 학생별 배포 실습 검증
 - 저장소: 이 프로젝트는 전용 GitHub 저장소(`YangSeonghwa/YangSeonghwa.github.io`, **public**)를 가진다 (D-007). 서버의 `projects/yangseonghwa.github.io/`가 그 저장소의 작업 폴더이다. 공개 저장소이고 푸시하면 Pages가 곧바로 공개하므로 개인정보·비밀·학생 정보를 절대 넣지 않는다.
 
 ## 실행 방법
@@ -30,8 +30,8 @@ projects/yangseonghwa.github.io/
   lessons.json           ← 프로그램 수업 목록
   games.json             ← 게임 목록
   wakeup.html            ← (기존 파일)
-  grade1/ grade2/ grade3/ ← 학년별 과학 시뮬레이션 및 수업 발표 자료
-  grade3/star-brightness/index.html ← 중3 별의 밝기와 등급 수업 발표(11장) + 역제곱 법칙·등급 비교 시뮬레이션
+  grade1/ grade2/        ← 학년별 과학 시뮬레이션 및 수업 발표 자료 (grade3는 아직 없음)
+  grade2/star-brightness/index.html ← 중2 별의 밝기와 등급 수업 발표(11장) + 역제곱 법칙·등급 비교 시뮬레이션
   programming/chatgpt-github-vibe/index.html     ← ChatGPT+GitHub 바이브 코딩 수업 발표(15장)
   programming/chatgpt-github-vibe/worksheet.html ← 학생 활동지(인쇄 가능)
   images/                ← 이미지
@@ -46,7 +46,8 @@ projects/yangseonghwa.github.io/
 - [x] 홈페이지에 프로그램 수업 섹션 추가 (lessons.json)
 - [x] ChatGPT+GitHub 바이브 코딩 수업 발표 페이지 추가
 - [x] 학생용 활동지(프롬프트 작성·수정 기록·공개 전 점검·자기 평가) 추가
-- [x] 중학교 3학년 과학 「별의 밝기와 등급」 발표 자료 및 인터랙티브 시뮬레이션 추가 (`grade3/star-brightness/index.html`)
+- [x] 중학교 2학년 과학 「별의 밝기와 등급」 발표 자료 및 인터랙티브 시뮬레이션 추가 (`grade2/star-brightness/index.html`)
+- [ ] 중학교 3학년 과학 시뮬레이션 추가
 - [ ] 실제 수업 전 ChatGPT의 GitHub 연결 화면을 확인하고 발표 자료의 메뉴 이름·스크린샷 보강
 
 ## 알려진 문제 / 주의사항
