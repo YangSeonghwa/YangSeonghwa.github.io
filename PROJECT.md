@@ -8,7 +8,7 @@ Beflower(중학교 과학 교사)의 GitHub Pages 홈페이지. 학년별 과학
 - 마지막 갱신: 2026-04-20 by antigravity
 - 지금 되는 것:
   - **Beflower 공통 디자인 시스템(`assets/css/beflower.css`) 및 제작 지침서(`GUIDELINES.md`), 표준 템플릿 4종(`templates/`)** 구축 및 전 페이지(8개 기존 HTML) 디자인/네비게이션/폰트/컬러 팔레트 통일 완료
-  - 과학 시뮬레이션 목록(sims.json, 중1·중2), 프로그램 수업 목록(lessons.json), 프로그램 수업 발표 페이지(15장), 학생용 인쇄 활동지(worksheet.html), 중학교 2학년 「별의 밝기와 등급」 발표 자료 및 역제곱 법칙 시뮬레이션(grade2/star-brightness/), 게임 탭(games.json, 수박 터뜨리기)
+  - 과학 시뮬레이션 목록(sims.json, 중1·중2), 프로그램 수업 목록(lessons.json), 프로그램 수업 발표 페이지(15장), 학생용 인쇄 활동지(worksheet.html), 중학교 2학년 「별의 밝기와 등급」 발표 자료 및 역제곱 법칙 시뮬레이션(`grade2/star-brightness/`), 중학교 2학년 「천체의 색깔과 별까지의 거리 판별」 발표 자료 및 인터랙티브 시뮬레이션(`grade2/star-color-distance/`), 게임 탭(games.json, 수박 터뜨리기)
 - 아직 안 되는 것: 중학교 3학년 시뮬레이션, 바이브 코딩 수업의 실제 학생별 배포 실습 검증
 - 저장소: 이 프로젝트는 전용 GitHub 저장소(`YangSeonghwa/YangSeonghwa.github.io`, **public**)를 가진다 (D-007). 서버의 `projects/yangseonghwa.github.io/`가 그 저장소의 작업 폴더이다. 공개 저장소이고 푸시하면 Pages가 곧바로 공개하므로 개인정보·비밀·학생 정보를 절대 넣지 않는다.
 
@@ -41,7 +41,8 @@ projects/yangseonghwa.github.io/
   games.json             ← 게임 목록
   wakeup.html            ← 1학년 아침 자습 루틴 안내 보드
   grade1/ grade2/        ← 학년별 과학 시뮬레이션 및 수업 발표 자료 (grade3는 아직 없음)
-  grade2/star-brightness/index.html ← 중2 별의 밝기와 등급 수업 발표(11장) + 역제곱 법칙·등급 비교 시뮬레이션
+  grade2/star-brightness/index.html     ← 중2 별의 밝기와 등급 수업 발표(11장) + 역제곱 법칙·등급 비교 시뮬레이션
+  grade2/star-color-distance/index.html ← 중2 천체의 색깔과 별까지의 거리 판별 수업 발표(10장) + 색깔·절대등급·10pc 거리 시뮬레이션
   programming/chatgpt-github-vibe/index.html     ← ChatGPT+GitHub 바이브 코딩 수업 발표(15장)
   programming/chatgpt-github-vibe/worksheet.html ← 학생 활동지(인쇄 가능)
   games/whack-a-mole/index.html                  ← 수박 터뜨리기 미니게임
@@ -58,6 +59,7 @@ projects/yangseonghwa.github.io/
 - [x] ChatGPT+GitHub 바이브 코딩 수업 발표 페이지 추가
 - [x] 학생용 활동지(프롬프트 작성·수정 기록·공개 전 점검·자기 평가) 추가
 - [x] 중학교 2학년 과학 「별의 밝기와 등급」 발표 자료 및 인터랙티브 시뮬레이션 추가 (`grade2/star-brightness/index.html`)
+- [x] 중학교 2학년 과학 「천체의 색깔과 별까지의 거리 판별」 발표 자료 및 인터랙티브 시뮬레이션 추가 (`grade2/star-color-distance/index.html`)
 - [ ] 중학교 3학년 과학 시뮬레이션 추가
 - [ ] 실제 수업 전 ChatGPT의 GitHub 연결 화면을 확인하고 발표 자료의 메뉴 이름·스크린샷 보강
 

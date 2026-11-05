@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<html lang="ko" class="bf-theme-dark" data-bf-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>천체의 색깔과 별까지의 거리 판별 | 중학교 2학년 과학 발표 자료 · Beflower</title>
+<meta name="description" content="별의 색깔과 표면 온도의 관계, 색깔을 통한 주계열성 절대등급(M) 추정, 그리고 겉보기 등급(m)과 절대등급(M)의 차이(m-M)를 이용해 10 pc보다 가까운지 먼지 판별하는 중2 지구과학 발표용 인터랙티브 시뮬레이션 및 수업 프레젠테이션">
+<link rel="stylesheet" href="../../assets/css/beflower.css">
+<style>
+:root,
+html.bf-theme-dark,
+body.bf-theme-dark {
+  color-scheme: dark;
+  --bg-deep: #070b19;
+  --bg-card: #111936;
+  --bg-soft: #1a254b;
+  --bg-glass: rgba(17, 25, 54, 0.92);
+  --bf-ink: #f8fafc;
+  --bf-sub: #cbd5e1;
+  --ink: #f8fafc;
+  --sub: #cbd5e1;
+  --gold: #fbbf24;
+  --gold-soft: rgba(251, 191, 36, 0.16);
+  --sky: #38bdf8;
+  --sky-soft: rgba(56, 189, 248, 0.16);
+  --pink: #f472b6;
+  --pink-soft: rgba(244, 114, 182, 0.16);
+  --mint: #34d399;
+  --mint-soft: rgba(52, 211, 153, 0.16);
+  --violet: #a78bfa;
+  --violet-soft: rgba(167, 139, 250, 0.16);
+  --line: #33477c;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; padding: 0; }
+body {
+  font-family: var(--bf-font-sans);
+  background: radial-gradient(ellipse at top, #172347 0%, #070b19 75%);
+  color: var(--ink);
+  overflow: hidden;
+  line-height: 1.6;
+  user-select: none;
+}
+
+/* Starfield background decoration */
+.stars-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(2px 2px at 12% 18%, rgba(147,197,253,0.9), transparent),
+    radial-gradient(1.5px 1.5px at 26% 48%, rgba(251,191,36,0.8), transparent),
+    radial-gradient(2px 2px at 42% 14%, rgba(248,113,113,0.8), transparent),
+    radial-gradient(1.5px 1.5px at 63% 78%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1.5px 1.5px at 78% 28%, rgba(96,165,250,0.8), transparent),
+    radial-gradient(2px 2px at 88% 62%, rgba(251,146,60,0.75), transparent),
+    radial-gradient(1.2px 1.2px at 18% 82%, rgba(56,189,248,0.7), transparent),
+    radial-gradient(1.8px 1.8px at 91% 19%, rgba(255,255,255,0.85), transparent);
+}
+
+/* Top Header */
+.top-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  min-height: 58px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 18px;
+  background: rgba(7, 11, 25, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  z-index: 100;
+}
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.slide-select {
+  background: var(--bg-soft);
+  color: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.slide-select option {
+  background: #111936;
+  color: #f8fafc;
+}
+
+/* Deck & Slide Container */
+.deck {
+  position: relative;
+  z-index: 10;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 68px 16px 64px;
+}
+.slide {
+  display: none;
+  width: min(1160px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  background: var(--bg-glass);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: clamp(18px, 3.1vw, 34px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+  animation: slideIn 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.slide.on { display: block; }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.slide::-webkit-scrollbar { width: 6px; }
+.slide::-webkit-scrollbar-track { background: transparent; }
+.slide::-webkit-scrollbar-thumb { background: var(--line); border-radius: 99px; }
+
+/* Typography & Badges */
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: var(--gold-soft);
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  color: var(--gold);
+  font-weight: 700;
+  font-size: clamp(12px, 1.4vw, 14px);
+}
+h1 {
+  font-size: clamp(25px, 4.3vw, 44px);
+  margin: 12px 0 10px;
+  line-height: 1.22;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  text-shadow: 0 2px 18px rgba(56, 189, 248, 0.28);
+}
+h2 {
+  font-size: clamp(19px, 2.8vw, 29px);
+  margin: 8px 0 10px;
+  color: var(--gold);
+  line-height: 1.3;
+  letter-spacing: -0.3px;
+}
+h3 {
+  font-size: clamp(15.5px, 1.9vw, 20px);
+  margin: 0 0 8px;
+  color: #ffffff;
+}
+p, li {
+  font-size: clamp(13.8px, 1.65vw, 17.5px);
+  line-height: 1.62;
+  color: #f1f5f9;
+}
+ul, ol { padding-left: 1.3em; margin: 6px 0; }
+li { margin: 4px 0; }
+.lead {
+  color: var(--sub);
+  font-size: clamp(14px, 1.75vw, 18px);
+  margin-top: -4px;
+  margin-bottom: 12px;
+}
+.hl-gold { color: var(--gold); font-weight: 800; }
+.hl-sky { color: var(--sky); font-weight: 800; }
+.hl-pink { color: var(--pink); font-weight: 800; }
+.hl-mint { color: var(--mint); font-weight: 800; }
+.hl-violet { color: var(--violet); font-weight: 800; }
+
+/* Layout Grids & Cards */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 14px;
+  margin-top: 10px;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+.box {
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 15px 17px;
+}
+.box p, .box li {
+  font-size: clamp(13.2px, 1.5vw, 16.5px);
+  margin: 4px 0;
+}
+.callout {
+  border-left: 5px solid var(--gold);
+  background: rgba(251, 191, 36, 0.14);
+  color: #f8fafc;
+  border-radius: 12px;
+  padding: 11px 15px;
+  margin: 10px 0;
+}
+.callout.sky {
+  border-left-color: var(--sky);
+  background: rgba(56, 189, 248, 0.14);
+}
+.callout.mint {
+  border-left-color: var(--mint);
+  background: rgba(52, 211, 153, 0.14);
+}
+.callout.pink {
+  border-left-color: var(--pink);
+  background: rgba(244, 114, 182, 0.14);
+}
+
+/* Formula Banner */
+.formula-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(26, 37, 75, 0.95), rgba(15, 23, 42, 0.95));
+  color: #f8fafc;
+  border: 2px solid var(--gold);
+  border-radius: 18px;
+  padding: 14px 20px;
+  margin: 12px 0;
+  text-align: center;
+  box-shadow: 0 0 28px rgba(251, 191, 36, 0.14);
+}
+.formula-math {
+  font-size: clamp(19px, 2.8vw, 30px);
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 0.3px;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: clamp(12.5px, 1.45vw, 16px);
+  margin-top: 8px;
+  background: rgba(17, 25, 54, 0.78);
+  color: #f8fafc;
+  border-radius: 12px;
+  overflow: hidden;
+}
+th, td {
+  border: 1px solid var(--line);
+  padding: 7px 9px;
+  text-align: center;
+  color: #f8fafc;
+}
+th {
+  background: var(--bg-soft);
+  color: var(--gold);
+  font-weight: 800;
+}
+td.left { text-align: left; }
+
+/* Interactive Controls & Buttons */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  align-items: center;
+}
+.btn {
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+  color: #f8fafc;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.18s;
+}
+.btn:hover {
+  border-color: var(--sky);
+  transform: translateY(-1px);
+}
+.btn.active {
+  background: var(--gold);
+  color: #070b19;
+  border-color: var(--gold);
+  box-shadow: 0 0 14px rgba(251, 191, 36, 0.45);
+}
+input[type=range] {
+  width: 100%;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+
+/* Simulation Layout */
+.sim-wrapper {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+@media (max-width: 880px) {
+  .sim-wrapper { grid-template-columns: 1fr; }
+}
+.canvas-box {
+  background: #050814;
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  padding: 12px;
+  position: relative;
+}
+canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.stat-card {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 9px 11px;
+}
+.stat-card .label {
+  font-size: 11.5px;
+  color: var(--sub);
+}
+.stat-card .val {
+  font-size: clamp(15px, 1.9vw, 20px);
+  font-weight: 900;
+  color: var(--gold);
+  margin-top: 2px;
+}
+
+/* Star Color Chips */
+.color-scale {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(78px, 1fr));
+  gap: 6px;
+  margin: 10px 0;
+  overflow-x: auto;
+}
+.color-chip {
+  text-align: center;
+  padding: 10px 6px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1.5px solid var(--line);
+  cursor: pointer;
+  transition: 0.18s;
+}
+.color-chip:hover, .color-chip.on {
+  border-color: var(--gold);
+  background: rgba(251, 191, 36, 0.15);
+  transform: translateY(-2px);
+}
+.star-orb {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  margin: 0 auto 6px;
+  transition: 0.2s;
+}
+
+/* Verdict Banner */
+.verdict-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: clamp(15px, 2vw, 20px);
+}
+.verdict-near {
+  background: rgba(52, 211, 153, 0.2);
+  border: 2px solid var(--mint);
+  color: #6ee7b7;
+}
+.verdict-same {
+  background: rgba(251, 191, 36, 0.2);
+  border: 2px solid var(--gold);
+  color: #fde047;
+}
+.verdict-far {
+  background: rgba(244, 114, 182, 0.2);
+  border: 2px solid var(--pink);
+  color: #f9a8d4;
+}
+
+/* Teacher Notes */
+.note {
+  display: none;
+  margin-top: 12px;
+  padding: 11px 15px;
+  border-radius: 12px;
+  background: rgba(254, 243, 199, 0.12);
+  border: 1px dashed var(--gold);
+  color: #fde68a;
+  font-size: clamp(12.8px, 1.45vw, 15px);
+}
+body.notes .note { display: block; }
+
+/* Bottom Navigation Bar */
+.bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  background: rgba(7, 11, 25, 0.88);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line);
+  z-index: 30;
+}
+.bar button {
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+  color: #f8fafc;
+  border-radius: 10px;
+  padding: 7px 14px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.15s;
+}
+.bar button:hover {
+  border-color: var(--gold);
+  background: rgba(251, 191, 36, 0.2);
+}
+.prog {
+  flex: 1;
+  height: 7px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.prog i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--sky), var(--gold), var(--pink));
+  transition: width 0.3s;
+}
+.cnt {
+  min-width: 68px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--gold);
+}
+
+/* Quiz options */
+.quiz-opt {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 9px 13px;
+  margin: 5px 0;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: rgba(15, 23, 42, 0.85);
+  color: #f8fafc;
+  font: inherit;
+  font-size: 14.5px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+.quiz-opt:hover { border-color: var(--sky); background: rgba(56, 189, 248, 0.16); }
+.quiz-opt.correct { border-color: var(--mint); background: rgba(52, 211, 153, 0.25); color: #a7f3d0; font-weight: 700; }
+.quiz-opt.wrong { border-color: var(--pink); background: rgba(244, 114, 182, 0.25); color: #fbcfe8; }
+
+@media (max-width: 820px) {
+  .deck { padding-top: 98px; }
+  .color-scale { grid-template-columns: repeat(4, minmax(76px, 1fr)); }
+}
+@media (max-width: 640px) {
+  .deck { padding-top: 106px; }
+  .bar { gap: 6px; padding: 0 8px; }
+  .bar button { padding: 6px 9px; font-size: 12px; }
+  .cnt { min-width: 48px; font-size: 12px; }
+}
+@media print {
+  body { overflow: visible; background: #fff; color: #000; }
+  .stars-bg, .top-header, .bar { display: none !important; }
+  .deck { display: block; padding: 0; height: auto; }
+  .slide {
+    display: block !important;
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+    page-break-after: always;
+    max-height: none !important;
+    margin-bottom: 20px;
+  }
+  h1, h2, h3, p, li, th, td { color: #000 !important; -webkit-text-fill-color: initial !important; }
+  .note { display: block !important; background: #fffbe6 !important; color: #333 !important; }
+}
+</style>
+</head>
+<body class="bf-theme-dark">
+
+<div class="stars-bg"></div>
+
+<!-- Top Navigation Header -->
+<header class="top-header bf-topbar bf-topbar-fixed bf-topbar-dark">
+  <div class="bf-topbar-inner">
+    <a class="bf-brand" href="../../index.html">
+      <span class="bf-brand-logo" aria-hidden="true">🌸</span>
+      <span class="bf-brand-text">
+        <span class="bf-brand-title">Beflower의 과학 시뮬레이션 랩</span>
+        <span class="bf-brand-sub">🌈 중2 과학 · 지구과학 (천체의 색깔과 별까지의 거리 판별)</span>
+      </span>
+    </a>
+    <div class="bf-nav">
+      <a href="../../index.html">🏠 홈</a>
+      <a class="active" href="../../index.html#sims">🧪 시뮬레이션</a>
+      <a href="../../index.html#coding">💻 프로그램 수업</a>
+      <a href="../../index.html#games">🎮 게임</a>
+    </div>
+    <div class="header-controls bf-topbar-actions">
+      <select id="slideJump" class="slide-select" aria-label="슬라이드 바로가기"></select>
+    </div>
+  </div>
+</header>
+
+<!-- Main Slide Deck -->
+<div class="deck">
+
+  <!-- ==================== SLIDE 1: 표지 ==================== -->
+  <section class="slide on" data-title="1. 표지: 천체의 색깔과 별까지의 거리 판별">
+    <span class="kicker">🌈 중학교 2학년 과학 · 지구과학 (별과 우주 · 후속 차시)</span>
+    <h1>천체의 색깔로 알아내는 표면 온도와 절대등급,<br>그리고 10 pc보다 가까울까, 멀까?</h1>
+    <p class="lead">밤하늘의 별빛 색깔(파란색~붉은색)에 담긴 <b>표면 온도</b>의 비밀을 풀고, 색깔로 <b>절대등급(<i>M</i>)</b>을 추정한 뒤 <b>겉보기 등급(<i>m</i>)과의 차이</b>를 이용해 별이 <b>10 pc보다 가까운지 먼지</b> 직접 판별해 봅시다!</p>
+
+    <div class="grid-3">
+      <div class="box" style="border-color:rgba(56,189,248,0.5);cursor:pointer" onclick="show(3)">
+        <h3>🌡️ 탐구 1 · 천체의 색깔과 표면 온도</h3>
+        <p>가스레인지 불꽃처럼 <span class="hl-sky">파란색 별은 고온(약 30,000 K)</span>, <span class="hl-gold">노란색 별은 중간(약 6,000 K)</span>, <span class="hl-pink">붉은색 별은 저온(약 3,000 K)</span>인 이유와 시뮬레이션</p>
+      </div>
+      <div class="box" style="border-color:rgba(251,191,36,0.5);cursor:pointer" onclick="show(4)">
+        <h3>🔮 탐구 2 · 색깔로 절대등급(<i>M</i>) 추정하기</h3>
+        <p>별의 색깔(온도)을 알면 별의 실제 밝기인 <span class="hl-gold">절대등급(<i>M</i>, 10 pc 기준 밝기)</span>을 추정할 수 있는 원리 (푸른 주계열성일수록 실제 밝기가 밝음!)</p>
+      </div>
+      <div class="box" style="border-color:rgba(52,211,153,0.5);cursor:pointer" onclick="show(6)">
+        <h3>📏 탐구 3 · 10 pc보다 가까울까, 멀까?</h3>
+        <p>눈으로 본 <span class="hl-sky">겉보기 등급(<i>m</i>)</span>과 색깔로 추정한 <span class="hl-gold">절대등급(<i>M</i>)</span>을 비교(<i>m</i> − <i>M</i>)하여 <span class="hl-mint">10 pc 안쪽/바깥쪽</span>을 가려내는 우주 거리 탐정 실습!</p>
+      </div>
+    </div>
+
+    <div class="callout sky" style="margin-top:16px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px">
+      <span>💡 <b>조작 안내:</b> 화면 아래 <b>이전/다음</b> 버튼이나 키보드 <b>방향키(←/→)·스페이스바</b>로 이동하세요. (<b>F</b>: 전체화면, <b>N</b>: 교사 메모)</span>
+      <a href="../star-brightness/index.html" style="color:var(--gold);font-weight:800;text-decoration:none;background:rgba(251,191,36,0.16);padding:4px 12px;border-radius:999px;border:1px solid rgba(251,191,36,0.4)">🔗 이전 차시: 별의 밝기와 등급 보러 가기 →</a>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 도입 (3분)]</b> 지난 시간에 배운 '겉보기 등급(m)'과 '절대등급(M, 10 pc 기준)'을 잠깐 복습합니다. "그렇다면 직접 가 볼 수도 없는 머나먼 별의 절대등급(실제 밝기)과 거리는 어떻게 알아낼까요? 놀랍게도 밤하늘 별의 <b>색깔</b>에 그 단서가 숨어 있습니다!"라고 흥미를 유발하며 시작합니다.
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 2: 학습 목표 & 오리온자리 색깔 비교 ==================== -->
+  <section class="slide" data-title="2. 학습 목표 & 밤하늘 별들의 다양한 색깔">
+    <span class="kicker">🎯 오늘의 학습 목표와 생각 열기</span>
+    <h2>밤하늘의 별은 모두 똑같은 노란색·흰색일까?</h2>
+    <p class="lead">겨울철 대표 별자리인 <b>오리온자리</b>를 자세히 보면 별마다 빛나는 <b>색깔</b>이 뚜렷하게 다릅니다!</p>
+
+    <div class="grid-2">
+      <div class="box" style="background:radial-gradient(circle at 30% 30%, #1e293b 0%, #050814 90%);border:2px solid var(--line);display:flex;flex-direction:column;justify-content:space-between">
+        <h3>✨ 오리온자리에서 찾은 두 대표 별의 색깔</h3>
+        <div style="display:flex;justify-content:space-around;align-items:center;padding:18px 8px;gap:12px">
+          <div style="text-align:center">
+            <div style="width:68px;height:68px;border-radius:50%;margin:0 auto 10px;background:radial-gradient(circle,#fff 15%,#ff6b4a 55%,rgba(239,68,68,0) 75%);box-shadow:0 0 28px #ef4444"></div>
+            <div style="font-weight:900;color:#fca5a5;font-size:18px">🔴 베텔게우스 (Betelgeuse)</div>
+            <div style="font-size:13.5px;color:var(--sub)">오리온의 왼쪽 어깨 · <b>붉은색 별</b></div>
+            <div style="font-size:13px;color:#fca5a5;margin-top:2px">표면 온도: 약 3,500 K (저온)</div>
+          </div>
+          <div style="font-size:24px;color:var(--sub);font-weight:900">VS</div>
+          <div style="text-align:center">
+            <div style="width:68px;height:68px;border-radius:50%;margin:0 auto 10px;background:radial-gradient(circle,#fff 20%,#93c5fd 55%,rgba(59,130,246,0) 75%);box-shadow:0 0 28px #60a5fa"></div>
+            <div style="font-weight:900;color:#93c5fd;font-size:18px">🔵 리겔 (Rigel)</div>
+            <div style="font-size:13.5px;color:var(--sub)">오리온의 오른쪽 다리 · <b>청백색 별</b></div>
+            <div style="font-size:13px;color:#93c5fd;margin-top:2px">표면 온도: 약 12,000 K (고온)</div>
+          </div>
+        </div>
+        <div class="callout" style="margin:0;font-size:13.5px">
+          🤔 수도꼭지는 <b>빨간색이 온수(뜨거움)</b>, <b>파란색이 냉수(차가움)</b>인데, 왜 우주에 있는 별과 불꽃은 정반대로 <span class="hl-sky">파란색이 더 뜨겁고</span> <span class="hl-pink">붉은색이 더 차가울까요?</span>
+        </div>
+      </div>
+
+      <div class="box">
+        <h3>📋 오늘의 3단계 학습 로드맵</h3>
+        <div class="box" style="background:rgba(15,23,42,0.75);margin-bottom:8px;border-left:4px solid var(--sky)">
+          <b>1단계 · 별의 색깔 ↔ 표면 온도</b>
+          <p style="font-size:14px;color:var(--sub)">천체의 표면 온도가 높을수록 <span class="hl-sky">파란색(청색)</span>, 낮을수록 <span class="hl-pink">붉은색(적색)</span>을 띤다는 것을 설명할 수 있다.</p>
+        </div>
+        <div class="box" style="background:rgba(15,23,42,0.75);margin-bottom:8px;border-left:4px solid var(--gold)">
+          <b>2단계 · 별의 색깔 → 절대등급(<i>M</i>) 추정</b>
+          <p style="font-size:14px;color:var(--sub)">일반적인 별(주계열성)은 표면 온도가 높을수록(파란색일수록) 실제로도 많은 빛을 내므로, <b>색깔을 보고 절대등급(<i>M</i>)을 추정</b>할 수 있음을 이해한다.</p>
+        </div>
+        <div class="box" style="background:rgba(15,23,42,0.75);border-left:4px solid var(--mint)">
+          <b>3단계 · (<i>m</i> − <i>M</i>) 비교 → 10 pc보다 가깝다 vs 멀다 판별!</b>
+          <p style="font-size:14px;color:var(--sub)">겉보기 등급(<i>m</i>)과 절대등급(<i>M</i>)을 비교하여 별이 기준 거리인 <span class="hl-mint">10 pc보다 가까운지, 10 pc인지, 10 pc보다 먼지</span> 판별할 수 있다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 오개념 깨기]</b> 미술 시간의 '따뜻한 색(빨강)/차가운 색(파랑)'이나 수도꼭지 표시 때문에 학생들은 빨간 별이 가장 뜨겁다고 생각하기 쉽습니다. 촛불의 겉불꽃(푸른빛)·속불꽃(붉은빛) 또는 가스레인지 파란 불꽃을 예로 들어 실제 빛(흑체 복사)에서는 파란빛이 에너지가 높고 온도가 높다는 점을 인상 깊게 짚어 주세요.
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 3: 천체의 색깔과 표면 온도 원리 ==================== -->
+  <section class="slide" data-title="3. 개념 1: 천체의 색깔과 표면 온도의 관계">
+    <span class="kicker">🌡️ 개념 1 · 천체의 색깔이 알려 주는 표면 온도</span>
+    <h2>별의 표면 온도가 높을수록 왜 파란색을 띨까?</h2>
+    <p class="lead">스스로 빛을 내는 천체(항성)는 <b>표면 온도</b>에 따라 방출하는 빛의 주된 파장(에너지)이 달라져 눈에 보이는 <b>색깔</b>이 달라집니다.</p>
+
+    <div class="grid-2">
+      <div class="box">
+        <h3>🔥 일상 속 온도와 빛의 색깔 비교</h3>
+        <ul>
+          <li>쇠못이나 니크롬선을 가열하면 처음(저온)에는 <b>붉은빛</b>을 내다가, 온도가 점점 높아지면 <b>주황색 → 노란색 → 눈부신 흰색 → 푸른빛</b>으로 변합니다.</li>
+          <li>캠핑장 모닥불(약 1,000℃)은 <b>붉은색·주황색</b>이지만, 훨씬 뜨거운 가스레인지 불꽃이나 용접 불꽃(약 2,000~3,000℃ 이상)은 <b>파란색</b>입니다.</li>
+          <li><b>이유:</b> 온도가 높을수록 에너지가 큰 <b>짧은 파장(파란색·보라색 영역)</b>의 빛을 많이 방출하고, 온도가 낮을수록 에너지가 작은 <b>긴 파장(붉은색 영역)</b>의 빛을 많이 방출하기 때문입니다.</li>
+        </ul>
+        <div class="callout sky" style="margin-bottom:0">
+          🌟 <b>핵심 정리:</b> 별의 표면 온도는 <span class="hl-sky"><b>파란색(청색)</b></span> &gt; <b>청백색</b> &gt; <b>흰색</b> &gt; <b>황백색</b> &gt; <span class="hl-gold"><b>노란색(황색)</b></span> &gt; <b>주황색</b> &gt; <span class="hl-pink"><b>붉은색(적색)</b></span> 순으로 높습니다!
+        </div>
+      </div>
+
+      <div class="box">
+        <h3>🌈 천체의 7가지 대표 색깔과 표면 온도 표</h3>
+        <table>
+          <tr>
+            <th>별의 색깔</th>
+            <th>분광형</th>
+            <th>표면 온도 (K)</th>
+            <th>대표적인 별 (예시)</th>
+          </tr>
+          <tr>
+            <td><span style="color:#60a5fa;font-weight:900">🔵 파란색 (청색)</span></td>
+            <td>O형</td>
+            <td><b>30,000 K 이상</b> (최고온)</td>
+            <td class="left">나오스(고물자리 ζ), 민타카</td>
+          </tr>
+          <tr>
+            <td><span style="color:#93c5fd;font-weight:900">💎 청백색</span></td>
+            <td>B형</td>
+            <td><b>10,000 ~ 30,000 K</b></td>
+            <td class="left"><b>리겔</b>, 스피카, 레굴루스</td>
+          </tr>
+          <tr>
+            <td><span style="color:#f8fafc;font-weight:900">⚪ 흰색 (백색)</span></td>
+            <td>A형</td>
+            <td><b>7,500 ~ 10,000 K</b></td>
+            <td class="left"><b>시리우스</b>, <b>베가(직녀성)</b></td>
+          </tr>
+          <tr>
+            <td><span style="color:#fef9c3;font-weight:900">🌕 황백색</span></td>
+            <td>F형</td>
+            <td><b>6,000 ~ 7,500 K</b></td>
+            <td class="left">프로키온, <b>북극성</b></td>
+          </tr>
+          <tr>
+            <td><span style="color:#fde047;font-weight:900">🟡 노란색 (황색)</span></td>
+            <td>G형</td>
+            <td><b>5,000 ~ 6,000 K</b></td>
+            <td class="left"><b>태양 (약 5,800 K)</b>, 카펠라</td>
+          </tr>
+          <tr>
+            <td><span style="color:#fb923c;font-weight:900">🟠 주황색</span></td>
+            <td>K형</td>
+            <td><b>3,500 ~ 5,000 K</b></td>
+            <td class="left">아크투루스, 알데바란</td>
+          </tr>
+          <tr>
+            <td><span style="color:#f87171;font-weight:900">🔴 붉은색 (적색)</span></td>
+            <td>M형</td>
+            <td><b>3,500 K 이하</b> (저온)</td>
+            <td class="left"><b>베텔게우스</b>, 안타레스, 프록시마</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 시험 빈출 포인트]</b> 중2 과학에서는 <b>태양(노란색, 약 6,000 K)</b>, <b>시리우스·베가(흰색, 약 10,000 K)</b>, <b>리겔(청백색, 고온)</b>, <b>베텔게우스·안타레스(붉은색, 저온)</b>의 색깔과 온도 순서가 가장 자주 출제됩니다.
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 4: 시뮬레이션 1 (천체의 색깔 → 표면 온도 & 절대등급 추정) ==================== -->
+  <section class="slide" data-title="4. [시뮬레이션 1] 천체의 색깔과 표면 온도·절대등급 추정 실험실">
+    <span class="kicker">🧪 인터랙티브 시뮬레이션 1 · 색깔로 온도와 절대등급(<i>M</i>) 알아내기</span>
+    <h2>별의 색깔을 바꾸면 표면 온도와 절대등급(<i>M</i>)은 어떻게 변할까?</h2>
+
+    <div class="sim-wrapper">
+      <!-- Left: Star Spectrum & Color Canvas -->
+      <div class="canvas-box">
+        <canvas id="colorSimCanvas" width="650" height="340"></canvas>
+        <div class="color-scale" id="colorChipBar">
+          <!-- Populated by JS -->
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
+          <span style="font-size:13px;color:var(--sub);white-space:nowrap">표면 온도 슬라이더:</span>
+          <input type="range" id="tempSlider" min="2800" max="32000" step="100" value="5800">
+          <span id="tempSliderLabel" style="font-weight:900;color:var(--gold);min-width:78px;text-align:right">5,800 K</span>
+        </div>
+      </div>
+
+      <!-- Right: Estimated Properties & Pedagogical Bridge -->
+      <div class="box" style="padding:14px">
+        <h3 style="margin-bottom:8px">🔭 선택된 별의 물리량 분석 (주계열성 기준)</h3>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="label">🎨 관측된 천체의 색깔</div>
+            <div class="val" id="cStatColor">노란색 (G형)</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">🌡️ 추정 표면 온도 (<i>T</i>)</div>
+            <div class="val" id="cStatTemp" style="color:var(--sky)">약 5,800 K</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">⚖️ 추정 절대등급 (<i>M</i>, 10 pc)</div>
+            <div class="val" id="cStatAbsMag" style="color:var(--mint)">+4.8 등급</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">💡 태양 대비 실제 밝기 (광도)</div>
+            <div class="val" id="cStatLum" style="color:var(--pink)">약 1 배</div>
+          </div>
+        </div>
+
+        <div id="colorSimDetail" class="callout sky" style="margin:8px 0;font-size:13.5px;line-height:1.55">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="box" style="background:rgba(5,8,20,0.75);padding:11px 13px;border-color:rgba(251,191,36,0.4)">
+          <div style="font-size:13px;font-weight:800;color:var(--gold);margin-bottom:4px">💡 왜 색깔만으로 절대등급(<i>M</i>)을 추정할 수 있을까?</div>
+          <p style="font-size:13px;color:var(--sub);margin:0;line-height:1.5">
+            밤하늘 별의 약 90%(태양 포함 <b>주계열성</b>)는 <b>표면 온도가 높고 파란색일수록 크기가 크고 단위 면적당 방출하는 에너지가 많아 실제 밝기(광도)가 훨씬 밝습니다!</b> 따라서 별의 <b>색깔(분광형)</b>을 관측하면 그 별을 10 pc에 두었을 때의 밝기인 <span class="hl-gold"><b>절대등급(<i>M</i>)을 추정</b></span>할 수 있습니다.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 개념 연결 (핵심!)]</b> 학생들이 "어떻게 지구에 앉아서 별의 실제 밝기(절대등급 M)를 알 수 있나요?"라고 궁금해합니다. 이때 위 시뮬레이션의 7가지 색깔 버튼을 눌러 보며, "고온의 파란색 별일수록 실제로 엄청나게 밝은 빛(절대등급 -4등급 등 낮은 숫자)을 내고, 저온의 붉은색 주계열성일수록 실제로 어두운 빛(절대등급 +9등급 등 높은 숫자)을 낸다"는 관계를 시각적으로 확인시켜 주세요. (단, 베텔게우스 같은 적색거성은 온도는 낮지만 크기가 매우 커서 밝다는 점은 심화 팁으로 간단히 덧붙일 수 있습니다.)
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 5: 색깔로 절대등급을 추정해 거리를 알아내는 3단계 원리 ==================== -->
+  <section class="slide" data-title="5. 개념 2: 색깔 → 절대등급 추정 → 10 pc 거리 비교 원리">
+    <span class="kicker">🔮 개념 2 · 천문학자들의 거리 측정 추리법 (분광 시차법의 기초)</span>
+    <h2>별의 색깔과 겉보기 등급으로 어떻게 거리를 알아낼까?</h2>
+    <p class="lead">줄자를 들고 우주에 갈 수 없는 천문학자들은 <b>① 눈에 보이는 밝기(<i>m</i>)</b>와 <b>② 색깔로 알아낸 실제 밝기(<i>M</i>)</b>를 비교합니다!</p>
+
+    <div class="grid-3">
+      <div class="box" style="border-top:4px solid var(--sky)">
+        <h3>STEP 1 · 겉보기 등급(<i>m</i>) 관측</h3>
+        <p>지구에서 밤하늘의 별을 보고 <b>우리 눈에 보이는 밝기 등급</b>인 <span class="hl-sky"><b>겉보기 등급(<i>m</i>)</b></span>을 직접 측정합니다.</p>
+        <div class="callout sky" style="font-size:13px;margin-top:10px">
+          예) "저 별은 우리 눈에 <b>+1등급(<i>m</i> = 1)</b>으로 꽤 밝게 보이네!"
+        </div>
+      </div>
+
+      <div class="box" style="border-top:4px solid var(--gold)">
+        <h3>STEP 2 · 색깔로 절대등급(<i>M</i>) 추정</h3>
+        <p>별빛의 <b>색깔(표면 온도)</b>을 분석해, 이 별이 표준 거리인 <b>10 pc에 있을 때의 실제 밝기 등급</b>인 <span class="hl-gold"><b>절대등급(<i>M</i>)</b></span>을 추정합니다.</p>
+        <div class="callout" style="font-size:13px;margin-top:10px">
+          예) "노란색 별(태양과 비슷)이니 10 pc에 놓으면 <b>+5등급(<i>M</i> = 5)</b>으로 희미하게 보여야 정상인데?"
+        </div>
+      </div>
+
+      <div class="box" style="border-top:4px solid var(--mint)">
+        <h3>STEP 3 · 두 등급 비교로 거리 판별!</h3>
+        <p><b>10 pc에 있을 때의 밝기(<i>M</i>)</b>와 <b>실제 내 눈에 보이는 밝기(<i>m</i>)</b>를 비교해 10 pc보다 가까운지 먼지 판정합니다!</p>
+        <div class="callout mint" style="font-size:13px;margin-top:10px">
+          예) "10 pc에 있을 때(+5등급)보다 내 눈에 훨씬 밝게(+1등급) 보이니, <b>10 pc보다 가까이에 있구나!</b>"
+        </div>
+      </div>
+    </div>
+
+    <div class="formula-card" style="margin-top:14px">
+      <div style="text-align:center">
+        <div style="font-size:13.5px;color:var(--sub);margin-bottom:4px">⚠️ 잠깐! 등급 비교에서 가장 중요한 핵심 전제 (지난 시간 복습)</div>
+        <div class="formula-math" style="font-size:clamp(18px,2.5vw,27px)">
+          "별의 등급은 <span style="color:#fff;text-decoration:underline">숫자가 작을수록(낮을수록) 더 밝고</span>, 숫자가 클수록 더 어둡다!"
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 비유 활용]</b> 학생들에게 '100W 백열전구(노란색)'와 '1000W LED 투광등(파란색)' 비유를 들어 주세요. 전구의 색깔과 종류를 보면 원래 얼마나 밝은 전구인지(절대등급 M) 알 수 있습니다. 만약 원래 희미한 꼬마전구인데 내 눈에 눈부시게 밝게 보인다면? 내 눈앞 아주 가까이(10 pc보다 가까이)에 있기 때문입니다!
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 6: 겉보기 등급(m)과 절대등급(M)으로 10 pc 거리 판별하기 ==================== -->
+  <section class="slide" data-title="6. 핵심 원리: m과 M의 차이(m-M)로 10 pc보다 가깝다/멀다 판별하기">
+    <span class="kicker">📏 개념 3 · 10 pc 기준 거리 판별 공식 완벽 정리 (시험 1순위!)</span>
+    <h2>겉보기 등급(<i>m</i>)과 절대등급(<i>M</i>)을 비교하면 거리가 보인다!</h2>
+    <p class="lead"><b>절대등급(<i>M</i>)은 별을 정확히 10 pc 거리에 두었을 때의 밝기 등급</b>입니다. 따라서 현재 보이는 <b>겉보기 등급(<i>m</i>)</b>과 비교하면 다음 3가지 경우가 나타납니다.</p>
+
+    <div class="grid-3">
+      <!-- Case 1: d < 10 pc -->
+      <div class="box" style="border:2px solid var(--mint);background:rgba(6,78,59,0.22)">
+        <div class="verdict-badge verdict-near" style="margin-bottom:8px;font-size:15px">🟢 경우 ① 10 pc보다 가깝다</div>
+        <h3 style="color:#6ee7b7"><i>m</i> &lt; <i>M</i> &nbsp;(즉, <i>m</i> − <i>M</i> &lt; 0)</h3>
+        <ul>
+          <li><b>밝기 비교:</b> <b>겉보기 밝기 &gt; 실제 밝기(10 pc 기준)</b></li>
+          <li><b>등급 숫자:</b> 더 밝게 보이므로 <b>겉보기 등급(<i>m</i>) 숫자가 절대등급(<i>M</i>)보다 작다!</b></li>
+          <li><b>이유:</b> 기준 거리인 <b>10 pc보다 지구에 더 가까이</b> 있어서 빛이 덜 퍼진 채 우리 눈에 많이 들어오기 때문!</li>
+        </ul>
+        <div class="callout mint" style="margin-bottom:0;font-size:13px">
+          예) <b>시리우스:</b> <i>m</i> = −1.5, <i>M</i> = +1.4<br>
+          (−1.5 &lt; +1.4 이므로 <b>10 pc보다 가깝다!</b> 실제 약 2.6 pc)
+        </div>
+      </div>
+
+      <!-- Case 2: d = 10 pc -->
+      <div class="box" style="border:2px solid var(--gold);background:rgba(120,53,15,0.22)">
+        <div class="verdict-badge verdict-same" style="margin-bottom:8px;font-size:15px">🟡 경우 ② 정확히 10 pc 거리</div>
+        <h3 style="color:#fde047"><i>m</i> = <i>M</i> &nbsp;(즉, <i>m</i> − <i>M</i> = 0)</h3>
+        <ul>
+          <li><b>밝기 비교:</b> <b>겉보기 밝기 = 실제 밝기(10 pc 기준)</b></li>
+          <li><b>등급 숫자:</b> <b>겉보기 등급(<i>m</i>)과 절대등급(<i>M</i>) 숫자가 서로 같다!</b></li>
+          <li><b>이유:</b> 별이 절대등급의 기준 거리인 <b>정확히 10 pc(약 32.6광년)</b> 위치에 있기 때문!</li>
+        </ul>
+        <div class="callout" style="margin-bottom:0;font-size:13px">
+          예) <b>폴룩스(쌍둥이자리):</b> <i>m</i> ≈ +1.1, <i>M</i> ≈ +1.1<br>
+          (<i>m</i> − <i>M</i> = 0 이므로 <b>거리가 약 10 pc이다!</b>)
+        </div>
+      </div>
+
+      <!-- Case 3: d > 10 pc -->
+      <div class="box" style="border:2px solid var(--pink);background:rgba(131,24,67,0.22)">
+        <div class="verdict-badge verdict-far" style="margin-bottom:8px;font-size:15px">🔴 경우 ③ 10 pc보다 멀다</div>
+        <h3 style="color:#f9a8d4"><i>m</i> &gt; <i>M</i> &nbsp;(즉, <i>m</i> − <i>M</i> &gt; 0)</h3>
+        <ul>
+          <li><b>밝기 비교:</b> <b>겉보기 밝기 &lt; 실제 밝기(10 pc 기준)</b></li>
+          <li><b>등급 숫자:</b> 더 어둡게 보이므로 <b>겉보기 등급(<i>m</i>) 숫자가 절대등급(<i>M</i>)보다 크다!</b></li>
+          <li><b>이유:</b> 기준 거리인 <b>10 pc보다 더 멀리</b> 떨어져 있어서 별빛이 넓게 퍼져 어둡게 보이기 때문!</li>
+        </ul>
+        <div class="callout pink" style="margin-bottom:0;font-size:13px">
+          예) <b>리겔:</b> <i>m</i> = +0.1, <i>M</i> = −6.8<br>
+          (+0.1 &gt; −6.8 이므로 <b>10 pc보다 훨씬 멀다!</b> 실제 약 260 pc)
+        </div>
+      </div>
+    </div>
+
+    <div class="formula-card" style="margin-top:12px;padding:12px 18px">
+      <div style="font-size:clamp(15px,1.9vw,20px);font-weight:800;color:#fff">
+        📌 <b>거리 지수 (<i>m</i> − <i>M</i>) 한 줄 공식:</b> &nbsp;
+        <span class="hl-mint"><i>m</i> − <i>M</i> &lt; 0 (10 pc보다 가깝다)</span> &nbsp;|&nbsp;
+        <span class="hl-gold"><i>m</i> − <i>M</i> = 0 (거리 = 10 pc)</span> &nbsp;|&nbsp;
+        <span class="hl-pink"><i>m</i> − <i>M</i> &gt; 0 (10 pc보다 멀다)</span>
+        <br><span style="font-size:13.5px;color:var(--sub);font-weight:600">👉 <i>m</i> − <i>M</i> 값이 클수록 지구에서 더 멀리 있는 별입니다!</span>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 기억법 전수]</b> 학생들이 부등호 방향을 외우려다 헷갈리지 않도록 <b>"10 pc 자리에 놓았을 때(M)보다 지금 내 눈에(m) 더 밝게 보이나, 어둡게 보이나?"</b>를 먼저 생각하게 지도하세요. "내 눈에 더 밝게 보인다(m 숫자가 작다) → 10 pc보다 가까이 다가와 있다!"로 이해하면 절대 틀리지 않습니다.
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 7: 시뮬레이션 2 (10 pc 기준선 별 이동 & m-M 실험실) ==================== -->
+  <section class="slide" data-title="7. [시뮬레이션 2] 별의 색깔·거리 이동과 (m-M) 10 pc 판별 실험실">
+    <span class="kicker">🧪 인터랙티브 시뮬레이션 2 · 별을 10 pc 안팎으로 직접 움직여 보기</span>
+    <h2>별의 색깔(절대등급 <i>M</i>)을 고르고 거리(pc)를 바꿔 가며 <i>m</i>과 <i>M</i>을 비교해 보세요!</h2>
+
+    <div class="sim-wrapper">
+      <!-- Left: Space Distance & 10pc Line Canvas -->
+      <div class="canvas-box">
+        <canvas id="distSimCanvas" width="650" height="330"></canvas>
+
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-top:10px">
+          <div class="btn-group" id="sim2StarTypeBtns">
+            <span style="font-size:12.5px;color:var(--sub)">① 별의 색깔(절대등급 <i>M</i> 추정):</span>
+            <button type="button" class="btn" data-idx="0">🔵 파란 별 (M=-3.0)</button>
+            <button type="button" class="btn" data-idx="1">⚪ 흰색 별 (M=+1.0)</button>
+            <button type="button" class="btn active" data-idx="2">🟡 노란 별 (M=+4.8)</button>
+            <button type="button" class="btn" data-idx="3">🔴 붉은 별 (M=+8.0)</button>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:8px">
+          <span style="font-size:13px;color:var(--sub);white-space:nowrap">② 별까지의 실제 거리 (<i>d</i>):</span>
+          <input type="range" id="pcSlider" min="1" max="100" step="0.5" value="4">
+          <span id="pcSliderLabel" style="font-weight:900;color:var(--gold);min-width:68px;text-align:right">4.0 pc</span>
+          <div class="btn-group">
+            <button type="button" class="btn" onclick="setSim2Dist(1)">1 pc (가까움)</button>
+            <button type="button" class="btn" onclick="setSim2Dist(10)">10 pc (기준!)</button>
+            <button type="button" class="btn" onclick="setSim2Dist(40)">40 pc (멂)</button>
+            <button type="button" class="btn" onclick="setSim2Dist(100)">100 pc (10배 멂)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Real-time m, M, m-M and Verdict -->
+      <div class="box" style="padding:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <h3 style="margin:0">📊 실시간 등급 비교 및 거리 판정</h3>
+          <span id="sim2VerdictBadge" class="verdict-badge verdict-near" style="font-size:13.5px;padding:4px 12px">10 pc보다 가깝다</span>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="label">🎨 색깔로 추정한 절대등급 (<i>M</i>)</div>
+            <div class="val" id="s2AbsM" style="color:var(--gold)">+4.8 등급</div>
+            <div style="font-size:11px;color:var(--sub)">10 pc에 놓았을 때의 밝기(고정)</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">👀 지구에서 본 겉보기 등급 (<i>m</i>)</div>
+            <div class="val" id="s2AppM" style="color:var(--sky)">+2.8 등급</div>
+            <div style="font-size:11px;color:var(--sub)">현재 거리에서 눈에 보이는 밝기</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">➖ 등급 차이 (<i>m</i> − <i>M</i>)</div>
+            <div class="val" id="s2Diff" style="color:var(--mint)">-2.0 (음수 &lt; 0)</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">📏 기준 거리(10 pc)와 비교</div>
+            <div class="val" id="s2DistCompare" style="color:#fff">4.0 pc (&lt; 10 pc)</div>
+          </div>
+        </div>
+
+        <!-- Visual Comparison of Apparent vs Absolute Brightness -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;background:rgba(5,8,20,0.8);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center">
+          <div>
+            <div style="font-size:12px;color:var(--sky);font-weight:700;margin-bottom:4px">👀 지구에서 본 모습 (겉보기 <i>m</i>)</div>
+            <div style="height:86px;display:flex;align-items:center;justify-content:center;background:#03050c;border-radius:10px;border:1px solid rgba(56,189,248,0.35)">
+              <div id="s2AppOrb" style="width:46px;height:46px;border-radius:50%"></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--gold);font-weight:700;margin-bottom:4px">⚖️ 10 pc에 놓았을 때 (절대 <i>M</i>)</div>
+            <div style="height:86px;display:flex;align-items:center;justify-content:center;background:#03050c;border-radius:10px;border:1px solid rgba(251,191,36,0.35)">
+              <div id="s2AbsOrb" style="width:30px;height:30px;border-radius:50%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s2Explanation" class="callout mint" style="margin:10px 0 0;font-size:13.2px;line-height:1.5">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 시뮬레이션 시연 포인트]</b> ① 먼저 별의 색깔을 바꿔 보며 <b>절대등급(M)은 별의 고유한 실제 밝기이므로 거리를 아무리 바꿔도 변하지 않는다</b>는 점을 확인시켜 주세요! ② 그다음 거리 버튼을 <b>1 pc → 10 pc → 100 pc</b>로 눌러 보며 10 pc 안쪽에서는 m &lt; M, 정확히 10 pc에서는 m = M, 10 pc 바깥쪽에서는 m &gt; M(특히 100 pc = 10배 거리에서는 +5등급 증가!)이 되는 것을 눈으로 보여 주세요.
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 8: 탐구 활동 (미지의 별 5개 거리 판별 실습) ==================== -->
+  <section class="slide" data-title="8. [탐구 실습] 우주 거리 탐정단: 별 5개의 색깔과 등급으로 거리 판별하기">
+    <span class="kicker">🕵️‍♂️ 인터랙티브 탐구 실습 · 우주 거리 탐정단</span>
+    <h2>관측한 별 5개! 어느 별이 10 pc보다 가깝고, 어느 별이 가장 멀까?</h2>
+    <p class="lead">천체 망원경으로 관측한 별 5개의 <b>색깔</b>과 <b>겉보기 등급(<i>m</i>)</b>, 그리고 색깔로 추정한 <b>절대등급(<i>M</i>)</b> 표입니다. 각 행의 판별 버튼을 눌러 확인해 보세요!</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>별 이름</th>
+          <th>관측된 색깔</th>
+          <th>표면 온도</th>
+          <th>겉보기 등급 (<i>m</i>)</th>
+          <th>추정 절대등급 (<i>M</i>)</th>
+          <th>등급 차 (<i>m</i> − <i>M</i>)</th>
+          <th>10 pc 기준 거리 판별 (클릭해 확인!)</th>
+        </tr>
+      </thead>
+      <tbody id="detectiveTableBody">
+        <!-- Populated by JS -->
+      </tbody>
+    </table>
+
+    <div class="grid-2" style="margin-top:12px">
+      <div class="box" style="border-left:4px solid var(--sky)">
+        <h3>🧐 심화 질문 1: 가장 뜨거운 별과 가장 차가운 별은?</h3>
+        <p style="font-size:14.5px">
+          • <b>표면 온도가 가장 높은 별:</b> <span class="hl-sky"><b>파란색·청백색</b></span>을 띠는 <b>리겔(별 C)</b><br>
+          • <b>표면 온도가 가장 낮은 별:</b> <span class="hl-pink"><b>붉은색</b></span>을 띠는 <b>베텔게우스(별 E)</b>
+        </p>
+      </div>
+      <div class="box" style="border-left:4px solid var(--gold)">
+        <h3>🧐 심화 질문 2: 지구에서 가장 가까운 별과 가장 먼 별은?</h3>
+        <p style="font-size:14.5px">
+          • <b>가장 가까운 별:</b> <i>m</i> − <i>M</i> 값이 <b>가장 작은(음수로 가장 큰)</b> <span class="hl-mint"><b>태양 / 시리우스(별 A, −2.9)</b></span><br>
+          • <b>가장 먼 별:</b> <i>m</i> − <i>M</i> 값이 <b>가장 큰(+6.9)</b> <span class="hl-pink"><b>리겔(별 C, 약 260 pc)</b></span>
+        </p>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 수업 활동 팁]</b> 칠판에서 학생들을 지목해 별 A~E 각각이 10 pc보다 가까운지 먼지 먼저 대답하게 한 뒤, 표 오른쪽의 <b>[판별 결과 보기]</b> 버튼을 클릭해 정답 배지를 하나씩 공개하면 수업 집중도가 매우 높습니다!
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 9: 형성 평가 퀴즈 (3문항) ==================== -->
+  <section class="slide" data-title="9. 형성 평가 퀴즈 (3문항)">
+    <span class="kicker">✅ 형성 평가 퀴즈 · 배운 내용 점검하기</span>
+    <h2>오늘 배운 천체의 색깔과 거리 판별, 퀴즈로 완벽 정복!</h2>
+
+    <div class="grid-3">
+      <!-- Quiz 1 -->
+      <div class="box">
+        <h3>Quiz 1. 별의 색깔과 표면 온도</h3>
+        <p style="font-size:14.2px">밤하늘의 별 A(파란색), 별 B(노란색), 별 C(붉은색)의 <b>표면 온도를 높은 것부터</b> 바르게 나열한 것은?</p>
+        <button type="button" class="quiz-opt" onclick="checkQuiz(this, false, 'q1Msg')">① C(붉은색) &gt; B(노란색) &gt; A(파란색)</button>
+        <button type="button" class="quiz-opt" onclick="checkQuiz(this, true, 'q1Msg')">② A(파란색) &gt; B(노란색) &gt; C(붉은색)</button>
+        <button type="button" class="quiz-opt" onclick="checkQuiz(this, false, 'q1Msg')">③ B(노란색) &gt; A(파란색) &gt; C(붉은색)</button>
+        <div id="q1Msg" style="font-size:13px;margin-top:6px;min-height:36px"></div>
+      </div>
+
+      <!-- Quiz 2 -->
+      <div class="box">
+        <h3>Quiz 2. 색깔로 추정한 등급과 거리</h3>
+        <p style="font-size:14.2px">어떤 별의 색깔을 분석해 추정한 <b>절대등급(<i>M</i>)이 +4.0등급</b>인데, 지구에서 관측한 <b>겉보기 등급(<i>m</i>)은 +1.0등급</b>이었다. 이 별의 위치는?</p>
+        <button type="button" class="quiz-opt" onclick="checkQuiz(this, true, 'q2Msg')">① <i>m</i> &lt; <i>M</i> 이므로 10 pc보다 가까이 있다.</button>
+        <button type="button" class="quiz-opt" onclick="checkQuiz(this, false, 'q2Msg')">② <i>m</i> = <i>M</i> 이므로 정확히 10 pc에 있다.</button>
+        <button type="button" class="quiz-opt" onclick="checkQuiz(this, false, 'q2Msg')">③ <i>m</i> &lt; <i>M</i> 이므로 10 pc보다 멀리 있다.</button>
+        <div id="q2Msg" style="font-size:13px;margin-top:6px;min-height:36px"></div>
+      </div>
+
+      <!-- Quiz 3 -->
+      <div class="box">
+        <h3>Quiz 3. (<i>m</i> − <i>M</i>)과 거리의 관계</h3>
+        <p style="font-size:14.2px">겉보기 등급이 <b>+2.0등급</b>이고 절대등급이 <b>−3.0등급</b>인 청백색 별에 대한 설명으로 <b>옳은 것</b>은?</p>
+        <button type="button" class="quiz-opt" onclick="checkQuiz(this, false, 'q3Msg')">① 태양(노란색)보다 표면 온도가 낮다.</button>
+        <button type="button" class="quiz-opt" onclick="checkQuiz(this, false, 'q3Msg')">② 10 pc에 있을 때보다 우리 눈에 더 밝게 보인다.</button>
+        <button type="button" class="quiz-opt" onclick="checkQuiz(this, true, 'q3Msg')">③ <i>m</i> − <i>M</i> = +5.0 &gt; 0 이므로 10 pc보다 멀리(100 pc) 있다.</button>
+        <div id="q3Msg" style="font-size:13px;margin-top:6px;min-height:36px"></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · Quiz 3 해설 포인트]</b> Quiz 3번은 지난 차시 내용까지 결합된 최고난도 응용 문제입니다! <i>m</i>(+2.0)이 <i>M</i>(−3.0)보다 <b>+5등급 더 크므로(어둡게 보이므로)</b> 10 pc보다 멀리 있으며, 5등급 차이(=100배 어두워짐 = 거리 10배 멀어짐)이므로 기준 거리 10 pc의 10배인 <b>100 pc</b> 거리에 있다는 것까지 연결해 주면 완벽합니다.
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 10: 전체 단원 한눈에 요약 ==================== -->
+  <section class="slide" data-title="10. 핵심 총정리: 별의 색깔·온도·등급·거리 한눈에 보기">
+    <span class="kicker">🌟 단원 총정리 · 오늘 배운 핵심 개념 한 장 요약</span>
+    <h2>천체의 색깔부터 10 pc 거리 판별까지 한눈에 정리!</h2>
+
+    <div class="grid-3">
+      <div class="box" style="border-top:4px solid var(--sky)">
+        <h3>1️⃣ 천체의 색깔과 표면 온도</h3>
+        <ul>
+          <li>별의 색깔은 <b>표면 온도</b>에 따라 결정된다.</li>
+          <li><b>고온(30,000 K 이상):</b> <span class="hl-sky"><b>파란색·청백색</b></span> (리겔)</li>
+          <li><b>중온(10,000~6,000 K):</b> <b>흰색</b>(시리우스, 베가) → <span class="hl-gold"><b>노란색</b></span>(태양)</li>
+          <li><b>저온(3,500 K 이하):</b> <span class="hl-pink"><b>붉은색</b></span> (베텔게우스)</li>
+        </ul>
+      </div>
+
+      <div class="box" style="border-top:4px solid var(--gold)">
+        <h3>2️⃣ 색깔로 절대등급(<i>M</i>) 추정</h3>
+        <ul>
+          <li><b>절대등급(<i>M</i>):</b> 별을 <b>10 pc(32.6광년)</b> 표준 거리에 놓았을 때의 밝기 등급 (실제 밝기).</li>
+          <li>주계열성은 <b>파란색(고온)일수록 실제 밝기가 밝아 절대등급(<i>M</i>) 숫자가 작고</b>, 붉은색일수록 어두워 숫자가 크다.</li>
+        </ul>
+      </div>
+
+      <div class="box" style="border-top:4px solid var(--mint)">
+        <h3>3️⃣ <i>m</i>과 <i>M</i> 비교로 거리 판별</h3>
+        <ul>
+          <li><span class="hl-mint"><b><i>m</i> &lt; <i>M</i> (<i>m</i>−<i>M</i> &lt; 0):</b></span> 10 pc보다 밝게 보임 → <b>10 pc보다 가깝다!</b></li>
+          <li><span class="hl-gold"><b><i>m</i> = <i>M</i> (<i>m</i>−<i>M</i> = 0):</b></span> 밝기가 같음 → <b>정확히 10 pc 거리!</b></li>
+          <li><span class="hl-pink"><b><i>m</i> &gt; <i>M</i> (<i>m</i>−<i>M</i> &gt; 0):</b></span> 10 pc보다 어둡게 보임 → <b>10 pc보다 멀다!</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="formula-card" style="margin-top:16px;justify-content:space-between;padding:16px 24px">
+      <div style="text-align:left">
+        <div style="font-size:14px;color:var(--gold);font-weight:800">🚀 과학 탐구 연결 고리 완성!</div>
+        <div style="font-size:clamp(15px,1.9vw,20px);font-weight:800;color:#fff;margin-top:4px">
+          별빛 색깔 관측 → 표면 온도 확인 → 절대등급(<i>M</i>) 추정 → 겉보기 등급(<i>m</i>)과 비교 → 별까지의 거리(10 pc 안/밖) 판별!
+        </div>
+      </div>
+      <div class="btn-group">
+        <button type="button" class="btn active" onclick="show(0)">🔄 처음 슬라이드로</button>
+        <a class="btn" href="../star-brightness/index.html" style="text-decoration:none">🌟 이전 단원: 별의 밝기와 등급</a>
+        <a class="btn" href="../../index.html#sims" style="text-decoration:none">🏠 시뮬레이션 목록으로</a>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 수업 마무리]</b> 인쇄(Ctrl+P)를 실행하면 10장의 슬라이드와 교사 메모가 학생 배포용 유인물로 깔끔하게 출력됩니다. 수고하셨습니다!
+    </div>
+  </section>
+
+</div>
+
+<!-- Bottom Navigation Bar -->
+<div class="bar">
+  <a class="home-link" href="../../index.html" style="color:#fff;text-decoration:none;font-size:13px;white-space:nowrap">← 홈으로</a>
+  <button id="prevBtn" type="button">◀ 이전</button>
+  <div class="prog"><i id="progBar"></i></div>
+  <span class="cnt" id="slideCnt">1 / 10</span>
+  <button id="nextBtn" type="button">다음 ▶</button>
+  <button id="fsBtn" type="button">전체화면 (F)</button>
+  <button id="noteBtn" type="button">교사 메모 (N)</button>
+</div>
+
+<script>
+/* ==================== SLIDE NAVIGATION ==================== */
+const slides = Array.from(document.querySelectorAll('.slide'));
+const slideJump = document.getElementById('slideJump');
+let cur = 0;
+
+slides.forEach((s, idx) => {
+  const opt = document.createElement('option');
+  opt.value = idx;
+  opt.textContent = s.dataset.title || `슬라이드 ${idx + 1}`;
+  slideJump.appendChild(opt);
+});
+
+function show(n) {
+  cur = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, k) => s.classList.toggle('on', k === cur));
+  document.getElementById('slideCnt').textContent = (cur + 1) + ' / ' + slides.length;
+  document.getElementById('progBar').style.width = ((cur + 1) / slides.length * 100) + '%';
+  slideJump.value = cur;
+  history.replaceState(null, '', '#' + (cur + 1));
+}
+
+slideJump.onchange = e => show(parseInt(e.target.value, 10));
+document.getElementById('nextBtn').onclick = () => show(cur + 1);
+document.getElementById('prevBtn').onclick = () => show(cur - 1);
+document.getElementById('noteBtn').onclick = () => document.body.classList.toggle('notes');
+document.getElementById('fsBtn').onclick = () => {
+  if (document.fullscreenElement) { document.exitFullscreen(); }
+  else if (document.documentElement.requestFullscreen) { document.documentElement.requestFullscreen(); }
+};
+
+document.addEventListener('keydown', e => {
+  const tag = e.target.tagName;
+  if (tag === 'INPUT' || tag === 'SELECT' || tag === 'BUTTON') {
+    if (e.key !== 'f' && e.key !== 'F' && e.key !== 'n' && e.key !== 'N') return;
+  }
+  const k = e.key;
+  if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); show(cur + 1); }
+  else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); show(cur - 1); }
+  else if (k === 'Home') { show(0); }
+  else if (k === 'End') { show(slides.length - 1); }
+  else if (k === 'f' || k === 'F') { document.getElementById('fsBtn').click(); }
+  else if (k === 'n' || k === 'N') { document.body.classList.toggle('notes'); }
+});
+
+let touchStartX = null;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', e => {
+  if (touchStartX === null) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 60 && e.target.tagName !== 'INPUT') {
+    show(cur + (dx < 0 ? 1 : -1));
+  }
+  touchStartX = null;
+});
+
+/* ==================== SIMULATION 1: STAR COLOR, TEMPERATURE & ABSOLUTE MAGNITUDE (SLIDE 4) ==================== */
+const SPECTRAL_CLASSES = [
+  {
+    spec: 'O형', colorName: '파란색 (청색)', temp: 30000, absMag: -4.5, lumText: '약 25,000 배',
+    coreHex: '#ffffff', midHex: '#60a5fa', glowHex: '#2563eb', radiusFactor: 1.55,
+    examples: '나오스(고물자리 ζ), 민타카(오리온자리 δ)',
+    desc: '표면 온도가 30,000 K 이상으로 가장 뜨거운 별입니다! 에너지가 높은 짧은 파장(파란빛)을 강하게 방출하며, 실제 밝기(절대등급 -4.5등급)도 압도적으로 밝습니다.'
+  },
+  {
+    spec: 'B형', colorName: '청백색', temp: 15000, absMag: -1.5, lumText: '약 300 배',
+    coreHex: '#ffffff', midHex: '#93c5fd', glowHex: '#3b82f6', radiusFactor: 1.38,
+    examples: '리겔(오리온자리), 스피카(처녀자리)',
+    desc: '표면 온도가 10,000~30,000 K인 매우 뜨거운 청백색 별입니다. 주계열성 기준 절대등급은 약 -1.5등급으로 태양보다 수백 배 이상 밝습니다.'
+  },
+  {
+    spec: 'A형', colorName: '흰색 (백색)', temp: 9000, absMag: +1.0, lumText: '약 35 배',
+    coreHex: '#ffffff', midHex: '#f1f5f9', glowHex: '#94a3b8', radiusFactor: 1.22,
+    examples: '시리우스(큰개자리), 베가(직녀성)',
+    desc: '표면 온도가 7,500~10,000 K인 깨끗한 흰색 별입니다. 10 pc 거리에 놓았을 때의 절대등급이 약 +1.0등급(1등성 밝기)으로 추정됩니다.'
+  },
+  {
+    spec: 'F형', colorName: '황백색', temp: 6700, absMag: +3.0, lumText: '약 5 배',
+    coreHex: '#ffffff', midHex: '#fef9c3', glowHex: '#fde047', radiusFactor: 1.08,
+    examples: '프로키온(작은개자리), 북극성(황백색 초거성)',
+    desc: '표면 온도가 6,000~7,500 K로 흰색에 살짝 노란빛이 감도는 황백색 별입니다. 주계열성 기준 절대등급은 약 +3.0등급으로 추정됩니다.'
+  },
+  {
+    spec: 'G형', colorName: '노란색 (황색)', temp: 5800, absMag: +4.8, lumText: '1 배 (태양 기준)',
+    coreHex: '#ffffff', midHex: '#fde047', glowHex: '#f59e0b', radiusFactor: 1.0,
+    examples: '태양(5,800 K, M=+4.8), 카펠라(마차부자리)',
+    desc: '우리 태양과 같은 표면 온도(약 5,000~6,000 K)를 가진 노란색 별입니다! 10 pc 표준 거리에 놓으면 약 +4.8등급(5등성 수준)으로 보입니다.'
+  },
+  {
+    spec: 'K형', colorName: '주황색', temp: 4300, absMag: +6.5, lumText: '약 0.2 배',
+    coreHex: '#fff7ed', midHex: '#fb923c', glowHex: '#ea580c', radiusFactor: 0.86,
+    examples: '센타우루스자리 알파 B, 알데바란(주황색 거성)',
+    desc: '표면 온도가 3,500~5,000 K로 태양보다 온도가 낮은 주황색 별입니다. 주계열성 기준 절대등급은 약 +6.5등급으로 실제 밝기가 어둡습니다.'
+  },
+  {
+    spec: 'M형', colorName: '붉은색 (적색)', temp: 3100, absMag: +9.0, lumText: '약 0.02 배',
+    coreHex: '#fef2f2', midHex: '#f87171', glowHex: '#dc2626', radiusFactor: 0.72,
+    examples: '프록시마 센타우리(적색왜성), 베텔게우스(적색초거성)',
+    desc: '표면 온도가 3,500 K 이하로 가장 차가운 붉은색 별입니다! 일반적인 붉은 별(적색왜성)은 절대등급이 +9등급 이상으로 실제 밝기가 매우 어둡습니다.'
+  }
+];
+
+const colorChipBar = document.getElementById('colorChipBar');
+const tempSlider = document.getElementById('tempSlider');
+const colorCv = document.getElementById('colorSimCanvas');
+const colorCtx = colorCv.getContext('2d');
+
+SPECTRAL_CLASSES.forEach((item, idx) => {
+  const chip = document.createElement('div');
+  chip.className = 'color-chip' + (idx === 4 ? ' on' : '');
+  chip.dataset.idx = idx;
+  chip.innerHTML = `
+    <div class="star-orb" style="background:radial-gradient(circle, ${item.coreHex} 18%, ${item.midHex} 58%, rgba(0,0,0,0) 75%);box-shadow:0 0 16px ${item.glowHex}"></div>
+    <div style="font-weight:800;font-size:12.5px;color:#fff">${item.colorName.split(' ')[0]}</div>
+    <div style="font-size:11px;color:var(--sub)">${item.temp.toLocaleString()} K</div>
+    <div style="font-size:11px;color:var(--gold);font-weight:700">M ≈ ${item.absMag > 0 ? '+' + item.absMag : item.absMag}</div>
+  `;
+  chip.onclick = () => selectSpectralByTemp(item.temp);
+  colorChipBar.appendChild(chip);
+});
+
+function getInterpolatedStarByTemp(tempK) {
+  // Find nearest spectral class for description and smooth visual interpolation
+  let nearestIdx = 0;
+  let minDiff = Infinity;
+  SPECTRAL_CLASSES.forEach((s, i) => {
+    const d = Math.abs(s.temp - tempK);
+    if (d < minDiff) { minDiff = d; nearestIdx = i; }
+  });
+
+  // Interpolate absMag along main sequence log(T)
+  const logT = Math.log10(tempK);
+  const logTMin = Math.log10(2800);
+  const logTMax = Math.log10(32000);
+  const norm = Math.max(0, Math.min(1, (logT - logTMin) / (logTMax - logTMin)));
+  const estM = +(9.2 - norm * 13.8).toFixed(1); // +9.2 at 2800K down to -4.6 at 32000K
+  const lumRatio = Math.pow(10, (4.8 - estM) / 2.5);
+
+  return { nearest: SPECTRAL_CLASSES[nearestIdx], nearestIdx, tempK, estM, lumRatio, norm };
+}
+
+function drawColorSim(info) {
+  colorCtx.clearRect(0, 0, colorCv.width, colorCv.height);
+  const sp = info.nearest;
+
+  // Left side: Animated glowing star visualization
+  const sx = 155, sy = 172;
+  const rBase = 52 * (0.72 + info.norm * 0.75);
+
+  const outerGlow = colorCtx.createRadialGradient(sx, sy, rBase * 0.15, sx, sy, rBase * 1.95);
+  outerGlow.addColorStop(0, sp.coreHex);
+  outerGlow.addColorStop(0.32, sp.midHex);
+  outerGlow.addColorStop(0.68, sp.glowHex + '66');
+  outerGlow.addColorStop(1, 'rgba(0,0,0,0)');
+
+  colorCtx.fillStyle = outerGlow;
+  colorCtx.beginPath();
+  colorCtx.arc(sx, sy, rBase * 1.95, 0, Math.PI * 2);
+  colorCtx.fill();
+
+  colorCtx.fillStyle = sp.coreHex;
+  colorCtx.beginPath();
+  colorCtx.arc(sx, sy, rBase * 0.55, 0, Math.PI * 2);
+  colorCtx.fill();
+
+  colorCtx.fillStyle = '#ffffff';
+  colorCtx.font = 'bold 14px sans-serif';
+  colorCtx.textAlign = 'center';
+  colorCtx.fillText(`🌟 ${sp.colorName} (${sp.spec})`, sx, 34);
+  colorCtx.font = 'bold 13px sans-serif';
+  colorCtx.fillStyle = '#fde047';
+  colorCtx.fillText(`표면 온도: ${info.tempK.toLocaleString()} K`, sx, 305);
+  colorCtx.fillStyle = '#34d399';
+  colorCtx.fillText(`추정 절대등급(M): ${info.estM > 0 ? '+' + info.estM : info.estM}등급`, sx, 325);
+
+  // Right side: Mini HR / Color-Absolute Magnitude Diagram
+  const gx = 330, gy = 42, gw = 290, gh = 248;
+  colorCtx.fillStyle = 'rgba(10, 15, 32, 0.9)';
+  colorCtx.strokeStyle = '#33477c';
+  colorCtx.lineWidth = 1.5;
+  colorCtx.beginPath();
+  colorCtx.roundRect(gx, gy, gw, gh, 12);
+  colorCtx.fill();
+  colorCtx.stroke();
+
+  colorCtx.fillStyle = '#e2e8f0';
+  colorCtx.font = 'bold 12.5px sans-serif';
+  colorCtx.textAlign = 'center';
+  colorCtx.fillText('📈 색깔(온도) — 절대등급(M) 관계 그래프 (주계열성)', gx + gw / 2, gy + 22);
+
+  // Color gradient bar at bottom of plot
+  const plotX = gx + 48, plotY = gy + 38, plotW = gw - 66, plotH = gh - 74;
+  const barGrad = colorCtx.createLinearGradient(plotX, 0, plotX + plotW, 0);
+  barGrad.addColorStop(0, '#3b82f6');
+  barGrad.addColorStop(0.28, '#93c5fd');
+  barGrad.addColorStop(0.45, '#ffffff');
+  barGrad.addColorStop(0.65, '#fde047');
+  barGrad.addColorStop(0.82, '#fb923c');
+  barGrad.addColorStop(1, '#ef4444');
+  colorCtx.fillStyle = barGrad;
+  colorCtx.fillRect(plotX, plotY + plotH + 6, plotW, 8);
+
+  // Axes labels
+  colorCtx.fillStyle = '#94a3b8';
+  colorCtx.font = '11px sans-serif';
+  colorCtx.textAlign = 'left';
+  colorCtx.fillText('◀ 고온(파란색)', plotX, plotY + plotH + 28);
+  colorCtx.textAlign = 'right';
+  colorCtx.fillText('저온(붉은색) ▶', plotX + plotW, plotY + plotH + 28);
+
+  // Y-axis ticks (Absolute Magnitude M: -5 at top to +10 at bottom)
+  [-5, 0, +5, +10].forEach(mTick => {
+    const yNorm = (mTick - (-5)) / 15;
+    const py = plotY + yNorm * plotH;
+    colorCtx.strokeStyle = 'rgba(148, 163, 184, 0.2)';
+    colorCtx.beginPath();
+    colorCtx.moveTo(plotX, py);
+    colorCtx.lineTo(plotX + plotW, py);
+    colorCtx.stroke();
+
+    colorCtx.fillStyle = '#cbd5e1';
+    colorCtx.textAlign = 'right';
+    colorCtx.fillText((mTick > 0 ? `+${mTick}` : mTick) + '등', plotX - 6, py + 4);
+  });
+
+  // Draw Main Sequence Band
+  colorCtx.strokeStyle = 'rgba(251, 191, 36, 0.35)';
+  colorCtx.lineWidth = 10;
+  colorCtx.lineCap = 'round';
+  colorCtx.beginPath();
+  colorCtx.moveTo(plotX + 8, plotY + 10);
+  colorCtx.lineTo(plotX + plotW - 8, plotY + plotH - 8);
+  colorCtx.stroke();
+
+  // Plot all 7 reference points
+  SPECTRAL_CLASSES.forEach(sc => {
+    const lT = Math.log10(sc.temp);
+    const xN = 1 - (lT - Math.log10(2800)) / (Math.log10(32000) - Math.log10(2800));
+    const yN = (sc.absMag - (-5)) / 15;
+    const px = plotX + xN * plotW;
+    const py = plotY + yN * plotH;
+    colorCtx.fillStyle = sc.midHex;
+    colorCtx.beginPath();
+    colorCtx.arc(px, py, 4.5, 0, Math.PI * 2);
+    colorCtx.fill();
+  });
+
+  // Highlight active star point on graph
+  const activeXN = 1 - info.norm;
+  const activeYN = (info.estM - (-5)) / 15;
+  const ax = plotX + activeXN * plotW;
+  const ay = plotY + activeYN * plotH;
+
+  colorCtx.strokeStyle = '#fbbf24';
+  colorCtx.lineWidth = 2;
+  colorCtx.setLineDash([3, 3]);
+  colorCtx.beginPath();
+  colorCtx.moveTo(plotX, ay);
+  colorCtx.lineTo(ax, ay);
+  colorCtx.lineTo(ax, plotY + plotH);
+  colorCtx.stroke();
+  colorCtx.setLineDash([]);
+
+  colorCtx.fillStyle = sp.midHex;
+  colorCtx.strokeStyle = '#ffffff';
+  colorCtx.lineWidth = 2.5;
+  colorCtx.beginPath();
+  colorCtx.arc(ax, ay, 8, 0, Math.PI * 2);
+  colorCtx.fill();
+  colorCtx.stroke();
+}
+
+function selectSpectralByTemp(tempVal) {
+  tempSlider.value = tempVal;
+  const info = getInterpolatedStarByTemp(tempVal);
+  const sp = info.nearest;
+
+  document.getElementById('tempSliderLabel').textContent = tempVal.toLocaleString() + ' K';
+  document.getElementById('cStatColor').textContent = `${sp.colorName} (${sp.spec})`;
+  document.getElementById('cStatColor').style.color = sp.midHex;
+  document.getElementById('cStatTemp').textContent = `약 ${tempVal.toLocaleString()} K`;
+  document.getElementById('cStatAbsMag').textContent = `${info.estM > 0 ? '+' + info.estM : info.estM} 등급`;
+
+  let lumStr = info.lumRatio >= 100
+    ? `약 ${Math.round(info.lumRatio).toLocaleString()} 배`
+    : info.lumRatio >= 1
+      ? `약 ${info.lumRatio.toFixed(1)} 배`
+      : `약 ${info.lumRatio.toFixed(2)} 배`;
+  document.getElementById('cStatLum').textContent = lumStr;
+
+  Array.from(colorChipBar.children).forEach((c, idx) => {
+    c.classList.toggle('on', idx === info.nearestIdx);
+  });
+
+  document.getElementById('colorSimDetail').innerHTML = `
+    <b>[${sp.colorName} · ${sp.spec}]</b> ${sp.desc}<br>
+    <span style="color:var(--gold)">🔭 <b>대표 별:</b> ${sp.examples}</span>
+  `;
+
+  drawColorSim(info);
+}
+
+tempSlider.oninput = e => selectSpectralByTemp(parseInt(e.target.value, 10));
+selectSpectralByTemp(5800);
+
+/* ==================== SIMULATION 2: 10 pc DISTANCE & (m - M) COMPARATOR (SLIDE 7) ==================== */
+const SIM2_STARS = [
+  { name: '파란색 고온 별 (O·B형)', colorName: '파란색', absM: -3.0, core: '#ffffff', mid: '#60a5fa', glow: '#2563eb' },
+  { name: '흰색 별 (A형, 시리우스급)', colorName: '흰색', absM: +1.0, core: '#ffffff', mid: '#f1f5f9', glow: '#94a3b8' },
+  { name: '노란색 별 (G형, 태양급)', colorName: '노란색', absM: +4.8, core: '#ffffff', mid: '#fde047', glow: '#f59e0b' },
+  { name: '붉은색 저온 별 (M형, 적색왜성)', colorName: '붉은색', absM: +8.0, core: '#fef2f2', mid: '#f87171', glow: '#dc2626' }
+];
+
+let sim2StarIdx = 2;
+let sim2DistPc = 4.0;
+const distCv = document.getElementById('distSimCanvas');
+const distCtx = distCv.getContext('2d');
+const pcSlider = document.getElementById('pcSlider');
+const sim2TypeBtns = Array.from(document.querySelectorAll('#sim2StarTypeBtns .btn'));
+
+function pcToCanvasX(pc) {
+  // Log scale mapping: 1 pc -> x=130, 10 pc -> x=365, 100 pc -> x=600
+  const logVal = Math.log10(Math.max(1, Math.min(100, pc))); // 0 .. 2
+  return 130 + (logVal / 2) * 470;
+}
+
+function drawDistSim(star, dPc, appM, diff) {
+  distCtx.clearRect(0, 0, distCv.width, distCv.height);
+
+  const earthX = 58, cy = 175;
+  const x10pc = pcToCanvasX(10);
+  const starX = pcToCanvasX(dPc);
+
+  // Shaded zones: Near (<10pc) vs Far (>10pc)
+  distCtx.fillStyle = 'rgba(52, 211, 153, 0.08)';
+  distCtx.fillRect(earthX, 42, x10pc - earthX, 245);
+
+  distCtx.fillStyle = 'rgba(244, 114, 182, 0.07)';
+  distCtx.fillRect(x10pc, 42, 625 - x10pc, 245);
+
+  // Zone headers
+  distCtx.font = 'bold 12.5px sans-serif';
+  distCtx.fillStyle = '#6ee7b7';
+  distCtx.textAlign = 'center';
+  distCtx.fillText('🟢 10 pc보다 가까운 영역 (m < M, 더 밝게 보임)', (earthX + x10pc) / 2, 62);
+
+  distCtx.fillStyle = '#f9a8d4';
+  distCtx.fillText('🔴 10 pc보다 먼 영역 (m > M, 더 어둡게 보임)', (x10pc + 625) / 2, 62);
+
+  // Horizontal distance axis
+  distCtx.strokeStyle = 'rgba(148, 163, 184, 0.4)';
+  distCtx.lineWidth = 2;
+  distCtx.beginPath();
+  distCtx.moveTo(earthX, cy);
+  distCtx.lineTo(620, cy);
+  distCtx.stroke();
+
+  // Reference distance ticks: 1, 2.5, 5, 10, 25, 50, 100 pc
+  [1, 2.5, 5, 10, 25, 50, 100].forEach(tickPc => {
+    const tx = pcToCanvasX(tickPc);
+    const isTen = tickPc === 10;
+    distCtx.strokeStyle = isTen ? '#fbbf24' : 'rgba(148, 163, 184, 0.45)';
+    distCtx.lineWidth = isTen ? 2.5 : 1.2;
+    distCtx.beginPath();
+    distCtx.moveTo(tx, isTen ? 42 : cy - 8);
+    distCtx.lineTo(tx, isTen ? 287 : cy + 8);
+    distCtx.stroke();
+
+    distCtx.fillStyle = isTen ? '#fbbf24' : '#94a3b8';
+    distCtx.font = isTen ? 'bold 13px sans-serif' : '11.5px sans-serif';
+    distCtx.textAlign = 'center';
+    distCtx.fillText(`${tickPc} pc`, tx, isTen ? 305 : cy + 26);
+  });
+
+  // 10 pc Ghost Star (shows Absolute Magnitude M reference at 10 pc)
+  distCtx.save();
+  distCtx.strokeStyle = '#fbbf24';
+  distCtx.lineWidth = 2;
+  distCtx.setLineDash([4, 4]);
+  distCtx.beginPath();
+  distCtx.arc(x10pc, cy, 24, 0, Math.PI * 2);
+  distCtx.stroke();
+  distCtx.restore();
+
+  distCtx.fillStyle = '#fde047';
+  distCtx.font = 'bold 12px sans-serif';
+  distCtx.textAlign = 'center';
+  distCtx.fillText(`⚖️ 10 pc 기준선 (절대등급 M = ${star.absM > 0 ? '+' + star.absM.toFixed(1) : star.absM.toFixed(1)})`, x10pc, 322);
+
+  // Light beam from star to Earth
+  const beamGrad = distCtx.createLinearGradient(starX, cy, earthX, cy);
+  beamGrad.addColorStop(0, star.mid + '66');
+  beamGrad.addColorStop(1, star.mid + '11');
+  distCtx.fillStyle = beamGrad;
+  distCtx.beginPath();
+  distCtx.moveTo(starX, cy);
+  distCtx.lineTo(earthX, cy - 26);
+  distCtx.lineTo(earthX, cy + 26);
+  distCtx.closePath();
+  distCtx.fill();
+
+  // Draw Earth Observer on Left
+  distCtx.fillStyle = '#38bdf8';
+  distCtx.beginPath();
+  distCtx.arc(earthX, cy, 18, 0, Math.PI * 2);
+  distCtx.fill();
+  distCtx.fillStyle = '#22c55e';
+  distCtx.beginPath();
+  distCtx.arc(earthX - 4, cy - 3, 7, 0, Math.PI * 2);
+  distCtx.arc(earthX + 6, cy + 5, 5, 0, Math.PI * 2);
+  distCtx.fill();
+
+  distCtx.fillStyle = '#ffffff';
+  distCtx.font = 'bold 12.5px sans-serif';
+  distCtx.textAlign = 'center';
+  distCtx.fillText('🌍 지구 (관측자)', earthX, cy - 28);
+
+  // Draw Movable Star at starX
+  const glowR = 38;
+  const sGrad = distCtx.createRadialGradient(starX, cy, 4, starX, cy, glowR);
+  sGrad.addColorStop(0, star.core);
+  sGrad.addColorStop(0.4, star.mid);
+  sGrad.addColorStop(1, 'rgba(0,0,0,0)');
+  distCtx.fillStyle = sGrad;
+  distCtx.beginPath();
+  distCtx.arc(starX, cy, glowR, 0, Math.PI * 2);
+  distCtx.fill();
+
+  distCtx.fillStyle = star.core;
+  distCtx.beginPath();
+  distCtx.arc(starX, cy, 11, 0, Math.PI * 2);
+  distCtx.fill();
+
+  // Floating tag above movable star
+  const tagY = cy - 52;
+  distCtx.fillStyle = 'rgba(7, 11, 25, 0.92)';
+  distCtx.strokeStyle = star.mid;
+  distCtx.lineWidth = 1.8;
+  distCtx.beginPath();
+  distCtx.roundRect(starX - 82, tagY - 22, 164, 42, 8);
+  distCtx.fill();
+  distCtx.stroke();
+
+  distCtx.fillStyle = '#ffffff';
+  distCtx.font = 'bold 12px sans-serif';
+  distCtx.fillText(`현재 거리: ${dPc.toFixed(1)} pc`, starX, tagY - 4);
+  distCtx.fillStyle = '#38bdf8';
+  distCtx.fillText(`겉보기 등급 m = ${appM > 0 ? '+' + appM.toFixed(1) : appM.toFixed(1)}`, starX, tagY + 13);
+
+  // Top Title
+  distCtx.fillStyle = '#e2e8f0';
+  distCtx.font = 'bold 13.5px sans-serif';
+  distCtx.textAlign = 'left';
+  distCtx.fillText('10 pc 기준선 안쪽(가까움) vs 바깥쪽(멂)에서의 겉보기 등급(m)과 절대등급(M) 비교', 16, 24);
+}
+
+function updateSim2() {
+  const star = SIM2_STARS[sim2StarIdx];
+  const dPc = sim2DistPc;
+  const diff = 5 * Math.log10(dPc / 10); // m - M = 5 log10(d / 10)
+  const appM = star.absM + diff;
+
+  pcSlider.value = dPc;
+  document.getElementById('pcSliderLabel').textContent = dPc.toFixed(1) + ' pc';
+
+  sim2TypeBtns.forEach((b, i) => b.classList.toggle('active', i === sim2StarIdx));
+
+  const fmt = v => (v > 0.04 ? '+' + v.toFixed(1) : v < -0.04 ? v.toFixed(1) : '0.0');
+  document.getElementById('s2AbsM').textContent = `${fmt(star.absM)} 등급`;
+  document.getElementById('s2AppM').textContent = `${fmt(appM)} 등급`;
+
+  const badge = document.getElementById('sim2VerdictBadge');
+  const expBox = document.getElementById('s2Explanation');
+
+  if (Math.abs(dPc - 10) < 0.3) {
+    document.getElementById('s2Diff').textContent = `0.0 (m = M)`;
+    document.getElementById('s2Diff').style.color = '#fbbf24';
+    document.getElementById('s2DistCompare').textContent = `10.0 pc (= 10 pc)`;
+    badge.className = 'verdict-badge verdict-same';
+    badge.textContent = '🟡 정확히 10 pc 거리';
+    expBox.className = 'callout';
+    expBox.innerHTML = `별이 기준 거리인 <b>정확히 10 pc</b>에 있으므로, 눈에 보이는 <b>겉보기 등급(<i>m</i> = ${fmt(appM)})</b>과 색깔로 추정한 <b>절대등급(<i>M</i> = ${fmt(star.absM)})</b>이 똑같습니다! (<b><i>m</i> − <i>M</i> = 0</b>)`;
+  } else if (dPc < 10) {
+    document.getElementById('s2Diff').textContent = `${fmt(diff)} (음수 < 0)`;
+    document.getElementById('s2Diff').style.color = '#34d399';
+    document.getElementById('s2DistCompare').textContent = `${dPc.toFixed(1)} pc (< 10 pc)`;
+    badge.className = 'verdict-badge verdict-near';
+    badge.textContent = '🟢 10 pc보다 가깝다!';
+    expBox.className = 'callout mint';
+    expBox.innerHTML = `10 pc에 있을 때(<b><i>M</i> = ${fmt(star.absM)}</b>)보다 현재 내 눈에 <b>더 밝게(<i>m</i> = ${fmt(appM)}, 숫자가 작게)</b> 보입니다! 즉 <b><i>m</i> &lt; <i>M</i> (<i>m</i> − <i>M</i> = ${fmt(diff)} &lt; 0)</b>이므로 이 별은 <b>10 pc보다 가까이에 있습니다!</b>`;
+  } else {
+    document.getElementById('s2Diff').textContent = `${fmt(diff)} (양수 > 0)`;
+    document.getElementById('s2Diff').style.color = '#f472b6';
+    document.getElementById('s2DistCompare').textContent = `${dPc.toFixed(1)} pc (> 10 pc)`;
+    badge.className = 'verdict-badge verdict-far';
+    badge.textContent = '🔴 10 pc보다 멀다!';
+    expBox.className = 'callout pink';
+    expBox.innerHTML = `10 pc에 있을 때(<b><i>M</i> = ${fmt(star.absM)}</b>)보다 현재 내 눈에 <b>더 어둡게(<i>m</i> = ${fmt(appM)}, 숫자가 크게)</b> 보입니다! 즉 <b><i>m</i> &gt; <i>M</i> (<i>m</i> − <i>M</i> = ${fmt(diff)} &gt; 0)</b>이므로 이 별은 <b>10 pc보다 멀리 있습니다!</b>`;
+  }
+
+  // Update visual orbs comparing apparent vs absolute brightness
+  const appOrb = document.getElementById('s2AppOrb');
+  const absOrb = document.getElementById('s2AbsOrb');
+  const sizeFromMag = m => Math.max(12, Math.min(72, 38 * Math.pow(10, -0.08 * (m - 2))));
+
+  const appSize = sizeFromMag(appM);
+  const absSize = sizeFromMag(star.absM);
+
+  [ [appOrb, appSize], [absOrb, absSize] ].forEach(([el, sz]) => {
+    el.style.width = sz + 'px';
+    el.style.height = sz + 'px';
+    el.style.background = `radial-gradient(circle, ${star.core} 20%, ${star.mid} 60%, rgba(0,0,0,0) 78%)`;
+    el.style.boxShadow = `0 0 ${Math.round(sz * 0.6)}px ${star.glow}`;
+  });
+
+  drawDistSim(star, dPc, appM, diff);
+}
+
+sim2TypeBtns.forEach(btn => {
+  btn.onclick = () => {
+    sim2StarIdx = parseInt(btn.dataset.idx, 10);
+    updateSim2();
+  };
+});
+pcSlider.oninput = e => {
+  sim2DistPc = parseFloat(e.target.value);
+  updateSim2();
+};
+function setSim2Dist(d) {
+  sim2DistPc = d;
+  updateSim2();
+}
+updateSim2();
+
+/* ==================== SLIDE 8: DETECTIVE TABLE INTERACTIVE ==================== */
+const DETECTIVE_STARS = [
+  { name: '별 A (시리우스)', color: '⚪ 흰색', colorHex: '#f8fafc', temp: '약 10,000 K', m: -1.5, M: +1.4, actualPc: '약 2.6 pc' },
+  { name: '별 B (베가 · 직녀성)', color: '⚪ 흰색', colorHex: '#f1f5f9', temp: '약 9,600 K', m: 0.0, M: +0.6, actualPc: '약 7.7 pc' },
+  { name: '별 C (리겔)', color: '🔵 청백색', colorHex: '#93c5fd', temp: '약 12,000 K', m: +0.1, M: -6.8, actualPc: '약 260 pc' },
+  { name: '별 D (폴룩스)', color: '🟠 주황색', colorHex: '#fb923c', temp: '약 4,800 K', m: +1.1, M: +1.1, actualPc: '약 10.3 pc' },
+  { name: '별 E (베텔게우스)', color: '🔴 붉은색', colorHex: '#f87171', temp: '약 3,500 K', m: +0.5, M: -5.8, actualPc: '약 180 pc' }
+];
+
+const tbody = document.getElementById('detectiveTableBody');
+DETECTIVE_STARS.forEach((st, idx) => {
+  const diff = +(st.m - st.M).toFixed(1);
+  const fmt = v => (v > 0 ? `+${v.toFixed(1)}` : v.toFixed(1));
+  let verdictHtml = '';
+  if (diff < 0) {
+    verdictHtml = `<span class="verdict-badge verdict-near" style="font-size:13px;padding:3px 10px">🟢 10 pc보다 가깝다 (${st.actualPc})</span>`;
+  } else if (diff === 0) {
+    verdictHtml = `<span class="verdict-badge verdict-same" style="font-size:13px;padding:3px 10px">🟡 약 10 pc 거리 (${st.actualPc})</span>`;
+  } else {
+    verdictHtml = `<span class="verdict-badge verdict-far" style="font-size:13px;padding:3px 10px">🔴 10 pc보다 멀다 (${st.actualPc})</span>`;
+  }
+
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><b>${st.name}</b></td>
+    <td><span style="color:${st.colorHex};font-weight:800">${st.color}</span></td>
+    <td>${st.temp}</td>
+    <td><b>${fmt(st.m)} 등급</b></td>
+    <td><span class="hl-gold"><b>${fmt(st.M)} 등급</b></span></td>
+    <td><b>${fmt(diff)}</b></td>
+    <td>
+      <button type="button" class="btn" onclick="this.style.display='none';document.getElementById('detRes${idx}').style.display='inline-flex'">🔍 판별 결과 보기</button>
+      <span id="detRes${idx}" style="display:none">${verdictHtml}</span>
+    </td>
+  `;
+  tbody.appendChild(tr);
+});
+
+/* ==================== SLIDE 9: QUIZ CHECK ==================== */
+function checkQuiz(btn, isCorrect, msgId) {
+  const parent = btn.parentElement;
+  parent.querySelectorAll('.quiz-opt').forEach(b => b.classList.remove('correct', 'wrong'));
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+  const msgEl = document.getElementById(msgId);
+  if (isCorrect) {
+    msgEl.style.color = '#34d399';
+    msgEl.innerHTML = '🎉 <b>정답입니다!</b> 색깔(온도)과 (<i>m</i> − <i>M</i>) 거리 판별 원리를 정확히 이해했네요!';
+  } else {
+    msgEl.style.color = '#f472b6';
+    msgEl.innerHTML = '💡 다시 생각해 볼까요? <b>파란색이 고온</b>이고, <b><i>m</i> &lt; <i>M</i>이면 10 pc보다 가깝고 <i>m</i> &gt; <i>M</i>이면 10 pc보다 멉니다!</b>';
+  }
+}
+
+/* Initial hash jump */
+if (location.hash) {
+  const h = parseInt(location.hash.replace('#', ''), 10);
+  if (!isNaN(h) && h >= 1 && h <= slides.length) show(h - 1);
+}
+</script>
+</body>
+</html>
