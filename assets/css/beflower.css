@@ -77,15 +77,16 @@
 }
 
 /* Dark Theme Variant (for Space / Physics / Immersive Presentation Decks) */
+html.bf-theme-dark,
 body.bf-theme-dark,
 [data-bf-theme="dark"] {
   --bf-bg: #080f1e;
   --bf-surface: #111c35;
   --bf-surface-soft: #1a2849;
   --bf-surface-muted: #0d162b;
-  --bf-ink: #f1f5f9;
-  --bf-sub: #94a3b8;
-  --bf-muted: #64748b;
+  --bf-ink: #f8fafc;
+  --bf-sub: #cbd5e1;
+  --bf-muted: #94a3b8;
   --bf-line: #26365c;
   --bf-line-strong: #384f82;
   --bf-main: #34d399;
@@ -99,6 +100,16 @@ body.bf-theme-dark,
   --bf-pink-soft: rgba(244, 114, 182, 0.16);
   --bf-shadow-md: 0 12px 32px rgba(0, 0, 0, 0.45);
   --bf-shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.65);
+
+  /* Re-bind Legacy Variable Aliases for Dark Theme */
+  --bg: var(--bf-bg);
+  --card: var(--bf-surface);
+  --soft: var(--bf-surface-soft);
+  --ink: var(--bf-ink);
+  --sub: var(--bf-sub);
+  --main: var(--bf-main);
+  --pink: var(--bf-pink);
+  --line: var(--bf-line);
 }
 
 /* ==========================================================================
@@ -218,6 +229,13 @@ body.bf-theme-dark .bf-brand-title,
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+html.bf-theme-dark .bf-brand-sub,
+body.bf-theme-dark .bf-brand-sub,
+[data-bf-theme="dark"] .bf-brand-sub,
+.bf-topbar.bf-topbar-dark .bf-brand-sub {
+  color: #cbd5e1;
 }
 
 .bf-nav {
