@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>별의 밝기와 등급 | 중학교 3학년 과학 발표 자료 · Beflower</title>
+<meta name="description" content="거리에 따른 별빛의 퍼짐(역제곱 법칙) 인터랙티브 시뮬레이션, 고대 그리스 히파르코스의 겉보기 등급, 현대 포그슨의 등급 체계(5등급=100배, 1등급=2.5배)를 배우는 수업 발표용 프레젠테이션">
+<style>
+:root {
+  --bg-deep: #070b19;
+  --bg-card: #111936;
+  --bg-soft: #1a254b;
+  --bg-glass: rgba(17, 25, 54, 0.88);
+  --ink: #f1f5f9;
+  --sub: #94a3b8;
+  --gold: #fbbf24;
+  --gold-soft: rgba(251, 191, 36, 0.15);
+  --sky: #38bdf8;
+  --sky-soft: rgba(56, 189, 248, 0.15);
+  --pink: #f472b6;
+  --pink-soft: rgba(244, 114, 182, 0.15);
+  --mint: #34d399;
+  --mint-soft: rgba(52, 211, 153, 0.15);
+  --line: #293866;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; padding: 0; }
+body {
+  font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, -apple-system, sans-serif;
+  background: radial-gradient(ellipse at top, #172347 0%, #070b19 75%);
+  color: var(--ink);
+  overflow: hidden;
+  line-height: 1.6;
+  user-select: none;
+}
+
+/* Starfield background decoration */
+.stars-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 10% 15%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 25% 45%, rgba(251,191,36,0.7), transparent),
+    radial-gradient(2px 2px at 40% 12%, rgba(56,189,248,0.7), transparent),
+    radial-gradient(1.5px 1.5px at 60% 80%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 75% 25%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(2px 2px at 88% 60%, rgba(251,191,36,0.6), transparent),
+    radial-gradient(1px 1px at 15% 85%, rgba(56,189,248,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 92% 18%, rgba(255,255,255,0.8), transparent);
+}
+
+/* Top Header */
+.top-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  background: rgba(7, 11, 25, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  z-index: 30;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand a.home-link {
+  color: var(--sky);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--sky-soft);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  transition: 0.2s;
+}
+.brand a.home-link:hover {
+  background: rgba(56, 189, 248, 0.3);
+}
+.brand-title {
+  font-weight: 800;
+  font-size: 15px;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.slide-select {
+  background: var(--bg-soft);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* Deck & Slide Container */
+.deck {
+  position: relative;
+  z-index: 10;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 16px 64px;
+}
+.slide {
+  display: none;
+  width: min(1160px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  background: var(--bg-glass);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: clamp(18px, 3.2vw, 36px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+  animation: slideIn 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.slide.on { display: block; }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Custom Scrollbar inside slide */
+.slide::-webkit-scrollbar { width: 6px; }
+.slide::-webkit-scrollbar-track { background: transparent; }
+.slide::-webkit-scrollbar-thumb { background: var(--line); border-radius: 99px; }
+
+/* Typography & Badges */
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: var(--gold-soft);
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  color: var(--gold);
+  font-weight: 700;
+  font-size: clamp(12px, 1.4vw, 14px);
+}
+h1 {
+  font-size: clamp(26px, 4.6vw, 46px);
+  margin: 12px 0 10px;
+  line-height: 1.22;
+  letter-spacing: -0.5px;
+  background: linear-gradient(90deg, #ffffff, #fde68a, #7dd3fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+h2 {
+  font-size: clamp(20px, 3vw, 30px);
+  margin: 8px 0 12px;
+  color: var(--gold);
+  line-height: 1.3;
+  letter-spacing: -0.3px;
+}
+h3 {
+  font-size: clamp(16px, 2vw, 21px);
+  margin: 0 0 8px;
+  color: #fff;
+}
+p, li {
+  font-size: clamp(14px, 1.7vw, 18px);
+  line-height: 1.65;
+  color: #e2e8f0;
+}
+ul, ol { padding-left: 1.3em; margin: 6px 0; }
+li { margin: 5px 0; }
+.lead {
+  color: var(--sub);
+  font-size: clamp(14px, 1.8vw, 18.5px);
+  margin-top: -4px;
+  margin-bottom: 14px;
+}
+.hl-gold { color: var(--gold); font-weight: 800; }
+.hl-sky { color: var(--sky); font-weight: 800; }
+.hl-pink { color: var(--pink); font-weight: 800; }
+.hl-mint { color: var(--mint); font-weight: 800; }
+
+/* Fraction helper for clean math without external LaTeX library */
+.frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: middle;
+  font-size: 0.88em;
+  line-height: 1.05;
+  margin: 0 2px;
+}
+.frac > span:first-child {
+  border-bottom: 1.5px solid currentColor;
+  padding: 0 3px 1px;
+}
+.frac > span:last-child {
+  padding: 1px 3px 0;
+}
+
+/* Layout Grids & Cards */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+  margin-top: 12px;
+}
+.box {
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px 18px;
+}
+.box p, .box li {
+  font-size: clamp(13.5px, 1.55vw, 17px);
+  margin: 4px 0;
+}
+.callout {
+  border-left: 5px solid var(--gold);
+  background: rgba(251, 191, 36, 0.1);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin: 12px 0;
+}
+.callout.sky {
+  border-left-color: var(--sky);
+  background: rgba(56, 189, 248, 0.1);
+}
+.callout.mint {
+  border-left-color: var(--mint);
+  background: rgba(52, 211, 153, 0.1);
+}
+.callout.pink {
+  border-left-color: var(--pink);
+  background: rgba(244, 114, 182, 0.1);
+}
+
+/* Formula Banner */
+.formula-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: linear-gradient(135deg, rgba(26, 37, 75, 0.95), rgba(15, 23, 42, 0.95));
+  border: 2px solid var(--gold);
+  border-radius: 18px;
+  padding: 16px 24px;
+  margin: 14px 0;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(251, 191, 36, 0.15);
+}
+.formula-math {
+  font-size: clamp(21px, 3.2vw, 34px);
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 0.5px;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: clamp(13px, 1.55vw, 16.5px);
+  margin-top: 10px;
+  background: rgba(17, 25, 54, 0.6);
+  border-radius: 12px;
+  overflow: hidden;
+}
+th, td {
+  border: 1px solid var(--line);
+  padding: 8px 10px;
+  text-align: center;
+}
+th {
+  background: var(--bg-soft);
+  color: var(--gold);
+  font-weight: 800;
+}
+td.left { text-align: left; }
+
+/* Interactive Controls & Buttons */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.btn {
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 7px 15px;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.18s;
+}
+.btn:hover {
+  border-color: var(--sky);
+  transform: translateY(-1px);
+}
+.btn.active {
+  background: var(--gold);
+  color: #070b19;
+  border-color: var(--gold);
+  box-shadow: 0 0 16px rgba(251, 191, 36, 0.45);
+}
+input[type=range] {
+  width: 100%;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+
+/* Simulation Layout (Slide 4) */
+.sim-wrapper {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 880px) {
+  .sim-wrapper { grid-template-columns: 1fr; }
+}
+.canvas-box {
+  background: #050814;
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  padding: 12px;
+  position: relative;
+}
+canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.stat-card {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.stat-card .label {
+  font-size: 12px;
+  color: var(--sub);
+}
+.stat-card .val {
+  font-size: clamp(16px, 2.1vw, 21px);
+  font-weight: 900;
+  color: var(--gold);
+  margin-top: 2px;
+}
+.unit-grid-preview {
+  display: grid;
+  gap: 4px;
+  width: 130px;
+  height: 130px;
+  margin: 0 auto;
+  padding: 6px;
+  background: #050814;
+  border: 2px solid var(--sky);
+  border-radius: 12px;
+}
+.unit-cell {
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 2px;
+  position: relative;
+}
+.unit-cell.highlight {
+  border: 2px solid var(--gold);
+  background: rgba(251, 191, 36, 0.14);
+}
+.photon-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 5px var(--gold);
+}
+
+/* Star Magnitude Ruler */
+.mag-scale {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 6px;
+  margin: 14px 0;
+  padding: 14px;
+  background: #060916;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow-x: auto;
+}
+.mag-item {
+  flex: 1;
+  min-width: 82px;
+  text-align: center;
+  padding: 10px 6px;
+  border-radius: 12px;
+  background: rgba(26, 37, 75, 0.5);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.mag-item:hover, .mag-item.on {
+  border-color: var(--gold);
+  background: rgba(251, 191, 36, 0.14);
+  transform: translateY(-2px);
+}
+.star-circle {
+  margin: 0 auto 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 20%, #fde047 65%, rgba(251,191,36,0) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Teacher Notes */
+.note {
+  display: none;
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(254, 243, 199, 0.12);
+  border: 1px dashed var(--gold);
+  color: #fde68a;
+  font-size: clamp(13px, 1.5vw, 15.5px);
+}
+body.notes .note { display: block; }
+
+/* Bottom Navigation Bar */
+.bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  background: rgba(7, 11, 25, 0.88);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line);
+  z-index: 30;
+}
+.bar button {
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+  color: var(--ink);
+  border-radius: 10px;
+  padding: 7px 14px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.15s;
+}
+.bar button:hover {
+  border-color: var(--gold);
+  background: rgba(251, 191, 36, 0.2);
+}
+.prog {
+  flex: 1;
+  height: 7px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.prog i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--gold), var(--sky));
+  transition: width 0.3s;
+}
+.cnt {
+  min-width: 68px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--gold);
+}
+
+/* Quiz options */
+.quiz-opt {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  margin: 6px 0;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: rgba(15, 23, 42, 0.7);
+  color: var(--ink);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+.quiz-opt:hover { border-color: var(--sky); background: rgba(56, 189, 248, 0.12); }
+.quiz-opt.correct { border-color: var(--mint); background: rgba(52, 211, 153, 0.22); color: #a7f3d0; font-weight: 700; }
+.quiz-opt.wrong { border-color: var(--pink); background: rgba(244, 114, 182, 0.22); color: #fbcfe8; }
+
+@media (max-width: 640px) {
+  .bar { gap: 6px; padding: 0 8px; }
+  .bar button { padding: 6px 9px; font-size: 12px; }
+  .cnt { min-width: 48px; font-size: 12px; }
+  .brand-title { display: none; }
+}
+@media print {
+  body { overflow: visible; background: #fff; color: #000; }
+  .stars-bg, .top-header, .bar { display: none !important; }
+  .deck { display: block; padding: 0; height: auto; }
+  .slide {
+    display: block !important;
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+    page-break-after: always;
+    max-height: none !important;
+    margin-bottom: 20px;
+  }
+  h1, h2, h3, p, li, th, td { color: #000 !important; -webkit-text-fill-color: initial !important; }
+  .note { display: block !important; background: #fffbe6 !important; color: #333 !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="stars-bg"></div>
+
+<!-- Top Navigation Header -->
+<header class="top-header">
+  <div class="brand">
+    <a class="home-link" href="../../index.html">← Beflower 과학 실험실 홈</a>
+    <span class="brand-title">🌟 중3 과학 · 별의 밝기와 등급 (인터랙티브 수업 발표 자료)</span>
+  </div>
+  <div class="header-controls">
+    <select id="slideJump" class="slide-select" aria-label="슬라이드 바로가기"></select>
+  </div>
+</header>
+
+<!-- Main Slide Deck -->
+<div class="deck">
+
+  <!-- ==================== SLIDE 1: 표지 ==================== -->
+  <section class="slide on" data-title="1. 표지: 별의 밝기와 등급">
+    <span class="kicker">🪐 중학교 3학년 과학 · 지구과학 (별과 우주)</span>
+    <h1>밤하늘 별의 밝기와 등급<br>빛은 거리에 따라 어떻게 퍼질까?</h1>
+    <p class="lead">거리에 따라 별빛이 퍼지는 원리(거리 제곱 반비례 법칙)부터, 고대 그리스 천문학자들의 1등성·6등성 이야기, 그리고 현대의 정밀한 등급 체계까지 직접 조작하며 배워 봅시다!</p>
+
+    <div class="grid-3">
+      <div class="box" style="border-color:rgba(56,189,248,0.45);cursor:pointer" onclick="show(3)">
+        <h3>🔦 탐구 1 · 거리와 별빛의 퍼짐</h3>
+        <p>거리가 <span class="hl-sky">2배, 3배</span> 멀어지면 빛이 퍼지는 면적은 <span class="hl-gold">4배, 9배(<i>r</i>²)</span>! 동일한 면적에 닿는 별빛이 <span class="hl-pink">1/<i>r</i>²</span>로 줄어드는 인터랙티브 실험실</p>
+      </div>
+      <div class="box" style="border-color:rgba(251,191,36,0.45);cursor:pointer" onclick="show(4)">
+        <h3>🏛️ 탐구 2 · 고대 그리스의 겉보기 등급</h3>
+        <p>기원전 2세기 <span class="hl-gold">히파르코스</span>와 <span class="hl-gold">프톨레마이오스</span>가 맨눈으로 보기에 가장 밝은 별을 <b>1등성</b>, 가장 희미한 별을 <b>6등성</b>으로 나눈 이야기</p>
+      </div>
+      <div class="box" style="border-color:rgba(52,211,153,0.45);cursor:pointer" onclick="show(6)">
+        <h3>📐 탐구 3 · 현대의 등급 기준 (포그슨)</h3>
+        <p><span class="hl-mint">5등급 차이 = 100배 밝기 차</span>! 그래서 <span class="hl-gold">1등급 당 약 2.5배</span> 차이가 나며, <b>숫자가 낮을수록(음수 포함) 더 밝은 별</b>임을 완벽 이해하기</p>
+      </div>
+    </div>
+
+    <div class="callout sky" style="margin-top:18px">
+      💡 <b>조작 안내:</b> 화면 아래 <b>이전/다음</b> 버튼이나 키보드 <b>방향키(←/→)·스페이스바</b>로 슬라이드를 넘기세요. 위 카드를 클릭하면 해당 파트로 바로 이동합니다. (<b>F 키</b>: 전체화면, <b>N 키</b>: 교사 수업 메모)
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 도입 (3분)]</b> 밤하늘 사진을 보여주며 "별마다 밝기가 다르게 보이는 까닭은 무엇일까요?"라고 질문합니다. ① 별 자체가 내는 빛의 양(방출량)이 다르거나, ② 별까지의 거리가 다르기 때문임을 상기시키고 오늘 수업을 시작합니다.
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 2: 학습 목표 & 도입 질문 ==================== -->
+  <section class="slide" data-title="2. 오늘의 학습 목표와 핵심 질문">
+    <span class="kicker">🎯 오늘의 학습 목표</span>
+    <h2>왜 멀리 있는 손전등과 별은 어둡게 보일까?</h2>
+    <p class="lead">오늘 수업이 끝나면 여러분은 아래 세 가지를 명확히 설명할 수 있습니다.</p>
+
+    <div class="grid-3">
+      <div class="box">
+        <h3>1️⃣ 거리와 밝기의 관계</h3>
+        <p>동일한 광원(별)에서 나온 별빛이 <b>거리의 제곱(<i>r</i>²)에 해당하는 면적</b>에 고르게 나누어지기 때문에, 같은 면적에 닿는 별빛의 양은 <b>거리의 제곱에 반비례(<span class="frac"><span>1</span><span><i>r</i>²</span></span>)</b>함을 설명할 수 있다.</p>
+      </div>
+      <div class="box">
+        <h3>2️⃣ 고대 그리스의 등급 유래</h3>
+        <p>고대 그리스 과학자 <b>히파르코스</b>와 <b>프톨레마이오스</b>가 눈에 보이는 밝기(겉보기 등급)를 기준으로 <b>1등성, 2등성 ~ 6등성</b>을 정한 역사적 배경을 말할 수 있다.</p>
+      </div>
+      <div class="box">
+        <h3>3️⃣ 현대의 정량적 등급 체계</h3>
+        <p>현대에 와서 <b>5등급 차이 = 100배 밝기 차이</b>(1등급 당 약 <b>2.5배</b> 차이)로 정립된 이유와, <b>등급 숫자가 낮을수록 더 밝은 별</b>임을 계산·비교할 수 있다.</p>
+      </div>
+    </div>
+
+    <div class="formula-card">
+      <div>
+        <div style="font-size:14px;color:var(--sub)">일상 속 생각 열기 💡</div>
+        <div style="font-size:clamp(16px,2vw,21px);font-weight:700;color:#fff;margin-top:4px">
+          "같은 스마트워치 불빛도 눈앞 10cm에서 볼 때와 운동장 끝 100m에서 볼 때 밝기가 완전히 다릅니다.<br>빛이 중간에 사라진 걸까요, 아니면 <span class="hl-gold">거리에 따라 넓은 면적으로 퍼진 걸까요?</span>"
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 개념 연결]</b> 학생들이 흔히 "빛이 날아가면서 우주 공간에서 저절로 소멸해서 어두워진다"는 오개념을 갖기 쉽습니다. 우주 공간(진공)에서는 빛의 총량이 그대로 유지되며, 단지 구면으로 퍼져 나가면서 단위 면적(우리 눈동자나 망원경 렌즈)에 들어오는 빛의 비율이 줄어든다는 점을 강조해 주세요.
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 3: 거리에 따라 빛이 퍼지는 원리 ==================== -->
+  <section class="slide" data-title="3. 원리: 거리에 따라 퍼지는 별빛과 면적(r²)">
+    <span class="kicker">🔦 개념 1 · 별빛의 퍼짐과 거리 제곱 반비례 법칙</span>
+    <h2>거리가 멀어지면 별빛은 어떻게 나누어질까?</h2>
+    <p class="lead">동일한 소스(별)에서 출발한 빛은 사방으로 직진하며 거리에 따라 점점 더 넓은 면적으로 고르게 퍼져 나갑니다.</p>
+
+    <div class="grid-2">
+      <div class="box">
+        <h3>📐 1단계: 거리에 따라 빛이 퍼지는 전체 면적 (<i>r</i>²)</h3>
+        <ul>
+          <li>별에서 똑같은 양의 별빛이 출발해 사방으로 퍼진다고 생각해 봅시다.</li>
+          <li><b>거리 1<i>r</i></b>인 곳에서는 빛이 가로 1 × 세로 1 = <span class="hl-sky"><b>1칸(1²)</b></span>의 면적을 비춥니다.</li>
+          <li><b>거리 2<i>r</i></b>인 곳에서는 가로·세로가 각각 2배씩 넓어져 2 × 2 = <span class="hl-sky"><b>4칸(2²)</b></span>의 면적에 고르게 나누어집니다.</li>
+          <li><b>거리 3<i>r</i></b>인 곳에서는 가로·세로가 3배씩 넓어져 3 × 3 = <span class="hl-sky"><b>9칸(3²)</b></span>, <b>거리 4<i>r</i></b>에서는 <span class="hl-sky"><b>16칸(4²)</b></span>으로 나누어집니다!</li>
+        </ul>
+        <div class="callout sky">
+          👉 빛이 퍼지는 전체 면적은 <b>거리의 제곱(<i>r</i>²)에 비례</b>하여 넓어집니다!
+        </div>
+      </div>
+
+      <div class="box">
+        <h3>👁️ 2단계: 동일한 면적(1칸 = 내 눈)에 닿는 별빛</h3>
+        <ul>
+          <li>우리 눈동자(동공)나 관측 센서(1칸)의 면적은 거리가 멀어진다고 커지지 않고 <b>항상 동일한 면적(1칸)</b>입니다.</li>
+          <li>동일한 별빛이 <i>r</i>²개의 칸에 고르게 나누어지므로, <b>먼 곳에서는 동일한 1칸에 적은 별빛이 닿습니다:</b></li>
+        </ul>
+        <table>
+          <tr>
+            <th>거리 (<i>r</i>)</th>
+            <th>빛이 퍼진 면적 (<i>r</i>²)</th>
+            <th>1칸에 닿는 별빛 양</th>
+            <th>별의 겉보기 밝기</th>
+          </tr>
+          <tr>
+            <td><b>1배 (1<i>r</i>)</b></td>
+            <td>1² = 1칸</td>
+            <td>전체 빛의 <b>1</b></td>
+            <td><span class="hl-gold">기준 밝기 (1배)</span></td>
+          </tr>
+          <tr>
+            <td><b>2배 (2<i>r</i>)</b></td>
+            <td>2² = 4칸</td>
+            <td>전체 빛의 <b>1/4</b></td>
+            <td><span class="hl-sky">1/4배로 어두워짐</span></td>
+          </tr>
+          <tr>
+            <td><b>3배 (3<i>r</i>)</b></td>
+            <td>3² = 9칸</td>
+            <td>전체 빛의 <b>1/9</b></td>
+            <td><span class="hl-pink">1/9배로 어두워짐</span></td>
+          </tr>
+          <tr>
+            <td><b>10배 (10<i>r</i>)</b></td>
+            <td>10² = 100칸</td>
+            <td>전체 빛의 <b>1/100</b></td>
+            <td><span class="hl-mint">1/100배로 어두워짐</span></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="formula-card">
+      <div class="formula-math">
+        별의 밝기 (<i>B</i>) ∝ <span class="frac"><span>1</span><span>거리(<i>r</i>)²</span></span>
+      </div>
+      <div style="text-align:left;max-width:640px;font-size:15.5px">
+        동일한 소스에서 나온 별빛이 <b>거리 제곱(<i>r</i>²)에 해당하는 면적에 고르게 나누어지기 때문에</b>,<br>
+        거리가 먼 곳에서는 동일한 면적에 적은 별빛이 닿아 <b>거리의 제곱에 반비례(1/<i>r</i>²)</b>하여 별이 어둡게 보입니다.
+      </div>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 판서 포인트]</b> "왜 거리에 반비례(1/r)가 아니라 거리의 제곱에 반비례(1/r²)할까요?"라고 발문하세요. 빛이 선(1차원)으로만 늘어나는 것이 아니라 가로와 세로(2차원 구면) 두 방향으로 동시에 퍼지기 때문에 r × r = r² 칸으로 나뉜다는 점을 칠판에 격자로 그려 주면 이해가 매우 빠릅니다. 다음 슬라이드에서 바로 인터랙티브 시뮬레이션으로 체험합니다.
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 4: 인터랙티브 시뮬레이션 (역제곱 법칙) ==================== -->
+  <section class="slide" data-title="4. [시뮬레이션] 거리에 따른 별빛의 퍼짐과 밝기 실험실">
+    <span class="kicker">🧪 인터랙티브 시뮬레이션 1 · 직접 조작해 보기</span>
+    <h2>거리(<i>r</i>)에 따른 별빛 퍼짐과 단위 면적당 밝기 실험실</h2>
+
+    <div class="sim-wrapper">
+      <!-- Left: 3D Perspective Cone & Grid Canvas -->
+      <div class="canvas-box">
+        <canvas id="invSqCanvas" width="660" height="390"></canvas>
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;margin-top:10px">
+          <div class="btn-group">
+            <span style="font-size:13.5px;color:var(--sub);margin-right:4px">거리(<i>r</i>) 선택:</span>
+            <button type="button" class="btn dist-btn active" data-r="1">1r (1칸)</button>
+            <button type="button" class="btn dist-btn" data-r="2">2r (4칸)</button>
+            <button type="button" class="btn dist-btn" data-r="3">3r (9칸)</button>
+            <button type="button" class="btn dist-btn" data-r="4">4r (16칸)</button>
+          </div>
+          <div style="flex:1;min-width:160px;display:flex;align-items:center;gap:8px">
+            <input type="range" id="distSlider" min="1" max="4" step="0.1" value="1">
+            <span id="distLabel" style="font-weight:800;color:var(--gold);min-width:48px">1.0r</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;font-size:13px;color:var(--sub)">
+          <span>✨ 총 방출 별빛 입자(광자) 수: <b>144개</b> (동일한 광원이므로 총량은 모든 거리에서 144개로 일정!)</span>
+          <button type="button" class="btn" id="toggleRayBtn" style="padding:4px 12px;font-size:12px">광선 애니메이션 일시정지/재생</button>
+        </div>
+      </div>
+
+      <!-- Right: Real-time Stats & Detector View -->
+      <div class="box" style="padding:14px">
+        <h3 style="margin-bottom:10px">📊 거리 <span id="statRTitle" class="hl-gold">1.0r</span>에서의 관측 결과</h3>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="label">📏 별까지의 거리 (<i>r</i>)</div>
+            <div class="val" id="statDist">1.0 배</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">🟦 빛이 퍼진 전체 면적 (<i>r</i>²)</div>
+            <div class="val" id="statArea" style="color:var(--sky)">1.0 칸</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">✨ 1칸(동일 면적)에 닿는 별빛</div>
+            <div class="val" id="statPhotons" style="color:var(--mint)">144.0 개</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">🌟 관측되는 별의 상대 밝기</div>
+            <div class="val" id="statBright" style="color:var(--pink)">1배 (100%)</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center;background:rgba(5,8,20,0.75);border:1px solid var(--line);border-radius:14px;padding:10px;margin-top:6px">
+          <div style="text-align:center">
+            <div style="font-size:12.5px;color:var(--sky);font-weight:700;margin-bottom:4px">빛이 나누어진 격자 (<i>r</i> × <i>r</i>)</div>
+            <div id="gridPreview" class="unit-grid-preview"></div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:12.5px;color:var(--gold);font-weight:700;margin-bottom:4px">동일 면적(1칸)에서 본 별 밝기</div>
+            <div style="width:130px;height:130px;margin:0 auto;background:#03050c;border:2px solid var(--line);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative">
+              <div id="apparentStarVisual" style="width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,#fff 15%,#fde047 50%,rgba(251,191,36,0) 75%);transition:0.15s"></div>
+              <div id="apparentStarText" style="position:absolute;bottom:6px;font-size:11.5px;color:var(--sub)">밝기: 1/1배 (144개/칸)</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="simExplanation" class="callout" style="margin:10px 0 0;font-size:13.5px;line-height:1.5">
+          거리 <b>1r</b>에서는 별빛 144개가 <b>1칸(1²)</b>에 모두 모여 가장 밝게 보입니다.
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 시뮬레이션 활용 팁]</b> 먼저 버튼 <b>1r → 2r → 3r → 4r</b>을 차례대로 눌러 학생들과 함께 칸 수(1칸 → 4칸 → 9칸 → 16칸)와 노란색 테두리 1칸(관측자의 눈) 안에 들어오는 별빛 입자 수(144개 → 36개 → 16개 → 9개)를 확인해 보세요. 그다음 슬라이더를 연속으로 움직이며 거리가 멀어질수록 별이 어둡게 보이는 현상을 직관적으로 관찰하게 합니다.
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 5: 고대 그리스 과학자들의 이야기 ==================== -->
+  <section class="slide" data-title="5. 고대 그리스 과학자들의 이야기: 히파르코스와 프톨레마이오스">
+    <span class="kicker">🏛️ 개념 2 · 겉보기 등급의 시작 (기원전 2세기 고대 그리스)</span>
+    <h2>고대 그리스 과학자들은 1등성·2등성을 어떻게 정했을까?</h2>
+    <p class="lead">망원경도, 전자 광도계도 없던 2,100여 년 전! 고대 그리스 천문학자들은 오직 <b>맨눈(육안)</b>으로 밤하늘 별의 밝기 등급을 매겼습니다.</p>
+
+    <div class="grid-2">
+      <div class="box" style="border-top:4px solid var(--gold)">
+        <h3>🧔 히파르코스 (Hipparchus, 기원전 190~120년경)</h3>
+        <ul>
+          <li>고대 그리스의 천문학자 <b>히파르코스</b>는 에게해의 로도스섬에서 밤하늘의 별 약 850개를 관측해 <b>인류 최초의 별 목록(성표)</b>을 작성했습니다.</li>
+          <li>그는 밤하늘에서 <b>눈에 보이는 밝기</b>에 따라 별들을 <b>6개의 등급</b>으로 나누었습니다.</li>
+          <li>해가 진 뒤 어두워질 때 <b>가장 먼저 눈에 띄는 가장 밝은 별들</b>을 <span class="hl-gold"><b>1등성(제1등급 별)</b></span>이라 정하고, 그다음으로 밝은 별들을 <b>2등성, 3등성…</b>으로 불렀습니다.</li>
+          <li>반면, 맑고 깜깜한 밤에 눈을 크게 뜨고 보아야 <b>간신히 보이는 가장 어두운 별들</b>을 <span class="hl-sky"><b>6등성(제6등급 별)</b></span>이라 정했습니다.</li>
+        </ul>
+      </div>
+
+      <div class="box" style="border-top:4px solid var(--sky)">
+        <h3>📜 프톨레마이오스 (Ptolemy, 서기 100~170년경)</h3>
+        <ul>
+          <li>약 300년 뒤 알렉산드리아의 천문학자 <b>프톨레마이오스</b>가 히파르코스의 등급 체계를 이어받아 천문학서 <b>《알마게스트(Almagest)》</b>에 1,022개 별의 등급을 체계적으로 정리했습니다.</li>
+          <li>이 책을 통해 <b>1등성(가장 밝음) ~ 6등성(가장 어두움)</b> 기준이 수천 년간 전 세계 천문학의 표준으로 전해졌습니다.</li>
+          <li>이처럼 별까지의 실제 거리와 상관없이, <b>지구에서 우리 눈에 보이는 그대로의 밝기</b>를 기준으로 매긴 등급을 <span class="hl-gold"><b>겉보기 등급 (Apparent Magnitude, <i>m</i>)</b></span>이라고 합니다!</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      💡 <b>왜 숫자가 낮은 1등성이 가장 밝고, 숫자가 높은 6등성이 어두울까요?</b><br>
+      달리기 시합에서 <b>1등</b>이 가장 빠르고, 품질에서 <b>1등급</b>이 가장 으뜸인 것처럼, 고대 그리스 과학자들도 밤하늘에서 <b>"가장 밝고 훌륭하게 빛나는 으뜸 별"에 1등(1등성)</b>이라는 이름을 붙였기 때문입니다! 따라서 별의 등급은 <span class="hl-gold"><b>숫자가 낮을수록(작을수록) 더 밝은 별</b></span>입니다.
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 스토리텔링 팁]</b> 학생들이 등급 숫자와 밝기의 반비례 관계를 가장 많이 헷갈려합니다. "1등 상장, 1등급"처럼 '1등'이 최고라는 고대 그리스인들의 순위 매기기에서 출발했다는 이야기를 들려주면 "등급은 낮은 숫자가 더 밝다"는 개념을 절대 잊어버리지 않습니다.
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 6: 고대 그리스 1~6등성 밤하늘 체험 ==================== -->
+  <section class="slide" data-title="6. [체험] 히파르코스의 눈으로 본 1등성~6등성 기준">
+    <span class="kicker">🌌 고대 그리스 천문학자의 관측소</span>
+    <h2>1등성부터 6등성까지, 어떤 기준으로 정했을까?</h2>
+    <p class="lead">아래 <b>1등성 ~ 6등성</b> 카드를 클릭해 고대 그리스 과학자들이 각 등급을 어떻게 구분했는지 확인해 보세요.</p>
+
+    <div class="mag-scale" id="greekScale">
+      <div class="mag-item on" data-g="1">
+        <div class="star-circle" style="width:48px;height:48px;box-shadow:0 0 22px #fbbf24"></div>
+        <div style="font-weight:900;color:var(--gold);font-size:17px">1등성</div>
+        <div style="font-size:12px;color:var(--sub)">가장 밝은 으뜸 별</div>
+      </div>
+      <div class="mag-item" data-g="2">
+        <div class="star-circle" style="width:38px;height:38px;box-shadow:0 0 15px #fbbf24"></div>
+        <div style="font-weight:900;color:#fff;font-size:17px">2등성</div>
+        <div style="font-size:12px;color:var(--sub)">주요 별자리 대표 별</div>
+      </div>
+      <div class="mag-item" data-g="3">
+        <div class="star-circle" style="width:29px;height:29px;box-shadow:0 0 10px #fbbf24"></div>
+        <div style="font-weight:900;color:#fff;font-size:17px">3등성</div>
+        <div style="font-size:12px;color:var(--sub)">보통 밝기 별</div>
+      </div>
+      <div class="mag-item" data-g="4">
+        <div class="star-circle" style="width:21px;height:21px;opacity:0.85"></div>
+        <div style="font-weight:900;color:#fff;font-size:17px">4등성</div>
+        <div style="font-size:12px;color:var(--sub)">다소 어두운 별</div>
+      </div>
+      <div class="mag-item" data-g="5">
+        <div class="star-circle" style="width:14px;height:14px;opacity:0.7"></div>
+        <div style="font-weight:900;color:#fff;font-size:17px">5등성</div>
+        <div style="font-size:12px;color:var(--sub)">희미한 별</div>
+      </div>
+      <div class="mag-item" data-g="6">
+        <div class="star-circle" style="width:8px;height:8px;opacity:0.5"></div>
+        <div style="font-weight:900;color:var(--sky);font-size:17px">6등성</div>
+        <div style="font-size:12px;color:var(--sub)">맨눈 관측 한계 별</div>
+      </div>
+    </div>
+
+    <div id="greekDetailBox" class="box" style="border:2px solid var(--gold);background:rgba(26,37,75,0.8)">
+      <!-- Populated by JS -->
+    </div>
+
+    <div class="grid-2" style="margin-top:14px">
+      <div class="callout mint" style="margin:0">
+        <b>👀 고대 방식의 의의:</b> 도구 없이도 누구나 밤하늘을 올려다보고 별의 밝기 등급을 직관적으로 나눌 수 있었습니다.
+      </div>
+      <div class="callout pink" style="margin:0">
+        <b>🤔 고대 방식의 한계:</b> 사람의 눈대중으로 정했기 때문에 <b>"1등성이 2등성이나 6등성보다 정확히 몇 배 밝은가?"</b>, <b>"1등성보다 더 밝은 별은 어떻게 표기할까?"</b>라는 과학적 기준이 필요해졌습니다.
+      </div>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 대표 별 예시]</b> 1등성(시리우스, 베가, 리겔)과 2등성(북극성, 북두칠성의 주요 별들)을 비교해 주면 학생들이 밤하늘을 떠올리기 좋습니다.
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 7: 현대의 정밀한 등급 기준 (포그슨 방정식) ==================== -->
+  <section class="slide" data-title="7. 현대의 등급 기준: 5등급 차이 = 100배, 1등급 당 2.5배">
+    <span class="kicker">📐 개념 3 · 현대 천문학의 정확한 등급 정의 (1856년 포그슨)</span>
+    <h2>현대에 와서 정한 정확한 규칙: 5등급 차 = 100배, 1등급 당 2.5배!</h2>
+    <p class="lead">19세기 들어 별빛의 양을 정밀하게 측정하게 되면서, 고대 그리스의 등급 체계를 수학적으로 정확하게 확립했습니다.</p>
+
+    <div class="grid-2">
+      <div class="box">
+        <h3>🔬 노먼 포그슨(Norman Pogson)의 발견 (1856년)</h3>
+        <ul>
+          <li>영국의 천문학자 허셜과 <b>포그슨</b>이 고대 그리스부터 전해 내려온 <b>1등성</b>과 <b>6등성</b>의 실제 밝기를 정밀 관측 기구로 측정했습니다.</li>
+          <li>측정 결과, <b>1등성은 6등성보다 평균적으로 약 100배 밝다</b>는 사실을 알게 되었습니다!</li>
+          <li>포그슨은 과학적 정확성을 위해 다음과 같은 현대 등급 기준을 확립했습니다:</li>
+        </ul>
+        <div class="callout">
+          🌟 <b>현대의 정확한 기준:</b><br>
+          <b>"각 5등급 차이(예: 1등급과 6등급)는 정확히 100배의 밝기 차이가 난다!"</b>
+        </div>
+      </div>
+
+      <div class="box">
+        <h3>🧮 그렇다면 1등급 당 몇 배 차이가 날까?</h3>
+        <ul>
+          <li>5등급 차이가 날 때 100배가 되려면, <b>1등급 차이가 날 때마다 일정한 비율(<i>x</i>배)</b>로 밝기가 변해야 합니다.</li>
+          <li>즉, <b>똑같은 비율을 5번 거듭 곱해서 100이 되는 수</b>를 구하면 됩니다!</li>
+        </ul>
+        <div class="formula-card" style="margin:10px 0;padding:12px">
+          <div class="formula-math" style="font-size:clamp(18px,2.3vw,25px)">
+            <i>x</i> × <i>x</i> × <i>x</i> × <i>x</i> × <i>x</i> = <i>x</i>⁵ = 100
+          </div>
+          <div style="font-size:16px;color:#fff;font-weight:700">
+            ∴ 1등급 당 밝기 비율 <i>x</i> = <sup>5</sup>√100 ≈ <span class="hl-gold">2.512배 (약 2.5배)</span>
+          </div>
+        </div>
+        <ul>
+          <li>따라서 <b>1등급 당 약 2.5배(정확히는 약 2.512배)</b>의 밝기 차이가 납니다!</li>
+          <li>주의: 2.5 × 5(덧셈)가 아니라, <b>2.512를 5번 거듭제곱(2.512⁵ = 100)</b>하는 <b>비율(등비) 관계</b>입니다!</li>
+        </ul>
+      </div>
+    </div>
+
+    <table>
+      <tr>
+        <th>등급 차이 (Δ<i>m</i>)</th>
+        <th>0등급 차</th>
+        <th>1등급 차</th>
+        <th>2등급 차</th>
+        <th>3등급 차</th>
+        <th>4등급 차</th>
+        <th>5등급 차</th>
+        <th>10등급 차</th>
+      </tr>
+      <tr>
+        <td><b>계산 과정 (비율의 거듭제곱)</b></td>
+        <td>2.5⁰</td>
+        <td>2.512¹</td>
+        <td>2.512² (2.5×2.5)</td>
+        <td>2.512³</td>
+        <td>2.512⁴</td>
+        <td>2.512⁵</td>
+        <td>100 × 100</td>
+      </tr>
+      <tr>
+        <td><b>밝기 차이 (배)</b></td>
+        <td><b>1배</b></td>
+        <td><span class="hl-gold"><b>약 2.5배</b></span></td>
+        <td><span class="hl-sky"><b>약 6.3배</b></span></td>
+        <td><span class="hl-sky"><b>약 16배</b></span></td>
+        <td><span class="hl-sky"><b>약 40배</b></span></td>
+        <td><span class="hl-mint"><b>정확히 100배</b></span></td>
+        <td><span class="hl-pink"><b>10,000배</b></span></td>
+      </tr>
+    </table>
+
+    <div class="note">
+      <b>[교사 메모 · 오개념 지도]</b> 학생들에게 "1등급 차이가 2.5배이면 2등급 차이는 몇 배일까요?"라고 물으면 "5배요!"라고 답하기 쉽습니다. 1등급마다 2.5배씩 <b>곱해지는 비율</b>이므로 2.512 × 2.512 ≈ 6.3배가 되고, 5번 곱하면(2.512⁵) 정확히 100배가 된다는 점을 표와 함께 꼭 짚어 주세요.
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 8: 등급 숫자가 낮을수록 더 밝다 & 인터랙티브 비교기 ==================== -->
+  <section class="slide" data-title="8. [시뮬레이션] 등급은 낮은 숫자가 더 밝다! 등급-밝기 비교기">
+    <span class="kicker">🌟 개념 4 & 시뮬레이션 2 · 낮은 숫자(0, 음수)가 더 밝은 별!</span>
+    <h2>등급은 낮은 숫자가 더 밝다! (등급-밝기 비교 실험기)</h2>
+    <p class="lead">현대 등급 체계에서는 <b>1등급보다 2.5배 더 밝으면 0등급</b>, 0등급보다 2.5배 더 밝으면 <b>-1등급</b>처럼 <span class="hl-gold"><b>등급 숫자가 낮을수록(작을수록, 음수로 갈수록) 더 밝은 별</b></span>을 나타냅니다.</p>
+
+    <div class="grid-2">
+      <!-- Left: Interactive Magnitude Comparator -->
+      <div class="box" style="border:2px solid var(--sky)">
+        <h3>🎛️ 두 별의 등급-밝기 실시간 비교 계산기</h3>
+        <p style="font-size:13.5px;color:var(--sub);margin-bottom:10px">두 별 A와 B의 등급을 슬라이더로 조절하여 어느 별이 몇 배 더 밝은지 확인해 보세요.</p>
+
+        <div style="background:rgba(5,8,20,0.7);padding:12px;border-radius:12px;margin-bottom:10px">
+          <div style="display:flex;justify-content:space-between;font-weight:700">
+            <span>⭐ 별 A의 등급 (<i>m</i><sub>A</sub>)</span>
+            <span id="magAVal" class="hl-gold">+1 등급</span>
+          </div>
+          <input type="range" id="magASlider" min="-2" max="6" step="1" value="1">
+
+          <div style="display:flex;justify-content:space-between;font-weight:700;margin-top:10px">
+            <span>🌟 별 B의 등급 (<i>m</i><sub>B</sub>)</span>
+            <span id="magBVal" class="hl-sky">+6 등급</span>
+          </div>
+          <input type="range" id="magBSlider" min="-2" max="6" step="1" value="6">
+        </div>
+
+        <div id="magCompareResult" class="callout" style="margin:0;text-align:center">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="btn-group" style="margin-top:10px;justify-content:center">
+          <button type="button" class="btn" onclick="setMagPair(1,6)">1등급 vs 6등급 (100배)</button>
+          <button type="button" class="btn" onclick="setMagPair(1,2)">1등급 vs 2등급 (2.5배)</button>
+          <button type="button" class="btn" onclick="setMagPair(-1,4)">-1등급 vs 4등급 (100배)</button>
+        </div>
+      </div>
+
+      <!-- Right: Real Sky Magnitude Examples -->
+      <div class="box">
+        <h3>🔭 실제 밤하늘 천체들의 겉보기 등급 수직선</h3>
+        <p style="font-size:13.5px;color:var(--sub)">왼쪽(<b>낮은 숫자·음수</b>)으로 갈수록 <b>눈부시게 밝고</b>, 오른쪽(<b>높은 숫자</b>)으로 갈수록 <b>어둡습니다</b>.</p>
+
+        <div style="position:relative;padding:16px 12px;background:#050814;border:1px solid var(--line);border-radius:14px;margin:10px 0">
+          <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;margin-bottom:6px">
+            <span class="hl-gold">◀ 낮은 숫자 (음수 등급 = 매우 밝음)</span>
+            <span class="hl-sky">높은 숫자 (어두움) ▶</span>
+          </div>
+          <div style="height:10px;border-radius:99px;background:linear-gradient(90deg,#fbbf24 0%,#fef08a 35%,#38bdf8 75%,#1e293b 100%);margin-bottom:12px"></div>
+
+          <table>
+            <tr>
+              <th>천체 이름</th>
+              <th>겉보기 등급 (<i>m</i>)</th>
+              <th>특징</th>
+            </tr>
+            <tr>
+              <td>☀️ <b>태양</b></td>
+              <td><span class="hl-gold"><b>-26.8 등급</b></span></td>
+              <td class="left">지구에 가장 가까워 압도적으로 밝음</td>
+            </tr>
+            <tr>
+              <td>🌕 <b>보름달</b></td>
+              <td><span class="hl-gold"><b>-12.6 등급</b></span></td>
+              <td class="left">밤하늘에서 가장 밝은 천체</td>
+            </tr>
+            <tr>
+              <td>✨ <b>시리우스</b></td>
+              <td><span class="hl-gold"><b>-1.5 등급</b></span></td>
+              <td class="left">밤하늘의 별(항성) 중 겉보기 밝기 1위!</td>
+            </tr>
+            <tr>
+              <td>🎸 <b>베가 (직녀성)</b></td>
+              <td><span class="hl-mint"><b>0.0 등급</b></span></td>
+              <td class="left">겉보기 등급 0등급의 기준이 되는 별</td>
+            </tr>
+            <tr>
+              <td>🧭 <b>북극성</b></td>
+              <td><span class="hl-sky"><b>+2.0 등급</b></span></td>
+              <td class="left">전형적인 2등성 (북쪽 하늘의 길잡이)</td>
+            </tr>
+            <tr>
+              <td>👁️ <b>맨눈 한계 별</b></td>
+              <td><span class="hl-pink"><b>+6.0 등급</b></span></td>
+              <td class="left">맨눈으로 볼 수 있는 가장 어두운 별</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 질문 포인트]</b> "-1등급인 별과 4등급인 별은 누가 더 밝고, 몇 등급 차이가 날까요?" (숫자가 낮은 -1등급이 더 밝고, 4 - (-1) = 5등급 차이 → 100배 밝기 차이!) 계산기 버튼(`-1등급 vs 4등급`)을 눌러 직접 보여 주세요.
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 9: 겉보기 등급 vs 절대등급 ==================== -->
+  <section class="slide" data-title="9. 심화 연결: 겉보기 등급과 절대등급 (10 pc)">
+    <span class="kicker">🔭 개념 확장 · 거리와 등급의 만남</span>
+    <h2>겉보기 등급 vs 절대등급: 진짜 밝은 별을 가려내자!</h2>
+    <p class="lead">앞서 배운 <b>"거리가 멀어지면 1/<i>r</i>²로 어두워진다"</b>는 원리 때문에, 눈으로 본 밝기(겉보기 등급)만으로는 별의 <b>실제 밝기</b>를 알 수 없습니다.</p>
+
+    <div class="grid-2">
+      <div class="box" style="border-left:5px solid var(--sky)">
+        <h3>👀 겉보기 등급 (<i>m</i>, Apparent Magnitude)</h3>
+        <ul>
+          <li><b>기준:</b> 지구에 있는 관측자의 <b>눈에 보이는 그대로의 밝기</b> 등급</li>
+          <li><b>특징:</b> 별의 실제 밝기뿐만 아니라 <b>별까지의 거리</b>에 따라 크게 달라집니다.</li>
+          <li><b>예시:</b> 태양은 실제로는 평범한 별이지만 지구에 아주 가까워서 겉보기 등급이 <b>-26.8등급</b>으로 가장 밝게 보입니다.</li>
+        </ul>
+      </div>
+
+      <div class="box" style="border-left:5px solid var(--gold)">
+        <h3>⚖️ 절대등급 (<i>M</i>, Absolute Magnitude)</h3>
+        <ul>
+          <li><b>기준:</b> 모든 별을 지구로부터 똑같이 <span class="hl-gold"><b>10 pc (파섹, 약 32.6광년)</b></span>의 표준 거리에 놓았다고 가정했을 때의 밝기 등급!</li>
+          <li><b>특징:</b> 거리를 똑같이 맞추었으므로 <b>별이 실제로 방출하는 빛의 양(실제 밝기)</b>을 공정하게 비교할 수 있습니다.</li>
+          <li><b>예시:</b> 태양을 10 pc 거리로 옮기면 <b>+4.8등급</b>의 희미한 별로 보입니다!</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box" style="margin-top:14px">
+      <h3>🔄 거리 변화(<i>r</i>)와 등급 변화(Δ<i>m</i>)를 하나로 연결하기!</h3>
+      <p>오늘 배운 두 가지 핵심 원리(① 거리 제곱 반비례 법칙, ② 5등급 차이 = 100배 밝기 차)를 합쳐 볼까요?</p>
+      <div class="formula-card" style="margin:10px 0;padding:12px">
+        <div style="font-size:clamp(15px,1.9vw,21px);font-weight:800;color:#fff">
+          별의 거리가 <span class="hl-sky">10배</span> 멀어지면
+          <span style="color:var(--pink)">→</span>
+          별빛이 10² = 100칸으로 퍼져 밝기는 <span class="hl-gold">1/100배</span>로 감소
+          <span style="color:var(--pink)">→</span>
+          100배 어두워졌으므로 등급 숫자는 <span class="hl-mint">+5등급 증가!</span>
+        </div>
+      </div>
+      <p style="font-size:14.5px;color:var(--sub);margin:0">
+        예) 현재 <b>1등급</b>으로 보이는 별이 지금보다 <b>10배 먼 곳</b>으로 이동하면, 동일한 면적에 닿는 별빛이 1/100로 줄어들어 <b>6등급(1 + 5 = 6)</b>으로 어둡게 보입니다! 반대로 거리가 <b>1/10배</b>로 가까워지면 100배 밝아져 등급 숫자는 <b>5만큼 낮아집니다(-5)</b>.
+      </p>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 개념 통합]</b> 이 슬라이드는 오늘 배운 두 축(① 거리 제곱 반비례 법칙 1/r², ② 5등급 차 = 100배 밝기 차)이 왜 한 단원에서 함께 나오는지를 하나로 꿰어 주는 핵심 슬라이드입니다.
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 10: 형성 평가 퀴즈 & 핵심 요약 ==================== -->
+  <section class="slide" data-title="10. 마무리 퀴즈 & 오늘 배운 핵심 총정리">
+    <span class="kicker">✅ 형성 평가 & 핵심 요약</span>
+    <h2>오늘 배운 내용, 퀴즈로 확인해 볼까요?</h2>
+
+    <div class="grid-2">
+      <!-- Quiz 1 -->
+      <div class="box">
+        <h3>Quiz 1. 거리와 별빛의 퍼짐</h3>
+        <p style="font-size:15px">별까지의 거리가 처음보다 <b>3배</b> 멀어지면, 별빛이 퍼지는 면적은 몇 배가 되고 동일한 면적에 닿는 별의 밝기는 몇 배가 될까요?</p>
+        <button type="button" class="quiz-opt" onclick="checkQuiz(this, false, 'q1Msg')">① 면적 3배, 밝기 1/3배</button>
+        <button type="button" class="quiz-opt" onclick="checkQuiz(this, true, 'q1Msg')">② 면적 9배(3²), 밝기 1/9배(1/3²)</button>
+        <button type="button" class="quiz-opt" onclick="checkQuiz(this, false, 'q1Msg')">③ 면적 6배, 밝기 1/6배</button>
+        <div id="q1Msg" style="font-size:13.5px;margin-top:6px;min-height:20px"></div>
+      </div>
+
+      <!-- Quiz 2 -->
+      <div class="box">
+        <h3>Quiz 2. 별의 등급과 밝기 비교</h3>
+        <p style="font-size:15px">밤하늘에서 <b>1등성</b>인 별 A와 <b>6등성</b>인 별 B를 비교한 설명으로 <b>옳은 것</b>은?</p>
+        <button type="button" class="quiz-opt" onclick="checkQuiz(this, false, 'q2Msg')">① 숫자가 높은 6등성(별 B)이 1등성(별 A)보다 더 밝다.</button>
+        <button type="button" class="quiz-opt" onclick="checkQuiz(this, false, 'q2Msg')">② 1등성은 6등성보다 2.5 × 5 = 12.5배 더 밝다.</button>
+        <button type="button" class="quiz-opt" onclick="checkQuiz(this, true, 'q2Msg')">③ 숫자가 낮은 1등성(별 A)이 6등성(별 B)보다 2.512⁵ = 100배 더 밝다.</button>
+        <div id="q2Msg" style="font-size:13.5px;margin-top:6px;min-height:20px"></div>
+      </div>
+    </div>
+
+    <div class="box" style="margin-top:14px;border:2px solid var(--gold)">
+      <h3>🌟 오늘 수업 한눈에 핵심 요약</h3>
+      <div class="grid-3" style="margin-top:8px">
+        <div>
+          <span class="hl-sky"><b>① 거리와 별의 밝기 (1/<i>r</i>²)</b></span>
+          <p style="font-size:14px">동일한 소스의 별빛이 <b>거리 제곱(<i>r</i>²) 면적</b>에 고르게 나누어지므로, 먼 곳에서는 동일 면적에 적은 별빛이 닿아 <b>거리 제곱에 반비례(1/<i>r</i>²)</b>하여 어둡게 보인다.</p>
+        </div>
+        <div>
+          <span class="hl-gold"><b>② 고대 그리스의 겉보기 등급</b></span>
+          <p style="font-size:14px">고대 그리스 과학자 <b>히파르코스</b>와 <b>프톨레마이오스</b>가 맨눈으로 보기에 가장 밝은 별을 <b>1등성</b>, 가장 어두운 별을 <b>6등성</b>으로 정했다.</p>
+        </div>
+        <div>
+          <span class="hl-mint"><b>③ 현대 포그슨의 등급 체계</b></span>
+          <p style="font-size:14px">정확성을 위해 <b>5등급 차 = 100배</b> 밝기 차이, <b>1등급 당 약 2.5배</b> 차이로 정립했으며, <b>등급은 낮은 숫자가 더 밝은 별</b>이다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>[교사 메모 · 마무리]</b> 퀴즈 2문항을 학생들과 함께 풀며 오개념(덧셈 vs 거듭제곱, 등급 숫자의 대소)을 마지막으로 점검합니다. 인쇄(Ctrl+P)를 누르면 모든 슬라이드와 교사 메모가 깔끔하게 유인물로 출력됩니다.
+    </div>
+  </section>
+
+</div>
+
+<!-- Bottom Navigation Bar -->
+<div class="bar">
+  <a class="home-link" href="../../index.html" style="color:#fff;text-decoration:none;font-size:13px;white-space:nowrap">← 홈으로</a>
+  <button id="prevBtn" type="button">◀ 이전</button>
+  <div class="prog"><i id="progBar"></i></div>
+  <span class="cnt" id="slideCnt">1 / 10</span>
+  <button id="nextBtn" type="button">다음 ▶</button>
+  <button id="fsBtn" type="button">전체화면 (F)</button>
+  <button id="noteBtn" type="button">교사 메모 (N)</button>
+</div>
+
+<script>
+/* ==================== SLIDE NAVIGATION ==================== */
+const slides = Array.from(document.querySelectorAll('.slide'));
+const slideJump = document.getElementById('slideJump');
+let cur = 0;
+
+slides.forEach((s, idx) => {
+  const opt = document.createElement('option');
+  opt.value = idx;
+  opt.textContent = s.dataset.title || `슬라이드 ${idx + 1}`;
+  slideJump.appendChild(opt);
+});
+
+function show(n) {
+  cur = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, k) => s.classList.toggle('on', k === cur));
+  document.getElementById('slideCnt').textContent = (cur + 1) + ' / ' + slides.length;
+  document.getElementById('progBar').style.width = ((cur + 1) / slides.length * 100) + '%';
+  slideJump.value = cur;
+  history.replaceState(null, '', '#' + (cur + 1));
+}
+
+slideJump.onchange = e => show(parseInt(e.target.value, 10));
+document.getElementById('nextBtn').onclick = () => show(cur + 1);
+document.getElementById('prevBtn').onclick = () => show(cur - 1);
+document.getElementById('noteBtn').onclick = () => document.body.classList.toggle('notes');
+document.getElementById('fsBtn').onclick = () => {
+  if (document.fullscreenElement) { document.exitFullscreen(); }
+  else if (document.documentElement.requestFullscreen) { document.documentElement.requestFullscreen(); }
+};
+
+document.addEventListener('keydown', e => {
+  const tag = e.target.tagName;
+  if (tag === 'INPUT' || tag === 'SELECT' || tag === 'BUTTON') {
+    if (e.key !== 'f' && e.key !== 'F' && e.key !== 'n' && e.key !== 'N') return;
+  }
+  const k = e.key;
+  if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); show(cur + 1); }
+  else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); show(cur - 1); }
+  else if (k === 'Home') { show(0); }
+  else if (k === 'End') { show(slides.length - 1); }
+  else if (k === 'f' || k === 'F') { document.getElementById('fsBtn').click(); }
+  else if (k === 'n' || k === 'N') { document.body.classList.toggle('notes'); }
+});
+
+let touchStartX = null;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', e => {
+  if (touchStartX === null) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 60 && e.target.tagName !== 'INPUT') {
+    show(cur + (dx < 0 ? 1 : -1));
+  }
+  touchStartX = null;
+});
+
+/* ==================== SIMULATION 1: INVERSE-SQUARE LAW (SLIDE 4) ==================== */
+const cv = document.getElementById('invSqCanvas');
+const ctx = cv.getContext('2d');
+const distSlider = document.getElementById('distSlider');
+const distBtns = Array.from(document.querySelectorAll('.dist-btn'));
+let curR = 1.0;
+let animRunning = true;
+let animTime = 0;
+
+const TOTAL_PHOTONS = 144; // divisible by 1, 4, 9, 16! (144 / 1 = 144, /4 = 36, /9 = 16, /16 = 9)
+
+// Pre-generate 36 ray trajectories inside pyramid (-1..1, -1..1)
+const rays = [];
+for (let gy = 0; gy < 6; gy++) {
+  for (let gx = 0; gx < 6; gx++) {
+    const u = (gx + 0.5) / 6 * 2 - 1;
+    const v = (gy + 0.5) / 6 * 2 - 1;
+    rays.push({ u, v, phase: (gx * 0.17 + gy * 0.23) % 1 });
+  }
+}
+
+function projectSquareCorners(xPos, halfSize) {
+  const cy = 195;
+  const tiltX = halfSize * 0.34;
+  const tiltY = halfSize * 0.88;
+  return [
+    { x: xPos - tiltX, y: cy - tiltY - tiltX * 0.35 },
+    { x: xPos + tiltX, y: cy - tiltY + tiltX * 0.35 },
+    { x: xPos + tiltX, y: cy + tiltY + tiltX * 0.35 },
+    { x: xPos - tiltX, y: cy + tiltY - tiltX * 0.35 }
+  ];
+}
+
+function bilinear(corners, uNorm, vNorm) {
+  const topX = corners[0].x + (corners[1].x - corners[0].x) * uNorm;
+  const topY = corners[0].y + (corners[1].y - corners[0].y) * uNorm;
+  const botX = corners[3].x + (corners[2].x - corners[3].x) * uNorm;
+  const botY = corners[3].y + (corners[2].y - corners[3].y) * uNorm;
+  return {
+    x: topX + (botX - topX) * vNorm,
+    y: topY + (botY - topY) * vNorm
+  };
+}
+
+function drawInvSqSim() {
+  ctx.clearRect(0, 0, cv.width, cv.height);
+
+  const starX = 68, starY = 195;
+  const baseStepX = 132;
+  const baseHalf = 26;
+
+  const activeX = starX + curR * baseStepX;
+  const activeHalf = curR * baseHalf;
+  const activeCorners = projectSquareCorners(activeX, activeHalf);
+
+  // Draw light cone fill from star to active plane
+  const grad = ctx.createLinearGradient(starX, starY, activeX, starY);
+  grad.addColorStop(0, 'rgba(251, 191, 36, 0.38)');
+  grad.addColorStop(1, `rgba(251, 191, 36, ${Math.max(0.05, 0.25 / (curR * curR))})`);
+
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.moveTo(starX, starY);
+  ctx.lineTo(activeCorners[0].x, activeCorners[0].y);
+  ctx.lineTo(activeCorners[1].x, activeCorners[1].y);
+  ctx.lineTo(activeCorners[2].x, activeCorners[2].y);
+  ctx.lineTo(activeCorners[3].x, activeCorners[3].y);
+  ctx.closePath();
+  ctx.fill();
+
+  // Draw 4 pyramid edge lines up to 4r
+  const maxCorners = projectSquareCorners(starX + 4 * baseStepX, 4 * baseHalf);
+  ctx.strokeStyle = 'rgba(148, 163, 184, 0.28)';
+  ctx.lineWidth = 1.2;
+  ctx.setLineDash([4, 4]);
+  maxCorners.forEach(c => {
+    ctx.beginPath();
+    ctx.moveTo(starX, starY);
+    ctx.lineTo(c.x, c.y);
+    ctx.stroke();
+  });
+  ctx.setLineDash([]);
+
+  // Draw reference planes for r = 1, 2, 3, 4
+  for (let r = 1; r <= 4; r++) {
+    const rx = starX + r * baseStepX;
+    const rh = r * baseHalf;
+    const corners = projectSquareCorners(rx, rh);
+    const isNearActive = Math.abs(curR - r) < 0.08;
+
+    ctx.strokeStyle = isNearActive ? '#fbbf24' : 'rgba(56, 189, 248, 0.32)';
+    ctx.lineWidth = isNearActive ? 2.5 : 1.2;
+
+    ctx.beginPath();
+    corners.forEach((c, idx) => idx === 0 ? ctx.moveTo(c.x, c.y) : ctx.lineTo(c.x, c.y));
+    ctx.closePath();
+    ctx.stroke();
+
+    for (let i = 1; i < r; i++) {
+      const f = i / r;
+      const p1 = bilinear(corners, f, 0);
+      const p2 = bilinear(corners, f, 1);
+      ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+
+      const q1 = bilinear(corners, 0, f);
+      const q2 = bilinear(corners, 1, f);
+      ctx.beginPath(); ctx.moveTo(q1.x, q1.y); ctx.lineTo(q2.x, q2.y); ctx.stroke();
+    }
+
+    ctx.fillStyle = isNearActive ? '#fbbf24' : '#94a3b8';
+    ctx.font = isNearActive ? 'bold 13px sans-serif' : '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${r}r (${r * r}칸)`, rx, corners[2].y + 20);
+  }
+
+  // Highlight 1 unit square (top-left unit cell of size 1/curR of active plane)
+  const unitFrac = Math.min(1, 1 / curR);
+  const u00 = bilinear(activeCorners, 0, 0);
+  const u10 = bilinear(activeCorners, unitFrac, 0);
+  const u11 = bilinear(activeCorners, unitFrac, unitFrac);
+  const u01 = bilinear(activeCorners, 0, unitFrac);
+
+  ctx.fillStyle = 'rgba(251, 191, 36, 0.28)';
+  ctx.strokeStyle = '#fbbf24';
+  ctx.lineWidth = 2.6;
+  ctx.beginPath();
+  ctx.moveTo(u00.x, u00.y);
+  ctx.lineTo(u10.x, u10.y);
+  ctx.lineTo(u11.x, u11.y);
+  ctx.lineTo(u01.x, u01.y);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.fillStyle = '#fde68a';
+  ctx.font = 'bold 12px sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('👁️ 동일 면적(1칸)', u10.x + 6, u10.y + 4);
+
+  // Draw animated photons flying from star to active plane
+  rays.forEach(ray => {
+    const uNorm = (ray.u + 1) / 2;
+    const vNorm = (ray.v + 1) / 2;
+    const target = bilinear(activeCorners, uNorm, vNorm);
+    const prog = (animTime * 0.45 + ray.phase) % 1;
+    const px = starX + (target.x - starX) * prog;
+    const py = starY + (target.y - starY) * prog;
+
+    ctx.fillStyle = '#fef08a';
+    ctx.beginPath();
+    ctx.arc(px, py, 2.3, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = 'rgba(251, 191, 36, 0.85)';
+    ctx.beginPath();
+    ctx.arc(target.x, target.y, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  // Draw Star (Light Source) on Left
+  const starGlow = ctx.createRadialGradient(starX, starY, 4, starX, starY, 38);
+  starGlow.addColorStop(0, '#ffffff');
+  starGlow.addColorStop(0.35, '#fde047');
+  starGlow.addColorStop(0.7, 'rgba(251, 191, 36, 0.35)');
+  starGlow.addColorStop(1, 'rgba(251, 191, 36, 0)');
+  ctx.fillStyle = starGlow;
+  ctx.beginPath();
+  ctx.arc(starX, starY, 38, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(starX, starY, 10, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#fde68a';
+  ctx.font = 'bold 13px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('🌟 광원 (별)', starX, starY + 50);
+  ctx.font = '11.5px sans-serif';
+  ctx.fillStyle = '#94a3b8';
+  ctx.fillText('총 별빛 144개 방출', starX, starY + 66);
+
+  ctx.fillStyle = '#e2e8f0';
+  ctx.font = 'bold 13.5px sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('거리(r)에 따라 별빛이 퍼지는 면적(r²)과 동일 면적 1칸당 받는 별빛(1/r²) 비교', 16, 24);
+}
+
+function updateInvSqUI(rVal) {
+  curR = rVal;
+  distSlider.value = rVal;
+  document.getElementById('distLabel').textContent = rVal.toFixed(1) + 'r';
+  document.getElementById('statRTitle').textContent = rVal.toFixed(1) + 'r';
+
+  distBtns.forEach(b => {
+    b.classList.toggle('active', Math.abs(parseFloat(b.dataset.r) - rVal) < 0.05);
+  });
+
+  const area = rVal * rVal;
+  const photonsPerUnit = TOTAL_PHOTONS / area;
+  const relBright = 1 / area;
+  const pct = (relBright * 100);
+
+  document.getElementById('statDist').textContent = rVal.toFixed(1) + ' 배';
+  document.getElementById('statArea').textContent = area.toFixed(1) + ' 칸 (r²)';
+  document.getElementById('statPhotons').textContent = photonsPerUnit.toFixed(1) + ' 개 / 칸';
+
+  const isInt = Math.abs(rVal - Math.round(rVal)) < 0.05;
+  const rInt = Math.round(rVal);
+  const fracStr = isInt ? (rInt === 1 ? '1' : `1/${rInt * rInt}`) : relBright.toFixed(2);
+  document.getElementById('statBright').textContent = `${fracStr}배 (${pct.toFixed(1)}%)`;
+
+  // Update Grid Preview (rInt x rInt)
+  const gridBox = document.getElementById('gridPreview');
+  gridBox.innerHTML = '';
+  gridBox.style.gridTemplateColumns = `repeat(${rInt}, 1fr)`;
+  gridBox.style.gridTemplateRows = `repeat(${rInt}, 1fr)`;
+
+  const dotsPerCell = Math.round(TOTAL_PHOTONS / (rInt * rInt));
+  const visualDots = Math.max(1, Math.round(36 / (rInt * rInt)));
+
+  for (let i = 0; i < rInt * rInt; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'unit-cell' + (i === 0 ? ' highlight' : '');
+    for (let d = 0; d < visualDots; d++) {
+      const dot = document.createElement('span');
+      dot.className = 'photon-dot';
+      cell.appendChild(dot);
+    }
+    gridBox.appendChild(cell);
+  }
+
+  // Update Apparent Star Visual
+  const starVis = document.getElementById('apparentStarVisual');
+  const sizePx = Math.max(14, 76 * Math.sqrt(relBright));
+  starVis.style.width = sizePx + 'px';
+  starVis.style.height = sizePx + 'px';
+  starVis.style.opacity = Math.max(0.22, Math.pow(relBright, 0.35));
+  starVis.style.boxShadow = `0 0 ${Math.round(32 * relBright)}px rgba(251, 191, 36, ${Math.max(0.2, relBright)})`;
+  document.getElementById('apparentStarText').textContent = `밝기: ${fracStr}배 (${dotsPerCell}개/칸)`;
+
+  document.getElementById('simExplanation').innerHTML =
+    `거리가 <b>${rVal.toFixed(1)}배</b>가 되면 별빛 144개가 가로·세로로 퍼져 <b>${area.toFixed(1)}칸(<i>r</i>²)의 면적</b>에 고르게 나누어집니다. 따라서 동일한 1칸(노란 칸)에 닿는 별빛은 <b>${photonsPerUnit.toFixed(1)}개</b>로 줄어들어 별의 밝기가 <b>${fracStr}배(1/<i>r</i>²)</b>로 어둡게 보입니다!`;
+}
+
+distBtns.forEach(btn => {
+  btn.onclick = () => updateInvSqUI(parseFloat(btn.dataset.r));
+});
+distSlider.oninput = e => updateInvSqUI(parseFloat(e.target.value));
+document.getElementById('toggleRayBtn').onclick = () => { animRunning = !animRunning; };
+
+function animLoop() {
+  if (animRunning) animTime += 0.016;
+  drawInvSqSim();
+  requestAnimationFrame(animLoop);
+}
+updateInvSqUI(1.0);
+requestAnimationFrame(animLoop);
+
+/* ==================== SLIDE 6: GREEK MAGNITUDE INTERACTIVE ==================== */
+const GREEK_INFO = {
+  1: {
+    title: '🌟 1등성 (제1등급 별) — 해 진 뒤 가장 먼저 빛나는 으뜸 별!',
+    desc: '히파르코스는 해가 지고 어둑해질 때 밤하늘에서 <b>가장 먼저 눈에 띄는 가장 밝은 별 약 20개</b>를 <b>1등성</b>으로 정했습니다.',
+    examples: '대표 별: 시리우스(큰개자리), 베가(직녀성), 카펠라(마차부자리), 리겔(오리온자리), 베텔게우스(오리온자리)',
+    note: '현대 정밀 측정 결과, 1등성 안에서도 시리우스(-1.5등급)처럼 훨씬 더 밝은 별들은 0등급이나 음수(-) 등급으로 세분화되었습니다.'
+  },
+  2: {
+    title: '⭐ 2등성 (제2등급 별) — 밤하늘 주요 별자리의 뼈대를 이루는 별!',
+    desc: '1등성보다는 한 단계 덜 밝지만, 밤하늘에서 뚜렷하게 별자리 모양을 만들어 주는 밝은 별들입니다. 1등성보다 약 <b>2.5배</b> 어둡습니다.',
+    examples: '대표 별: 북극성(폴라리스, 약 +2.0등급), 북두칠성을 이루는 주요 별들, 카시오페이아자리 주요 별들',
+    note: '우리가 밤하늘에서 북극성이나 북두칠성을 찾을 때 보는 밝기가 바로 고대 그리스 과학자들이 정한 2등성의 기준입니다!'
+  },
+  3: {
+    title: '✨ 3등성 (제3등급 별) — 도심 밤하늘에서도 볼 수 있는 보통 밝기 별',
+    desc: '중간 정도의 밝기를 가진 별들로, 1등성보다 2등급 크므로 약 <b>6.3배(2.512²)</b> 어둡습니다.',
+    examples: '대표 별: 북두칠성의 연결부 별(메그레즈, +3.3등급), 백조자리 알비레오(+3.1등급)',
+    note: '불빛이 있는 도시 아파트 단지에서는 보통 2~3등성까지만 맨눈으로 보입니다.'
+  },
+  4: {
+    title: '💫 4등성 (제4등급 별) — 교외의 어두운 하늘에서 보이는 별',
+    desc: '별자리의 세부 모양을 채워 주는 다소 어두운 별들입니다. 1등성보다 3등급 차이 나므로 약 <b>16배(2.512³)</b> 어둡습니다.',
+    examples: '대표 별: 작은곰자리(북두칠성 맞은편)의 몸통을 이루는 별들',
+    note: '가로등이 적은 교외 지역으로 나가야 4등성 별들을 선명하게 볼 수 있습니다.'
+  },
+  5: {
+    title: '🔹 5등성 (제5등급 별) — 맑은 밤하늘에서 주의 깊게 봐야 보이는 별',
+    desc: '맨눈으로 보기에 꽤 희미한 별들로, 1등성보다 4등급 차이 나므로 약 <b>40배(2.512⁴)</b> 어둡습니다.',
+    examples: '대표 별: 플레이아데스 성단(좀생이별) 주변의 어두운 별들',
+    note: '달빛이 밝은 보름달 밤에는 5등성 별들은 달빛에 가려 잘 보이지 않습니다.'
+  },
+  6: {
+    title: '👁️ 6등성 (제6등급 별) — 사람의 맨눈으로 볼 수 있는 가장 어두운 한계 별!',
+    desc: '달도 없고 불빛도 없는 칠흑 같은 밤하늘에서 시력이 좋은 사람이 간신히 볼 수 있는 <b>육안 관측 한계 별</b>입니다. 1등성보다 정확히 <b>100배(2.512⁵)</b> 어둡습니다!',
+    examples: '기준: 맨눈으로 볼 수 있는 가장 어두운 별 (망원경을 쓰면 7등성, 10등성 이후의 별도 관측 가능)',
+    note: '1등성과 6등성의 5등급 차이가 정확히 100배 밝기 차이라는 점이 현대 포그슨 등급 체계의 출발점이 되었습니다!'
+  }
+};
+
+const greekItems = Array.from(document.querySelectorAll('#greekScale .mag-item'));
+function selectGreekMag(g) {
+  greekItems.forEach(item => item.classList.toggle('on', parseInt(item.dataset.g, 10) === g));
+  const info = GREEK_INFO[g];
+  document.getElementById('greekDetailBox').innerHTML = `
+    <h3>${info.title}</h3>
+    <p>${info.desc}</p>
+    <p style="color:var(--sky);font-size:15px">🔭 <b>${info.examples}</b></p>
+    <p style="color:var(--sub);font-size:14px;margin-bottom:0">💡 ${info.note}</p>
+  `;
+}
+greekItems.forEach(item => {
+  item.onclick = () => selectGreekMag(parseInt(item.dataset.g, 10));
+});
+selectGreekMag(1);
+
+/* ==================== SLIDE 8: MAGNITUDE COMPARATOR ==================== */
+const magASlider = document.getElementById('magASlider');
+const magBSlider = document.getElementById('magBSlider');
+
+function updateMagComparator() {
+  const mA = parseInt(magASlider.value, 10);
+  const mB = parseInt(magBSlider.value, 10);
+  document.getElementById('magAVal').textContent = (mA > 0 ? `+${mA}` : mA) + ' 등급';
+  document.getElementById('magBVal').textContent = (mB > 0 ? `+${mB}` : mB) + ' 등급';
+
+  const diff = Math.abs(mA - mB);
+  const ratio = Math.pow(100, diff / 5);
+  const ratioStr = diff === 0 ? '1' : diff === 5 ? '100' : diff === 1 ? '약 2.5 (2.512)' : ratio >= 100 ? Math.round(ratio).toLocaleString() : ratio.toFixed(1);
+
+  const resBox = document.getElementById('magCompareResult');
+  if (mA === mB) {
+    resBox.innerHTML = `두 별 A와 B는 모두 <b>${mA}등급</b>으로 등급이 같으므로, 눈에 보이는 밝기가 <b>1배(동일)</b>입니다!`;
+  } else {
+    const brighter = mA < mB ? `⭐ 별 A (${mA}등급)` : `🌟 별 B (${mB}등급)`;
+    const dimmer = mA < mB ? `별 B (${mB}등급)` : `별 A (${mA}등급)`;
+    resBox.innerHTML = `
+      등급은 낮은 숫자가 더 밝으므로 <span class="hl-gold"><b>${brighter}</b></span>이(가) ${dimmer}보다 <b>${diff}등급</b> 낮아,<br>
+      밝기는 2.512<sup>${diff}</sup> = <span class="hl-mint" style="font-size:20px"><b>${ratioStr}배</b></span> 더 밝습니다!
+    `;
+  }
+}
+
+function setMagPair(a, b) {
+  magASlider.value = a;
+  magBSlider.value = b;
+  updateMagComparator();
+}
+magASlider.oninput = updateMagComparator;
+magBSlider.oninput = updateMagComparator;
+updateMagComparator();
+
+/* ==================== SLIDE 10: QUIZ CHECK ==================== */
+function checkQuiz(btn, isCorrect, msgId) {
+  const parent = btn.parentElement;
+  parent.querySelectorAll('.quiz-opt').forEach(b => b.classList.remove('correct', 'wrong'));
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+  const msgEl = document.getElementById(msgId);
+  if (isCorrect) {
+    msgEl.style.color = '#34d399';
+    msgEl.innerHTML = '🎉 <b>정답입니다!</b> 완벽하게 이해했네요!';
+  } else {
+    msgEl.style.color = '#f472b6';
+    msgEl.innerHTML = '💡 아쉬워요! 거리의 제곱(r²)과 1등급 당 2.5배 거듭제곱 원리를 다시 떠올려 보세요.';
+  }
+}
+
+/* Init from URL hash */
+show((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>

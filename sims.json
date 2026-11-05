@@ -2,5 +2,6 @@
   { "grade": 1, "area": "화학", "title": "① 온도와 입자 1개의 충돌", "desc": "온도가 높아지면 입자 1개가 벽을 미는 힘이 커지는 모습 관찰", "url": "grade1/charles-law/index.html#1" },
   { "grade": 1, "area": "화학", "title": "② 부피와 충돌 횟수", "desc": "부피가 줄면 벽에 부딪히는 횟수가 늘어나는 모습 관찰", "url": "grade1/charles-law/index.html#2" },
   { "grade": 1, "area": "화학", "title": "③ 샤를의 법칙 (혼합 + 그래프)", "desc": "압력이 일정할 때 온도와 부피의 관계를 그래프로 확인", "url": "grade1/charles-law/index.html#3" },
-  { "grade": 2, "area": "물리", "title": "전기와 자기 인터랙티브 학습", "desc": "정전기, 전류·전압·저항, 옴의 법칙, 직렬·병렬 회로, 전력과 자기장, 전자기 유도를 학습하는 인터랙티브 페이지", "url": "grade2/electricity-magnetism/index.html" }
+  { "grade": 2, "area": "물리", "title": "전기와 자기 인터랙티브 학습", "desc": "정전기, 전류·전압·저항, 옴의 법칙, 직렬·병렬 회로, 전력과 자기장, 전자기 유도를 학습하는 인터랙티브 페이지", "url": "grade2/electricity-magnetism/index.html" },
+  { "grade": 3, "area": "지구과학", "title": "별의 밝기와 등급 (발표 자료 + 시뮬레이션)", "desc": "거리에 따른 별빛의 퍼짐(역제곱 법칙) 인터랙티브 시뮬레이션과 고대 그리스 겉보기 등급, 현대 포그슨 등급(5등급=100배, 1등급=2.5배) 수업 프레젠테이션", "url": "grade3/star-brightness/index.html" }
 ]
