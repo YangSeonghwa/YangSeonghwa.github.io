@@ -13,11 +13,16 @@ Beflower(중학교 과학 교사)의 GitHub Pages 홈페이지. 학년별 과학
 ## 실행 방법
 ```
 설치: 필요 없음 (순수 HTML/CSS/JavaScript)
+무결성 검증: python3 scripts/pages_tool.py check   (또는 python3 scripts/run_tests.py yangseonghwa.github.io)
+새 항목 스캐폴딩:
+  python3 scripts/pages_tool.py add-sim --grade 2 --area 물리 --slug my-sim --title "제목" --desc "설명"
+  python3 scripts/pages_tool.py add-lesson --slug my-lesson --title "제목" --desc "설명"
+  python3 scripts/pages_tool.py add-game --slug my-game --icon "🎮" --title "제목" --desc "설명"
 미리보기: python3 -m http.server   (저장소 폴더에서 실행하고 브라우저에서 localhost:8000 열기)
 푸시:   git -C projects/yangseonghwa.github.io push
 ```
 - 배포: `main` 브랜치 최상위 폴더를 GitHub Pages가 그대로 공개한다 (Settings → Pages → Deploy from a branch). 별도 빌드 단계가 없다.
-- Windows exe·CI 워크플로는 없다. 테스트 파일도 없으므로 `python3 scripts/run_tests.py`에서 「테스트 없음」 경고가 나오는 것은 정상이다.
+- Windows exe·CI 워크플로는 없다. 대신 `python3 scripts/run_tests.py yangseonghwa.github.io`를 실행하면 `scripts/pages_tool.py check`가 `sims.json`·`lessons.json`·`games.json` 스키마와 모든 HTML의 메타 태그·내부 링크·용량(5MiB 이하)을 자동으로 검증한다 (D-012).
 
 ## 구조
 ```

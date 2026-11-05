@@ -116,14 +116,16 @@ footer{text-align:center;color:var(--sub);font-size:13px;padding:24px 10px 40px}
   <section id="games">
     <h2>🎮 게임 놀이터</h2>
     <p class="lead2">잠깐 쉬어 가며 즐길 수 있는 간단한 게임을 모았습니다.</p>
-    <a class="game-card" href="games/whack-a-mole/index.html">
-      <div class="game-icon" aria-hidden="true">🐹</div>
-      <div class="game-info">
-        <h3>수박 터뜨리기</h3>
-        <p>30초 동안 나타나는 수박을 빠르게 터뜨리고 최고 점수에 도전해 보세요!</p>
-      </div>
-      <span class="game-link">게임 시작 →</span>
-    </a>
+    <div id="gameList">
+      <a class="game-card" href="games/whack-a-mole/index.html">
+        <div class="game-icon" aria-hidden="true">🐹</div>
+        <div class="game-info">
+          <h3>수박 터뜨리기</h3>
+          <p>30초 동안 나타나는 수박을 빠르게 터뜨리고 최고 점수에 도전해 보세요!</p>
+        </div>
+        <span class="game-link">게임 시작 →</span>
+      </a>
+    </div>
   </section>
 
   <section>
@@ -202,6 +204,23 @@ fetch("lessons.json", {cache: "no-cache"}).then(r => r.json()).then(list => {
     box.appendChild(el);
   });
 }).catch(() => { $("lessonList").innerHTML = '<div class="empty">수업 자료를 불러오지 못했어요.</div>'; });
+
+/* 게임은 games.json 에 한 줄씩 추가합니다.
+   { "icon":"🐹", "title":"제목", "desc":"한 줄 설명", "url":"games/폴더/index.html" } */
+fetch("games.json", {cache: "no-cache"}).then(r => r.json()).then(list => {
+  const box = $("gameList");
+  if(!box || !Array.isArray(list) || !list.length) return;
+  box.innerHTML = "";
+  list.forEach(item => {
+    const el = document.createElement("a");
+    el.className = "game-card"; el.href = item.url;
+    el.innerHTML = '<div class="game-icon" aria-hidden="true"></div><div class="game-info"><h3></h3><p></p></div><span class="game-link">게임 시작 →</span>';
+    el.querySelector(".game-icon").textContent = item.icon || "🎮";
+    el.querySelector("h3").textContent = item.title;
+    el.querySelector("p").textContent = item.desc || "";
+    box.appendChild(el);
+  });
+}).catch(() => {});
 </script>
 </body>
 </html>
