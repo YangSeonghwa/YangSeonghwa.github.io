@@ -1,0 +1,577 @@
+/* ==========================================================================
+   Beflower Design System (beflower.css) v1.0
+   Project: yangseonghwa.github.io (Beflower의 과학 시뮬레이션 랩)
+   Description: 사이트 전체 페이지(메인 허브, 과학 시뮬레이션, 수업 발표 슬라이드,
+                학생 인쇄용 활동지, 미니 게임)의 일관된 디자인 시스템(컬러 팔레트,
+                타이포그래피, 공통 헤더·네비게이션·푸터·슬라이드 컨트롤 바·컴포넌트).
+   ========================================================================== */
+
+:root {
+  /* 1. Brand & Core Color Palette (Light Mode Default) */
+  --bf-bg: #f4f9f6;
+  --bf-surface: #ffffff;
+  --bf-surface-soft: #eef7f3;
+  --bf-surface-muted: #f8fcfa;
+  --bf-ink: #1d2a30;
+  --bf-sub: #5a6b72;
+  --bf-muted: #7f9199;
+  --bf-line: #d9e8e1;
+  --bf-line-strong: #bdd5ca;
+
+  /* Brand Primary & Accents */
+  --bf-main: #1f8a70;          /* Beflower Emerald */
+  --bf-main-hover: #176f59;
+  --bf-main-soft: #e3f5ef;
+  --bf-navy: #0f2a44;          /* Deep Science Navy */
+  --bf-pink: #f08fb0;          /* Blossom Pink */
+  --bf-pink-hover: #df7398;
+  --bf-pink-soft: #fdebf1;
+  --bf-sky: #0284c7;           /* Physics Sky */
+  --bf-sky-soft: #e0f2fe;
+  --bf-amber: #f59e0b;         /* Energy Amber */
+  --bf-amber-soft: #fef3c7;
+  --bf-danger: #e11d48;
+  --bf-danger-soft: #ffe4e6;
+  --bf-success: #10b981;
+  --bf-success-soft: #d1fae5;
+
+  /* 2. Subject & Category Tag Palette */
+  --bf-tag-physics: #e3f0ff;
+  --bf-tag-physics-ink: #1d4ed8;
+  --bf-tag-chem: #fff0dc;
+  --bf-tag-chem-ink: #b45309;
+  --bf-tag-bio: #e2f6e6;
+  --bf-tag-bio-ink: #15803d;
+  --bf-tag-earth: #efe6ff;
+  --bf-tag-earth-ink: #6d28d9;
+  --bf-tag-coding: #ffe7f0;
+  --bf-tag-coding-ink: #be185d;
+  --bf-tag-game: #fef3c7;
+  --bf-tag-game-ink: #92400e;
+
+  /* 3. Typography Stack (Offline-safe System Font Stack) */
+  --bf-font-sans: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --bf-font-mono: "JetBrains Mono", "D2Coding", "Consolas", "SFMono-Regular", monospace;
+
+  /* 4. Elevation, Radius & Layout Tokens */
+  --bf-radius-sm: 10px;
+  --bf-radius-md: 14px;
+  --bf-radius-lg: 20px;
+  --bf-radius-xl: 26px;
+  --bf-radius-pill: 999px;
+  --bf-shadow-sm: 0 2px 8px rgba(15, 42, 68, 0.05);
+  --bf-shadow-md: 0 8px 24px rgba(15, 42, 68, 0.08);
+  --bf-shadow-lg: 0 18px 48px rgba(15, 42, 68, 0.14);
+  --bf-topbar-height: 58px;
+  --bf-max-width: 1120px;
+
+  /* Legacy Variable Aliases (for backward compatibility across pages) */
+  --bg: var(--bf-bg);
+  --card: var(--bf-surface);
+  --soft: var(--bf-surface-soft);
+  --ink: var(--bf-ink);
+  --sub: var(--bf-sub);
+  --main: var(--bf-main);
+  --pink: var(--bf-pink);
+  --line: var(--bf-line);
+}
+
+/* Dark Theme Variant (for Space / Physics / Immersive Presentation Decks) */
+body.bf-theme-dark,
+[data-bf-theme="dark"] {
+  --bf-bg: #080f1e;
+  --bf-surface: #111c35;
+  --bf-surface-soft: #1a2849;
+  --bf-surface-muted: #0d162b;
+  --bf-ink: #f1f5f9;
+  --bf-sub: #94a3b8;
+  --bf-muted: #64748b;
+  --bf-line: #26365c;
+  --bf-line-strong: #384f82;
+  --bf-main: #34d399;
+  --bf-main-hover: #10b981;
+  --bf-main-soft: rgba(52, 211, 153, 0.15);
+  --bf-sky: #38bdf8;
+  --bf-sky-soft: rgba(56, 189, 248, 0.16);
+  --bf-amber: #fbbf24;
+  --bf-amber-soft: rgba(251, 191, 36, 0.16);
+  --bf-pink: #f472b6;
+  --bf-pink-soft: rgba(244, 114, 182, 0.16);
+  --bf-shadow-md: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --bf-shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.65);
+}
+
+/* ==========================================================================
+   Base Reset & Typography
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--bf-font-sans);
+  background-color: var(--bf-bg);
+  color: var(--bf-ink);
+  line-height: 1.65;
+}
+
+/* ==========================================================================
+   1. Unified Global Top Navigation Bar (.bf-topbar)
+   ========================================================================== */
+.bf-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  min-height: var(--bf-topbar-height);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--bf-line);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.bf-theme-dark .bf-topbar,
+[data-bf-theme="dark"] .bf-topbar,
+.bf-topbar.bf-topbar-dark {
+  background: rgba(8, 15, 30, 0.88);
+  border-bottom-color: rgba(148, 163, 184, 0.2);
+  color: #f1f5f9;
+}
+
+.bf-topbar.bf-topbar-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.bf-topbar-inner {
+  width: 100%;
+  max-width: 1240px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.bf-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+}
+
+.bf-brand-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--bf-navy), var(--bf-main) 65%, var(--bf-pink));
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 800;
+  flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(31, 138, 112, 0.28);
+}
+
+.bf-brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  min-width: 0;
+}
+
+.bf-brand-title {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: var(--bf-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body.bf-theme-dark .bf-brand-title,
+[data-bf-theme="dark"] .bf-brand-title,
+.bf-topbar.bf-topbar-dark .bf-brand-title {
+  color: #ffffff;
+}
+
+.bf-brand-sub {
+  font-size: 11.5px;
+  color: var(--bf-sub);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bf-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.bf-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: var(--bf-radius-pill);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--bf-sub);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+
+.bf-nav a:hover,
+.bf-nav a:focus-visible {
+  color: var(--bf-main);
+  background: var(--bf-main-soft);
+  border-color: rgba(31, 138, 112, 0.25);
+  outline: none;
+}
+
+.bf-nav a.active,
+.bf-nav a[aria-current="page"] {
+  background: var(--bf-main);
+  color: #ffffff;
+  border-color: var(--bf-main);
+}
+
+body.bf-theme-dark .bf-nav a,
+[data-bf-theme="dark"] .bf-nav a,
+.bf-topbar.bf-topbar-dark .bf-nav a {
+  color: #cbd5e1;
+}
+
+body.bf-theme-dark .bf-nav a:hover,
+[data-bf-theme="dark"] .bf-nav a:hover,
+.bf-topbar.bf-topbar-dark .bf-nav a:hover {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.35);
+}
+
+body.bf-theme-dark .bf-nav a.active,
+[data-bf-theme="dark"] .bf-nav a.active,
+.bf-topbar.bf-topbar-dark .bf-nav a.active {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #38bdf8;
+}
+
+.bf-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   2. Standardized Page Hero / Header (.bf-page-header)
+   ========================================================================== */
+.bf-page-header {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--bf-navy), var(--bf-main) 68%, var(--bf-pink));
+  color: #ffffff;
+  padding: 28px 20px 32px;
+  border-radius: 0 0 28px 28px;
+  box-shadow: var(--bf-shadow-md);
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.bf-page-header-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.bf-page-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border-radius: var(--bf-radius-pill);
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  backdrop-filter: blur(6px);
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.bf-page-header h1 {
+  margin: 0 0 8px;
+  font-size: clamp(24px, 4.5vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  line-height: 1.25;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+.bf-page-header p {
+  margin: 0 auto;
+  max-width: 680px;
+  font-size: clamp(14px, 2vw, 17px);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* ==========================================================================
+   3. Containers, Cards, Badges, Buttons & Callouts
+   ========================================================================== */
+.bf-container {
+  max-width: var(--bf-max-width);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.bf-card {
+  background: var(--bf-surface);
+  border: 1px solid var(--bf-line);
+  border-radius: var(--bf-radius-lg);
+  padding: 22px;
+  box-shadow: var(--bf-shadow-md);
+}
+
+.bf-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--bf-radius-pill);
+  background: var(--bf-surface-soft);
+  color: var(--bf-main);
+}
+
+.bf-badge.물리, .bf-badge.physics { background: var(--bf-tag-physics); color: var(--bf-tag-physics-ink); }
+.bf-badge.화학, .bf-badge.chem    { background: var(--bf-tag-chem); color: var(--bf-tag-chem-ink); }
+.bf-badge.생명, .bf-badge.bio     { background: var(--bf-tag-bio); color: var(--bf-tag-bio-ink); }
+.bf-badge.지구과학, .bf-badge.earth { background: var(--bf-tag-earth); color: var(--bf-tag-earth-ink); }
+.bf-badge.코딩, .bf-badge.coding  { background: var(--bf-tag-coding); color: var(--bf-tag-coding-ink); }
+.bf-badge.게임, .bf-badge.game    { background: var(--bf-tag-game); color: var(--bf-tag-game-ink); }
+
+.bf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: var(--bf-radius-pill);
+  border: 1.5px solid var(--bf-main);
+  background: var(--bf-surface);
+  color: var(--bf-main);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.16s ease;
+}
+
+.bf-btn:hover {
+  transform: translateY(-1px);
+  background: var(--bf-main-soft);
+}
+
+.bf-btn.bf-btn-primary {
+  background: var(--bf-main);
+  color: #ffffff;
+  border-color: var(--bf-main);
+  box-shadow: 0 4px 12px rgba(31, 138, 112, 0.25);
+}
+
+.bf-btn.bf-btn-primary:hover {
+  background: var(--bf-main-hover);
+  border-color: var(--bf-main-hover);
+}
+
+.bf-btn.bf-btn-accent {
+  background: var(--bf-pink);
+  color: #ffffff;
+  border-color: var(--bf-pink);
+  box-shadow: 0 4px 12px rgba(240, 143, 176, 0.35);
+}
+
+.bf-callout {
+  border-left: 5px solid var(--bf-main);
+  background: var(--bf-surface-soft);
+  border-radius: var(--bf-radius-md);
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 14.5px;
+}
+
+.bf-callout.warn {
+  border-left-color: var(--bf-amber);
+  background: var(--bf-amber-soft);
+  color: #78350f;
+}
+
+/* ==========================================================================
+   4. Standardized Presentation Slide Bottom Bar (.bf-slide-bar)
+   ========================================================================== */
+.bf-slide-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  background: rgba(15, 42, 68, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  z-index: 90;
+}
+
+.bf-slide-bar a,
+.bf-slide-bar button {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 7px 14px;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.bf-slide-bar a:hover,
+.bf-slide-bar button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: var(--bf-pink);
+}
+
+.bf-slide-prog {
+  flex: 1;
+  height: 7px;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: var(--bf-radius-pill);
+  overflow: hidden;
+}
+
+.bf-slide-prog > i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--bf-main), var(--bf-pink));
+  transition: width 0.3s ease;
+}
+
+/* ==========================================================================
+   5. Unified Site Footer (.bf-footer)
+   ========================================================================== */
+.bf-footer {
+  margin-top: 40px;
+  padding: 28px 16px 40px;
+  border-top: 1px solid var(--bf-line);
+  text-align: center;
+  color: var(--bf-sub);
+  font-size: 13.5px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+body.bf-theme-dark .bf-footer,
+[data-bf-theme="dark"] .bf-footer {
+  background: rgba(8, 15, 30, 0.7);
+  border-top-color: rgba(148, 163, 184, 0.2);
+}
+
+.bf-footer-inner {
+  max-width: var(--bf-max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.bf-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 16px;
+}
+
+.bf-footer-links a {
+  color: var(--bf-sub);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.15s ease;
+}
+
+.bf-footer-links a:hover {
+  color: var(--bf-main);
+}
+
+/* ==========================================================================
+   6. Responsive & Print Rules
+   ========================================================================== */
+@media (max-width: 680px) {
+  .bf-topbar {
+    padding: 8px 12px;
+  }
+  .bf-brand-sub {
+    display: none;
+  }
+  .bf-nav a {
+    padding: 5px 9px;
+    font-size: 12px;
+  }
+  .bf-slide-bar {
+    gap: 6px;
+    padding: 0 8px;
+  }
+  .bf-slide-bar a,
+  .bf-slide-bar button {
+    padding: 6px 9px;
+    font-size: 12px;
+  }
+}
+
+@media print {
+  .bf-topbar,
+  .bf-slide-bar,
+  .bf-footer,
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    overflow: visible !important;
+  }
+}

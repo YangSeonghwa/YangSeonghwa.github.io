@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[수업 제목] 학생 활동지 | Beflower</title>
+<meta name="description" content="인쇄 및 태블릿 수업 겸용 학생 활동지 표준 템플릿">
+<!--
+  [사용 안내]
+  이 파일을 programming/<수업명>/worksheet.html 또는 gradeN/<단원명>/worksheet.html (깊이 2단계)로 복사할 때는
+  아래 상대 경로의 '../' 를 '../../' 로 변경하세요.
+-->
+<link rel="stylesheet" href="../assets/css/beflower.css">
+<style>
+  .worksheet-wrap {
+    max-width: 900px;
+    margin: 24px auto 48px;
+    padding: 0 16px;
+  }
+  .worksheet-sheet {
+    background: var(--bf-surface);
+    border: 1.5px solid var(--bf-line);
+    border-radius: var(--bf-radius-lg);
+    padding: clamp(20px, 4vw, 36px);
+    box-shadow: var(--bf-shadow-md);
+  }
+  .sheet-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+    border-bottom: 2px solid var(--bf-main);
+  }
+  .sheet-meta h1 {
+    margin: 4px 0 0;
+    font-size: clamp(22px, 3.6vw, 30px);
+    color: var(--bf-main);
+  }
+  .student-info {
+    font-size: 15px;
+    font-weight: 700;
+    background: var(--bf-surface-soft);
+    padding: 8px 14px;
+    border-radius: var(--bf-radius-md);
+    border: 1px solid var(--bf-line);
+  }
+  h2 {
+    margin: 22px 0 10px;
+    font-size: 19px;
+    color: var(--bf-main);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 14px;
+    font-size: 14.5px;
+  }
+  th, td {
+    border: 1px solid var(--bf-line-strong);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: var(--bf-surface-soft);
+    color: var(--bf-main);
+    font-weight: 700;
+    width: 28%;
+  }
+  td {
+    height: 42px;
+    background: #ffffff;
+  }
+  @media print {
+    .worksheet-wrap { margin: 0; padding: 0; max-width: 100%; }
+    .worksheet-sheet { border: none; box-shadow: none; padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="bf-topbar no-print" aria-label="전역 상단 네비게이션">
+  <div class="bf-topbar-inner">
+    <a class="bf-brand" href="../index.html">
+      <span class="bf-brand-logo" aria-hidden="true">🌸</span>
+      <span class="bf-brand-text">
+        <span class="bf-brand-title">Beflower의 과학 시뮬레이션 랩</span>
+        <span class="bf-brand-sub">학생용 인쇄 활동지 표준 템플릿</span>
+      </span>
+    </a>
+    <div class="bf-nav">
+      <a href="../index.html">🏠 홈</a>
+      <a href="../index.html#sims">🧪 시뮬레이션</a>
+      <a class="active" href="../index.html#coding">💻 프로그램 수업</a>
+      <a href="lesson-slides-template.html">📊 발표 템플릿</a>
+    </div>
+    <div class="bf-topbar-actions">
+      <button type="button" class="bf-btn bf-btn-primary" onclick="window.print()">🖨️ 활동지 인쇄</button>
+    </div>
+  </div>
+</nav>
+
+<main class="worksheet-wrap">
+  <article class="worksheet-sheet">
+    <div class="sheet-meta">
+      <div>
+        <span class="bf-badge 물리">📄 탐구 활동지</span>
+        <h1>[단원/수업 제목] 탐구 활동지</h1>
+      </div>
+      <div class="student-info">학번: ____________ &nbsp; 이름: ____________</div>
+    </div>
+
+    <p><b>🎯 탐구 목표:</b> 시뮬레이션을 조작하여 측정값을 기록하고, 변수 사이의 관계를 설명할 수 있다.</p>
+
+    <h2>1. 실험 전 예상하기</h2>
+    <table>
+      <tr><th>질문</th><th>나의 예상과 까닭</th></tr>
+      <tr><td>조작 변인을 2배로 늘리면 결과는 어떻게 될까요?</td><td></td></tr>
+    </table>
+
+    <h2>2. 실험 데이터 기록표</h2>
+    <table>
+      <tr><th style="width:20%">회차</th><th style="width:40%">조작 변인 측정값</th><th style="width:40%">결과 변인 측정값</th></tr>
+      <tr><td>1회</td><td></td><td></td></tr>
+      <tr><td>2회</td><td></td><td></td></tr>
+      <tr><td>3회</td><td></td><td></td></tr>
+    </table>
+
+    <h2>3. 결론 도출 및 자기 평가</h2>
+    <div class="bf-callout">
+      <b>결론 정리:</b> 실험 결과를 바탕으로 두 변인 사이의 관계를 한 문장으로 정리해 보세요.
+    </div>
+    <table><tr><td style="height:80px"></td></tr></table>
+    <p><b>자기 평가:</b> □ 변인을 정확히 통제했다　□ 측정값을 성실히 기록했다　□ 결과를 과학적 근거로 설명했다</p>
+  </article>
+</main>
+
+<footer class="bf-footer no-print">
+  <div class="bf-footer-inner">
+    <div class="bf-footer-links">
+      <a href="../index.html">🏠 홈으로</a>
+      <a href="simulation-template.html">🧪 시뮬레이션 템플릿</a>
+      <a href="lesson-slides-template.html">📊 발표 슬라이드 템플릿</a>
+    </div>
+    <div>© Beflower · AI와 함께 만드는 과학·프로그램 수업 연구실</div>
+  </div>
+</footer>
+
+</body>
+</html>

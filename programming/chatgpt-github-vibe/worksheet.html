@@ -1,25 +1,217 @@
-<!doctype html>
-<html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>학생 활동지 | 바이브 코딩</title>
-<style>body{font-family:Arial,sans-serif;max-width:850px;margin:30px auto;padding:24px;line-height:1.6;color:#203039}h1,h2{color:#19765f}table{width:100%;border-collapse:collapse}td,th{border:1px solid #aaa;padding:10px;text-align:left}td{height:38px}.note{background:#eef7f2;padding:12px;margin:12px 0}@media print{button{display:none}body{margin:0}}</style>
-<h1>내 홈페이지 바이브 코딩 활동지</h1>
-<p>이름 또는 모둠: ____________________ 날짜: ____________________</p>
-<p><b>미션:</b> 소개하고 싶은 주제로 홈페이지를 구상하고, AI에게 말로 요청해 GitHub 저장소에 바로 만들고 개선해 봅시다. 코드를 직접 편집하거나 복사할 필요는 없습니다.</p>
-<h2>1. 홈페이지 구상하기</h2>
-<table><tr><th>질문</th><th>나의 계획</th></tr><tr><td>누가 볼까요?</td><td></td></tr><tr><td>어떤 주제를 소개할까요?</td><td></td></tr><tr><td>꼭 들어갈 내용 3가지는?</td><td></td></tr><tr><td>어떤 색과 분위기가 좋을까요?</td><td></td></tr></table>
-<h2>2. 첫 번째 요청문 만들기</h2>
-<div class="note">내 GitHub 저장소 <b>아이디.github.io</b>에 홈페이지를 만들어 줘. 주제는 __________이야. 보는 사람은 __________이고, 꼭 들어갈 내용은 ① __________ ② __________ ③ __________이야. 분위기는 __________하게 해 줘. 휴대전화에서도 읽기 쉽게 만들고 개인정보는 넣지 말아 줘. 코드를 채팅에 길게 보여 주지 말고 저장소 파일에 직접 반영하고 커밋한 뒤 홈페이지 주소를 알려 줘.</div>
-<p>내가 실제로 입력한 요청문:</p><table><tr><td style="height:100px"></td></tr></table>
-<h2>3. AI가 만든 홈페이지를 보고 말로 고치기</h2>
-<table><tr><th>차례</th><th>무엇이 아쉬웠나요?</th><th>어떻게 고쳐 달라고 했나요?</th><th>바뀐 점</th></tr><tr><td>처음</td><td></td><td></td><td></td></tr><tr><td>수정 1</td><td></td><td></td><td></td></tr><tr><td>수정 2</td><td></td><td></td><td></td></tr><tr><td>수정 3</td><td></td><td></td><td></td></tr></table>
-<h2>4. 저장소 반영과 공개 전 점검</h2>
-<p>□ AI가 내 수업용 저장소에 파일을 만들거나 수정했나요?　□ 커밋 또는 변경 제안(PR) 결과를 확인했나요?</p>
-<p>□ 실명·학교명·학번·연락처가 없나요?　□ 사진·글을 사용할 권리가 있나요?</p>
-<p>□ 휴대전화에서도 읽기 쉬운가요?　□ 링크와 버튼이 작동하나요?</p>
-<p>□ Pages 주소를 직접 열어 확인했나요?</p>
-<div class="note"><b>꼭 기억해요.</b> GitHub 연결 도구마다 권한이 달라요. 쓰기 기능이 있는 연결 도구라면 AI가 파일을 직접 수정하고 커밋할 수 있습니다. 읽기 전용 연결이면 직접 저장할 수 없으므로 교사 시연을 이용합니다. 공개되는 홈페이지와 개인정보는 반드시 확인해요. 저장소 이름은 GitHub 아이디와 같은 <b>아이디.github.io</b>로 만들면 주소가 짧아집니다. 단, 아이디가 실명·학교명 등을 드러내지 않는지 먼저 확인해요. 만 13세 미만은 개인 ChatGPT·GitHub 계정으로 활동하지 않고 교사 시연과 모둠 활동으로 참여합니다. 13~17세도 보호자 동의와 학교 지침을 확인합니다.</div>
-<h2>5. 오늘의 배움 돌아보기</h2>
-<table><tr><th>질문</th><th>나의 답</th></tr><tr><td>내 요청에서 가장 중요한 조건은?</td><td></td></tr><tr><td>AI 결과에서 내가 직접 확인한 것은?</td><td></td></tr><tr><td>수정 뒤 무엇이 좋아졌나요?</td><td></td></tr><tr><td>다음에 무엇을 바꾸고 싶나요?</td><td></td></tr></table>
-<p>자기 평가: □ 목적과 대상을 정했다　□ 말로 구체적인 요청을 했다　□ AI가 저장소에 반영한 결과를 확인했다　□ 말로 수정 요청을 했다　□ 개인정보와 공개 화면을 점검했다</p>
-<button onclick="window.print()">활동지 인쇄하기</button>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>학생 활동지 | ChatGPT와 GitHub로 내 홈페이지 바이브 코딩하기 · Beflower</title>
+<link rel="stylesheet" href="../../assets/css/beflower.css">
+<style>
+  body {
+    font-family: var(--bf-font-sans);
+    background: var(--bf-bg);
+    color: var(--bf-ink);
+    line-height: 1.65;
+  }
+  .worksheet-wrap {
+    max-width: 900px;
+    margin: 24px auto 48px;
+    padding: 0 16px;
+  }
+  .worksheet-sheet {
+    background: var(--bf-surface);
+    border: 1.5px solid var(--bf-line);
+    border-radius: var(--bf-radius-lg);
+    padding: clamp(20px, 4vw, 36px);
+    box-shadow: var(--bf-shadow-md);
+  }
+  .sheet-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+    border-bottom: 2px solid var(--bf-main);
+  }
+  .sheet-meta h1 {
+    margin: 4px 0 0;
+    font-size: clamp(22px, 3.6vw, 30px);
+    color: var(--bf-main);
+    letter-spacing: -0.4px;
+  }
+  .student-info {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--bf-ink);
+    background: var(--bf-surface-soft);
+    padding: 8px 14px;
+    border-radius: var(--bf-radius-md);
+    border: 1px solid var(--bf-line);
+  }
+  h2 {
+    margin: 24px 0 10px;
+    font-size: 19px;
+    color: var(--bf-main);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 14px;
+    font-size: 14.5px;
+  }
+  th, td {
+    border: 1px solid var(--bf-line-strong);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: var(--bf-surface-soft);
+    color: var(--bf-main);
+    font-weight: 700;
+    width: 28%;
+  }
+  td {
+    height: 40px;
+    background: #ffffff;
+  }
+  .note {
+    background: var(--bf-surface-soft);
+    border-left: 5px solid var(--bf-main);
+    border-radius: var(--bf-radius-md);
+    padding: 14px 16px;
+    margin: 12px 0;
+    font-size: 14.5px;
+  }
+  .checklist p {
+    margin: 6px 0;
+    font-size: 14.5px;
+  }
+  .sheet-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 24px;
+  }
+  @media print {
+    body {
+      background: #ffffff;
+    }
+    .worksheet-wrap {
+      margin: 0;
+      padding: 0;
+      max-width: 100%;
+    }
+    .worksheet-sheet {
+      border: none;
+      box-shadow: none;
+      padding: 0;
+    }
+    .sheet-actions {
+      display: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+<nav class="bf-topbar no-print" aria-label="전역 상단 네비게이션">
+  <div class="bf-topbar-inner">
+    <a class="bf-brand" href="../../index.html">
+      <span class="bf-brand-logo" aria-hidden="true">🌸</span>
+      <span class="bf-brand-text">
+        <span class="bf-brand-title">Beflower의 과학 시뮬레이션 랩</span>
+        <span class="bf-brand-sub">프로그램 수업 · 학생용 인쇄 활동지</span>
+      </span>
+    </a>
+    <div class="bf-nav">
+      <a href="../../index.html">🏠 홈</a>
+      <a href="../../index.html#sims">🧪 시뮬레이션</a>
+      <a class="active" href="../../index.html#coding">💻 프로그램 수업</a>
+      <a href="index.html">📊 발표 슬라이드</a>
+    </div>
+    <div class="bf-topbar-actions">
+      <button type="button" class="bf-btn bf-btn-primary" onclick="window.print()">🖨️ 활동지 인쇄</button>
+    </div>
+  </div>
+</nav>
+
+<main class="worksheet-wrap">
+  <article class="worksheet-sheet">
+    <div class="sheet-meta">
+      <div>
+        <span class="bf-badge 코딩">💻 프로그램 수업 · 학생 활동지</span>
+        <h1>내 홈페이지 바이브 코딩 활동지</h1>
+      </div>
+      <div class="student-info">이름 또는 모둠: ____________________ &nbsp; 날짜: ____________</div>
+    </div>
+
+    <p><b>🎯 미션:</b> 소개하고 싶은 주제로 홈페이지를 구상하고, AI에게 말로 요청해 GitHub 저장소에 바로 만들고 개선해 봅시다. 코드를 직접 편집하거나 복사할 필요는 없습니다.</p>
+
+    <h2>1. 홈페이지 구상하기</h2>
+    <table>
+      <tr><th>질문</th><th>나의 계획</th></tr>
+      <tr><td>누가 볼까요?</td><td></td></tr>
+      <tr><td>어떤 주제를 소개할까요?</td><td></td></tr>
+      <tr><td>꼭 들어갈 내용 3가지는?</td><td></td></tr>
+      <tr><td>어떤 색과 분위기가 좋을까요?</td><td></td></tr>
+    </table>
+
+    <h2>2. 첫 번째 요청문 만들기</h2>
+    <div class="note">내 GitHub 저장소 <b>아이디.github.io</b>에 홈페이지를 만들어 줘. 주제는 __________이야. 보는 사람은 __________이고, 꼭 들어갈 내용은 ① __________ ② __________ ③ __________이야. 분위기는 __________하게 해 줘. 휴대전화에서도 읽기 쉽게 만들고 개인정보는 넣지 말아 줘. 코드를 채팅에 길게 보여 주지 말고 저장소 파일에 직접 반영하고 커밋한 뒤 홈페이지 주소를 알려 줘.</div>
+    <p><b>내가 실제로 입력한 요청문:</b></p>
+    <table><tr><td style="height:100px"></td></tr></table>
+
+    <h2>3. AI가 만든 홈페이지를 보고 말로 고치기</h2>
+    <table>
+      <tr><th style="width:16%">차례</th><th style="width:28%">무엇이 아쉬웠나요?</th><th style="width:28%">어떻게 고쳐 달라고 했나요?</th><th style="width:28%">바뀐 점</th></tr>
+      <tr><td>처음</td><td></td><td></td><td></td></tr>
+      <tr><td>수정 1</td><td></td><td></td><td></td></tr>
+      <tr><td>수정 2</td><td></td><td></td><td></td></tr>
+      <tr><td>수정 3</td><td></td><td></td><td></td></tr>
+    </table>
+
+    <h2>4. 저장소 반영과 공개 전 점검</h2>
+    <div class="checklist">
+      <p>□ AI가 내 수업용 저장소에 파일을 만들거나 수정했나요?　□ 커밋 또는 변경 제안(PR) 결과를 확인했나요?</p>
+      <p>□ 실명·학교명·학번·연락처가 없나요?　□ 사진·글을 사용할 권리가 있나요?</p>
+      <p>□ 휴대전화에서도 읽기 쉬운가요?　□ 링크와 버튼이 작동하나요?</p>
+      <p>□ Pages 주소를 직접 열어 확인했나요?</p>
+    </div>
+    <div class="note"><b>꼭 기억해요.</b> GitHub 연결 도구마다 권한이 달라요. 쓰기 기능이 있는 연결 도구라면 AI가 파일을 직접 수정하고 커밋할 수 있습니다. 읽기 전용 연결이면 직접 저장할 수 없으므로 교사 시연을 이용합니다. 공개되는 홈페이지와 개인정보는 반드시 확인해요. 저장소 이름은 GitHub 아이디와 같은 <b>아이디.github.io</b>로 만들면 주소가 짧아집니다. 단, 아이디가 실명·학교명 등을 드러내지 않는지 먼저 확인해요. 만 13세 미만은 개인 ChatGPT·GitHub 계정으로 활동하지 않고 교사 시연과 모둠 활동으로 참여합니다. 13~17세도 보호자 동의와 학교 지침을 확인합니다.</div>
+
+    <h2>5. 오늘의 배움 돌아보기</h2>
+    <table>
+      <tr><th>질문</th><th>나의 답</th></tr>
+      <tr><td>내 요청에서 가장 중요한 조건은?</td><td></td></tr>
+      <tr><td>AI 결과에서 내가 직접 확인한 것은?</td><td></td></tr>
+      <tr><td>수정 뒤 무엇이 좋아졌나요?</td><td></td></tr>
+      <tr><td>다음에 무엇을 바꾸고 싶나요?</td><td></td></tr>
+    </table>
+    <p><b>자기 평가:</b> □ 목적과 대상을 정했다　□ 말로 구체적인 요청을 했다　□ AI가 저장소에 반영한 결과를 확인했다　□ 말로 수정 요청을 했다　□ 개인정보와 공개 화면을 점검했다</p>
+
+    <div class="sheet-actions no-print">
+      <button type="button" class="bf-btn bf-btn-primary" onclick="window.print()">🖨️ 활동지 인쇄하기</button>
+      <a class="bf-btn" href="index.html">📊 수업 발표 슬라이드로 돌아가기</a>
+      <a class="bf-btn" href="../../index.html#coding">🏠 메인으로</a>
+    </div>
+  </article>
+</main>
+
+<footer class="bf-footer no-print">
+  <div class="bf-footer-inner">
+    <div class="bf-footer-links">
+      <a href="../../index.html">🏠 홈으로</a>
+      <a href="../../index.html#sims">🧪 과학 시뮬레이션</a>
+      <a href="../../index.html#coding">💻 프로그램 수업</a>
+      <a href="../../index.html#games">🎮 게임 놀이터</a>
+    </div>
+    <div>© Beflower · AI와 함께 만드는 과학·프로그램 수업 연구실</div>
+  </div>
+</footer>
+</body>
 </html>

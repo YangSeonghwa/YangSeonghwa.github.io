@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[단원명] 시뮬레이션 | Beflower의 과학 시뮬레이션 랩</title>
+<meta name="description" content="중학교 과학 인터랙티브 웹 시뮬레이션 표준 템플릿">
+<!--
+  [사용 안내]
+  이 파일을 grade1/<주제>/index.html (깊이 2단계)로 복사할 때는
+  아래 상대 경로의 '../' 를 '../../' 로 변경하세요.
+  예: href="../assets/css/beflower.css" -> href="../../assets/css/beflower.css"
+      href="../index.html" -> href="../../index.html"
+-->
+<link rel="stylesheet" href="../assets/css/beflower.css">
+<style>
+  .sim-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    max-width: var(--bf-max-width);
+    margin: 0 auto 16px;
+    padding: 0 16px;
+  }
+  .sim-tabs button {
+    flex: 1;
+    min-width: 150px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--bf-line);
+    background: var(--bf-surface);
+    border-radius: var(--bf-radius-pill);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    color: var(--bf-sub);
+    transition: all 0.16s ease;
+  }
+  .sim-tabs button:hover {
+    border-color: var(--bf-main);
+    color: var(--bf-main);
+  }
+  .sim-tabs button.on {
+    background: var(--bf-main);
+    color: #ffffff;
+    border-color: var(--bf-main);
+    box-shadow: 0 4px 12px rgba(31, 138, 112, 0.25);
+  }
+  .sim-grid {
+    max-width: var(--bf-max-width);
+    margin: 0 auto 18px;
+    padding: 0 16px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 860px) {
+    .sim-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  canvas {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: var(--bf-surface-muted);
+    border: 1px solid var(--bf-line);
+    border-radius: var(--bf-radius-md);
+  }
+  .ctrl-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 16px;
+    align-items: center;
+    margin-top: 12px;
+  }
+  .ctrl-row label {
+    font-size: 14.5px;
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 180px;
+  }
+  .ctrl-row input[type="range"] {
+    width: 100%;
+    accent-color: var(--bf-main);
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .stat-box {
+    background: var(--bf-surface-soft);
+    border: 1px solid var(--bf-line);
+    border-radius: var(--bf-radius-md);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--bf-sub);
+  }
+  .stat-box b {
+    display: block;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--bf-ink);
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. 전역 상단 네비게이션 바 (.bf-topbar) -->
+<nav class="bf-topbar" aria-label="전역 상단 네비게이션">
+  <div class="bf-topbar-inner">
+    <a class="bf-brand" href="../index.html">
+      <span class="bf-brand-logo" aria-hidden="true">🌸</span>
+      <span class="bf-brand-text">
+        <span class="bf-brand-title">Beflower의 과학 시뮬레이션 랩</span>
+        <span class="bf-brand-sub">중학교 과학 · 인터랙티브 시뮬레이션 템플릿</span>
+      </span>
+    </a>
+    <div class="bf-nav">
+      <a href="../index.html">🏠 홈</a>
+      <a class="active" href="../index.html#sims">🧪 시뮬레이션</a>
+      <a href="../index.html#coding">💻 프로그램 수업</a>
+      <a href="../index.html#games">🎮 게임</a>
+    </div>
+    <div class="bf-topbar-actions">
+      <a class="bf-btn" href="lesson-slides-template.html">📊 발표 템플릿</a>
+      <a class="bf-btn" href="worksheet-template.html">📄 활동지 템플릿</a>
+      <a class="bf-btn" href="game-template.html">🎮 게임 템플릿</a>
+    </div>
+  </div>
+</nav>
+
+<!-- 2. 페이지 헤더 배너 (.bf-page-header) -->
+<header class="bf-page-header">
+  <div class="bf-page-header-inner">
+    <span class="bf-page-kicker">🧪 중학교 1~3학년 과학 · [영역: 물리/화학/생명/지구과학]</span>
+    <h1>[단원 제목] 인터랙티브 시뮬레이션</h1>
+    <p>변인을 직접 조작하며 입자와 물리량의 변화를 눈으로 관찰하고 그래프로 확인해 보세요.</p>
+  </div>
+</header>
+
+<!-- 3. 탐구 모드 탭 -->
+<div class="sim-tabs" role="tablist" aria-label="탐구 단계 선택">
+  <button type="button" class="on" onclick="setMode(1)">① 기본 변인 조작</button>
+  <button type="button" onclick="setMode(2)">② 비교 실험</button>
+  <button type="button" onclick="setMode(3)">③ 그래프 분석</button>
+</div>
+
+<!-- 4. 메인 시뮬레이션 2단 그리드 -->
+<main>
+  <div class="sim-grid">
+    <!-- 왼쪽: 시뮬레이션 캔버스 및 조작 패널 -->
+    <section class="bf-card" aria-label="시뮬레이션 화면">
+      <canvas id="simCanvas" width="640" height="360"></canvas>
+      <div class="ctrl-row">
+        <label>
+          <span>조작 변인 (예: 온도 / 전압 / 거리): <strong id="valLabel">50</strong></span>
+          <input type="range" id="paramSlider" min="10" max="100" value="50">
+        </label>
+        <button type="button" class="bf-btn bf-btn-primary" id="recordBtn">📍 데이터 기록</button>
+        <button type="button" class="bf-btn" id="resetBtn">초기화</button>
+      </div>
+    </section>
+
+    <!-- 오른쪽: 측정 통계 및 실시간 그래프 -->
+    <section class="bf-card" aria-label="측정 결과 및 그래프">
+      <div class="stats-grid">
+        <div class="stat-box">🌡️ 조작 변인<b id="statX">50 단위</b></div>
+        <div class="stat-box">📈 종속 변인<b id="statY">100 단위</b></div>
+      </div>
+      <canvas id="graphCanvas" width="420" height="260"></canvas>
+    </section>
+  </div>
+
+  <!-- 5. 핵심 개념 정리 카드 -->
+  <section class="bf-container" style="margin-bottom: 32px;">
+    <div class="bf-card">
+      <span class="bf-badge 물리">💡 핵심 원리 정리</span>
+      <h2 style="margin: 8px 0 8px; color: var(--bf-main); font-size: 20px;">오늘 실험에서 발견한 과학 원리</h2>
+      <ul style="margin: 0; padding-left: 20px;">
+        <li>조작 변인을 높이면 종속 변인이 어떻게 변하는지 관찰합니다.</li>
+        <li>기록된 데이터 점들이 이루는 그래프의 모양(비례·반비례 등)을 확인합니다.</li>
+      </ul>
+      <div class="bf-callout" style="margin-top: 14px;">
+        <b>교실 생각 거리:</b> 일상생활에서 이 과학 원리가 적용되는 사례를 2가지 이상 찾아 친구와 이야기해 봅시다.
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- 6. 공통 푸터 (.bf-footer) -->
+<footer class="bf-footer">
+  <div class="bf-footer-inner">
+    <div class="bf-footer-links">
+      <a href="../index.html">🏠 홈으로</a>
+      <a href="../index.html#sims">🧪 과학 시뮬레이션</a>
+      <a href="../index.html#coding">💻 프로그램 수업</a>
+      <a href="../index.html#games">🎮 게임 놀이터</a>
+    </div>
+    <div>© Beflower · AI와 함께 만드는 과학·프로그램 수업 연구실</div>
+  </div>
+</footer>
+
+<script>
+  const slider = document.getElementById('paramSlider');
+  const valLabel = document.getElementById('valLabel');
+  const statX = document.getElementById('statX');
+  const statY = document.getElementById('statY');
+  const simCv = document.getElementById('simCanvas');
+  const simCtx = simCv.getContext('2d');
+  const grCv = document.getElementById('graphCanvas');
+  const grCtx = grCv.getContext('2d');
+  let points = [];
+
+  function setMode(m) {
+    document.querySelectorAll('.sim-tabs button').forEach((b, idx) => {
+      b.classList.toggle('on', idx + 1 === m);
+    });
+    draw();
+  }
+
+  function draw() {
+    const v = Number(slider.value);
+    valLabel.textContent = v;
+    statX.textContent = v + ' 단위';
+    statY.textContent = (v * 2) + ' 단위';
+
+    simCtx.clearRect(0, 0, simCv.width, simCv.height);
+    simCtx.fillStyle = '#e3f5ef';
+    simCtx.beginPath();
+    simCtx.arc(simCv.width / 2, simCv.height / 2, v * 1.1, 0, Math.PI * 2);
+    simCtx.fill();
+    simCtx.lineWidth = 3;
+    simCtx.strokeStyle = '#1f8a70';
+    simCtx.stroke();
+
+    simCtx.fillStyle = '#1d2a30';
+    simCtx.font = 'bold 16px sans-serif';
+    simCtx.textAlign = 'center';
+    simCtx.fillText('시뮬레이션 영역 (반지름 비례 예시: ' + v + ')', simCv.width / 2, simCv.height - 20);
+
+    grCtx.clearRect(0, 0, grCv.width, grCv.height);
+    grCtx.strokeStyle = '#bdd5ca';
+    grCtx.lineWidth = 2;
+    grCtx.beginPath();
+    grCtx.moveTo(45, 20);
+    grCtx.lineTo(45, 225);
+    grCtx.lineTo(395, 225);
+    grCtx.stroke();
+
+    points.forEach(([px, py]) => {
+      const cx = 45 + (px / 100) * 340;
+      const cy = 225 - (py / 200) * 190;
+      grCtx.fillStyle = '#f08fb0';
+      grCtx.beginPath();
+      grCtx.arc(cx, cy, 6, 0, Math.PI * 2);
+      grCtx.fill();
+    });
+  }
+
+  slider.addEventListener('input', draw);
+  document.getElementById('recordBtn').addEventListener('click', () => {
+    const v = Number(slider.value);
+    points.push([v, v * 2]);
+    draw();
+  });
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    points = [];
+    slider.value = 50;
+    draw();
+  });
+  draw();
+</script>
+</body>
+</html>

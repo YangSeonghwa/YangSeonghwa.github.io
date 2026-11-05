@@ -8,13 +8,24 @@
 ## 구조
 
 ```
-index.html            # 메인 페이지 (과학 시뮬레이션 + 프로그램 수업)
+index.html            # 메인 페이지 (과학 시뮬레이션 + 프로그램 수업 + 미니게임)
+GUIDELINES.md         # [필수] 공통 디자인 시스템(Beflower Design System) 및 제작 지침서
+assets/css/beflower.css # 전 페이지 공통 디자인 시스템 스타일시트
+templates/            # 새 시뮬레이션·수업·활동지·게임 표준 HTML 템플릿 4종
 sims.json             # 과학 시뮬레이션 목록
 lessons.json          # 프로그램 수업 목록
+games.json            # 미니게임 목록
 grade1/ grade2/ grade3/   # 학년별 과학 시뮬레이션
 programming/          # 프로그램 수업 자료 (수업마다 폴더 하나)
+games/                # 교육용 미니게임
 images/               # 이미지
 ```
+
+## 디자인 시스템 및 새 페이지 제작 지침 (`GUIDELINES.md`)
+
+모든 페이지(과학 실험실, 코딩·AI 발표 슬라이드, 활동지, 미니게임)는 **`assets/css/beflower.css` 공통 디자인 시스템**을 통해 일관된 브랜드 헤더(`.bf-topbar`), 네비게이션(`🏠 홈으로`), 푸터(`.bf-footer`), 오프라인 안전 시스템 폰트 스택, 컬러 팔레트(Light / Dark Lab 테마)를 공유합니다.
+
+새 페이지를 만들 때는 **`GUIDELINES.md`**를 먼저 읽고 **`templates/`** 폴더의 표준 템플릿(`simulation-template.html`, `lesson-slides-template.html`, `worksheet-template.html`, `game-template.html`)을 복사해 시작하세요.
 
 ## 새 과학 시뮬레이션 추가
 

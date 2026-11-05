@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[게임 제목] | Beflower 게임 놀이터</title>
+<meta name="description" content="Beflower 게임 놀이터 미니 게임 표준 템플릿">
+<!--
+  [사용 안내]
+  이 파일을 games/<게임명>/index.html (깊이 2단계)로 복사할 때는
+  아래 상대 경로의 '../' 를 '../../' 로 변경하세요.
+-->
+<link rel="stylesheet" href="../assets/css/beflower.css">
+<style>
+  .game-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 20px 16px 32px;
+  }
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .stat-pill {
+    background: var(--bf-surface-soft);
+    border: 1px solid var(--bf-line);
+    border-radius: var(--bf-radius-md);
+    text-align: center;
+    padding: 10px 8px;
+  }
+  .stat-pill span {
+    display: block;
+    color: var(--bf-sub);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .stat-pill strong {
+    display: block;
+    font-size: clamp(22px, 5vw, 30px);
+    color: var(--bf-main);
+    font-variant-numeric: tabular-nums;
+  }
+  .game-stage {
+    min-height: 260px;
+    border-radius: var(--bf-radius-lg);
+    background: linear-gradient(145deg, #eef7f3, #fff8ec);
+    border: 2px solid var(--bf-line-strong);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+  }
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="bf-topbar" aria-label="전역 상단 네비게이션">
+  <div class="bf-topbar-inner">
+    <a class="bf-brand" href="../index.html">
+      <span class="bf-brand-logo" aria-hidden="true">🌸</span>
+      <span class="bf-brand-text">
+        <span class="bf-brand-title">Beflower의 과학 시뮬레이션 랩</span>
+        <span class="bf-brand-sub">게임 놀이터 표준 템플릿</span>
+      </span>
+    </a>
+    <div class="bf-nav">
+      <a href="../index.html">🏠 홈</a>
+      <a href="../index.html#sims">🧪 시뮬레이션</a>
+      <a href="../index.html#coding">💻 프로그램 수업</a>
+      <a class="active" href="../index.html#games">🎮 게임</a>
+    </div>
+  </div>
+</nav>
+
+<header class="bf-page-header">
+  <div class="bf-page-header-inner">
+    <span class="bf-page-kicker">🎮 BEFLOWER GAME PLAYGROUND</span>
+    <h1>[게임 아이콘 + 게임 제목]</h1>
+    <p>제한 시간 동안 목표를 달성하고 최고 점수에 도전해 보세요!</p>
+  </div>
+</header>
+
+<main class="game-wrap">
+  <section class="bf-card">
+    <div class="stats-bar" aria-live="polite">
+      <div class="stat-pill"><span>점수</span><strong id="score">0</strong></div>
+      <div class="stat-pill"><span>남은 시간</span><strong id="time" style="color:var(--bf-danger)">30</strong></div>
+      <div class="stat-pill"><span>최고 기록</span><strong id="best">0</strong></div>
+    </div>
+
+    <div class="game-stage" id="stage">
+      <p id="statusMsg" style="font-weight:700;color:var(--bf-sub);margin:0 0 12px">아래 버튼을 눌러 점수를 올려 보세요!</p>
+      <button type="button" class="bf-btn bf-btn-accent" id="tapBtn" style="font-size:18px;padding:14px 28px">🎯 타깃 터치 (+1점)</button>
+    </div>
+
+    <div class="controls">
+      <button type="button" class="bf-btn bf-btn-primary" id="startBtn">게임 시작</button>
+      <button type="button" class="bf-btn" id="resetBtn">초기화</button>
+    </div>
+
+    <div class="bf-callout" style="margin-top:18px">
+      <b>🎯 게임 방법</b><br>
+      ① [게임 시작]을 누르면 타이머가 작동합니다.<br>
+      ② 화면의 타깃을 빠르게 조작해 점수를 획득하세요.<br>
+      ③ 최고 기록은 브라우저(`localStorage`)에 자동 저장됩니다.
+    </div>
+  </section>
+</main>
+
+<footer class="bf-footer">
+  <div class="bf-footer-inner">
+    <div class="bf-footer-links">
+      <a href="../index.html">🏠 홈으로</a>
+      <a href="../index.html#sims">🧪 과학 시뮬레이션</a>
+      <a href="../index.html#coding">💻 프로그램 수업</a>
+      <a href="../index.html#games">🎮 게임 놀이터</a>
+    </div>
+    <div>© Beflower · 즐겁게 배우고 신나게 놀아요!</div>
+  </div>
+</footer>
+
+<script>
+  let score = 0;
+  let best = 0;
+  const scoreEl = document.getElementById('score');
+  const bestEl = document.getElementById('best');
+  document.getElementById('tapBtn').onclick = () => {
+    score += 1;
+    scoreEl.textContent = score;
+    if (score > best) {
+      best = score;
+      bestEl.textContent = best;
+    }
+  };
+  document.getElementById('resetBtn').onclick = () => {
+    score = 0;
+    scoreEl.textContent = 0;
+  };
+  document.getElementById('startBtn').onclick = () => {
+    score = 0;
+    scoreEl.textContent = 0;
+    document.getElementById('statusMsg').textContent = '게임 시작! 타깃을 눌러 점수를 올리세요!';
+  };
+</script>
+</body>
+</html>

@@ -7,11 +7,12 @@
 <meta name="description" content="과학 교사 Beflower가 만드는 중학교 학년별 과학 웹 시뮬레이션과 프로그램(바이브 코딩) 수업 모음">
 <meta property="og:title" content="Beflower의 과학 시뮬레이션 랩">
 <meta property="og:image" content="images/hero.png">
+<link rel="stylesheet" href="assets/css/beflower.css">
 <style>
-:root{--bg:#f4f9f6;--card:#fff;--ink:#1d2a30;--sub:#5a6b72;--main:#1f8a70;--pink:#f08fb0;--line:#e0ebe6;--p:#e3f0ff;--c:#fff0dc;--b:#e2f6e6;--e:#efe6ff}
+:root{--bg:var(--bf-bg);--card:var(--bf-surface);--ink:var(--bf-ink);--sub:var(--bf-sub);--main:var(--bf-main);--pink:var(--bf-pink);--line:var(--bf-line);--p:var(--bf-tag-physics);--c:var(--bf-tag-chem);--b:var(--bf-tag-bio);--e:var(--bf-tag-earth)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;font-family:"Pretendard","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+body{margin:0;font-family:var(--bf-font-sans);background:var(--bg);color:var(--ink);line-height:1.65}
 a{color:inherit;text-decoration:none}
 .hero{position:relative;min-height:440px;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;padding:70px 20px 110px;background:linear-gradient(135deg,#0f2a44,#1f8a70 65%,#f08fb0);overflow:hidden}
 .hero::before{content:"";position:absolute;inset:0;background:url(images/hero.png) center/cover no-repeat}
@@ -55,7 +56,7 @@ h2{margin:0 0 16px;font-size:22px;color:var(--main)}
 .links a:hover{border-color:var(--main)}
 footer{text-align:center;color:var(--sub);font-size:13px;padding:24px 10px 40px}
 .lead2{margin:-6px 0 14px;color:var(--sub)}
-.site-tabs{position:sticky;top:0;z-index:20;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding:12px 10px;margin:0 -16px 18px;background:rgba(244,249,246,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.site-tabs{position:sticky;top:var(--bf-topbar-height,58px);z-index:20;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding:12px 10px;margin:0 -16px 18px;background:rgba(244,249,246,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .site-tabs a{display:inline-block;padding:8px 17px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--sub);font-size:14px;font-weight:700;transition:.18s}
 .site-tabs a:hover,.site-tabs a:focus-visible{background:var(--main);border-color:var(--main);color:#fff;outline:none}
 .game-card{display:flex;align-items:center;gap:18px;padding:20px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(120deg,#fff4e8,#f1fbf5);transition:.2s}
@@ -73,6 +74,23 @@ footer{text-align:center;color:var(--sub);font-size:13px;padding:24px 10px 40px}
 </style>
 </head>
 <body>
+<nav class="bf-topbar" aria-label="전역 상단 네비게이션">
+  <div class="bf-topbar-inner">
+    <a class="bf-brand" href="index.html">
+      <span class="bf-brand-logo" aria-hidden="true">🌸</span>
+      <span class="bf-brand-text">
+        <span class="bf-brand-title">Beflower의 과학 시뮬레이션 랩</span>
+        <span class="bf-brand-sub">중학교 과학 실험실 · 프로그램(바이브 코딩) 수업</span>
+      </span>
+    </a>
+    <div class="bf-nav">
+      <a class="active" href="index.html" aria-current="page">🏠 홈</a>
+      <a href="#sims">🧪 시뮬레이션</a>
+      <a href="#coding">💻 프로그램 수업</a>
+      <a href="#games">🎮 게임</a>
+    </div>
+  </div>
+</nav>
 <header class="hero">
   <div class="hero-inner">
     <h1>Beflower의 과학 시뮬레이션 랩</h1>
@@ -138,13 +156,25 @@ footer{text-align:center;color:var(--sub);font-size:13px;padding:24px 10px 40px}
         <div class="links">
           <a href="https://github.com/YangSeonghwa" target="_blank" rel="noopener">GitHub 프로필</a>
           <a href="https://github.com/YangSeonghwa/education" target="_blank" rel="noopener">education 저장소</a>
+          <a href="templates/simulation-template.html">디자인 템플릿 미리보기</a>
         </div>
       </div>
     </div>
   </section>
 </main>
 
-<footer>© <span id="y"></span> Beflower · AI와 함께 만드는 과학·프로그램 수업</footer>
+<footer class="bf-footer">
+  <div class="bf-footer-inner">
+    <div class="bf-footer-links">
+      <a href="index.html">🏠 홈</a>
+      <a href="#sims">🧪 과학 시뮬레이션</a>
+      <a href="#coding">💻 프로그램 수업</a>
+      <a href="#games">🎮 게임 놀이터</a>
+      <a href="https://github.com/YangSeonghwa/YangSeonghwa.github.io" target="_blank" rel="noopener">GitHub 저장소</a>
+    </div>
+    <div>© <span id="y"></span> Beflower · AI와 함께 만드는 과학·프로그램 수업 연구실</div>
+  </div>
+</footer>
 
 <script>
 /* 새 시뮬레이션은 sims.json 에 한 줄만 추가하면 됩니다.

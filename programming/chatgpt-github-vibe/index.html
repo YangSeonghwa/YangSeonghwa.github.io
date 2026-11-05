@@ -5,12 +5,13 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <title>ChatGPT와 GitHub로 내 홈페이지 바이브 코딩하기 | 프로그램 수업</title>
 <meta name='description' content='ChatGPT에 GitHub를 연결해 말로 설명하며 홈페이지를 만들고 GitHub Pages로 공개하는 프로그램 수업 발표 자료'>
+<link rel='stylesheet' href='../../assets/css/beflower.css'>
 <style>
-:root{--ink:#1d2a30;--sub:#5a6b72;--main:#1f8a70;--pink:#f08fb0;--line:#e0ebe6;--card:#fff;--soft:#f4f9f6}
+:root{--ink:var(--bf-ink);--sub:var(--bf-sub);--main:var(--bf-main);--pink:var(--bf-pink);--line:var(--bf-line);--card:var(--bf-surface);--soft:var(--bf-surface-soft)}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{font-family:'Pretendard','Noto Sans KR','Malgun Gothic',system-ui,sans-serif;background:linear-gradient(135deg,#0f2a44,#1f8a70 70%);color:var(--ink);overflow:hidden}
-.deck{position:relative;height:100%;display:flex;align-items:center;justify-content:center;padding:18px 18px 70px}
+body{font-family:var(--bf-font-sans);background:linear-gradient(135deg,var(--bf-navy),var(--bf-main) 70%);color:var(--ink);overflow:hidden}
+.deck{position:relative;height:100%;display:flex;align-items:center;justify-content:center;padding:68px 18px 70px}
 .slide{display:none;width:min(1100px,100%);max-height:100%;overflow:auto;background:var(--card);border-radius:24px;padding:clamp(20px,4vw,48px);box-shadow:0 20px 60px rgba(0,0,0,.35);animation:in .35s ease}
 .slide.on{display:block}
 @keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
@@ -51,6 +52,23 @@ a{color:var(--main)}
 </style>
 </head>
 <body>
+<nav class='bf-topbar bf-topbar-fixed bf-topbar-dark' aria-label='전역 상단 네비게이션'>
+  <div class='bf-topbar-inner'>
+    <a class='bf-brand' href='../../index.html'>
+      <span class='bf-brand-logo' aria-hidden='true'>🌸</span>
+      <span class='bf-brand-text'>
+        <span class='bf-brand-title'>Beflower의 과학 시뮬레이션 랩</span>
+        <span class='bf-brand-sub'>프로그램 수업 · ChatGPT와 GitHub 바이브 코딩</span>
+      </span>
+    </a>
+    <div class='bf-nav'>
+      <a href='../../index.html'>🏠 홈</a>
+      <a href='../../index.html#sims'>🧪 시뮬레이션</a>
+      <a class='active' href='../../index.html#coding'>💻 프로그램 수업</a>
+      <a href='worksheet.html'>📄 학생 활동지</a>
+    </div>
+  </div>
+</nav>
 <div class='deck'>
 
 <section class='slide'>
@@ -270,10 +288,10 @@ a{color:var(--main)}
 
 </div>
 
-<div class='bar'>
+<div class='bar bf-slide-bar'>
 <a class='back' href='../../index.html#coding'>← 홈으로</a>
 <button id='prev' type='button'>이전</button>
-<div class='prog'><i id='pi'></i></div>
+<div class='prog bf-slide-prog'><i id='pi'></i></div>
 <span class='cnt' id='cnt'>1 / 1</span>
 <button id='next' type='button'>다음</button>
 <button id='fs' type='button'>전체화면</button>

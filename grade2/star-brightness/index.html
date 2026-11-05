@@ -5,14 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>별의 밝기와 등급 | 중학교 2학년 과학 발표 자료 · Beflower</title>
 <meta name="description" content="거리에 따른 별빛의 퍼짐(역제곱 법칙) 인터랙티브 시뮬레이션, 고대 그리스 히파르코스의 겉보기 등급, 현대 포그슨의 등급 체계(5등급=100배, 1등급=2.5배)를 배우는 수업 발표용 프레젠테이션">
+<link rel="stylesheet" href="../../assets/css/beflower.css">
 <style>
 :root {
   --bg-deep: #070b19;
   --bg-card: #111936;
   --bg-soft: #1a254b;
   --bg-glass: rgba(17, 25, 54, 0.88);
-  --ink: #f1f5f9;
-  --sub: #94a3b8;
+  --ink: var(--bf-ink);
+  --sub: var(--bf-sub);
   --gold: #fbbf24;
   --gold-soft: rgba(251, 191, 36, 0.15);
   --sky: #38bdf8;
@@ -26,7 +27,7 @@
 * { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; padding: 0; }
 body {
-  font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, -apple-system, sans-serif;
+  font-family: var(--bf-font-sans);
   background: radial-gradient(ellipse at top, #172347 0%, #070b19 75%);
   color: var(--ink);
   overflow: hidden;
@@ -557,18 +558,29 @@ body.notes .note { display: block; }
 }
 </style>
 </head>
-<body>
+<body class="bf-theme-dark">
 
 <div class="stars-bg"></div>
 
 <!-- Top Navigation Header -->
-<header class="top-header">
-  <div class="brand">
-    <a class="home-link" href="../../index.html">← Beflower 과학 실험실 홈</a>
-    <span class="brand-title">🌟 중2 과학 · 별의 밝기와 등급 (인터랙티브 수업 발표 자료)</span>
-  </div>
-  <div class="header-controls">
-    <select id="slideJump" class="slide-select" aria-label="슬라이드 바로가기"></select>
+<header class="top-header bf-topbar bf-topbar-fixed bf-topbar-dark">
+  <div class="bf-topbar-inner">
+    <a class="bf-brand" href="../../index.html">
+      <span class="bf-brand-logo" aria-hidden="true">🌸</span>
+      <span class="bf-brand-text">
+        <span class="bf-brand-title">Beflower의 과학 시뮬레이션 랩</span>
+        <span class="bf-brand-sub">🌟 중2 과학 · 지구과학 (별의 밝기와 등급)</span>
+      </span>
+    </a>
+    <div class="bf-nav">
+      <a href="../../index.html">🏠 홈</a>
+      <a class="active" href="../../index.html#sims">🧪 시뮬레이션</a>
+      <a href="../../index.html#coding">💻 프로그램 수업</a>
+      <a href="../../index.html#games">🎮 게임</a>
+    </div>
+    <div class="header-controls bf-topbar-actions">
+      <select id="slideJump" class="slide-select" aria-label="슬라이드 바로가기"></select>
+    </div>
   </div>
 </header>
 

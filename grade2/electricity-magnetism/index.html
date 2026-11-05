@@ -3,19 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2022 개정 교육과정 중2 과학 | 전기와 자기 단원 마무리</title>
+  <title>2022 개정 교육과정 중2 과학 | 전기와 자기 단원 마무리 · Beflower</title>
+  <link rel="stylesheet" href="../../assets/css/beflower.css" />
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Pretendard & Noto Sans KR -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Noto Sans KR"', 'sans-serif'],
+            sans: ['"Pretendard"', '"Noto Sans KR"', '"Malgun Gothic"', 'system-ui', 'sans-serif'],
           },
           colors: {
             brand: {
@@ -33,7 +30,7 @@
   </script>
   <style>
     body {
-      font-family: 'Noto Sans KR', sans-serif;
+      font-family: var(--bf-font-sans);
       background-color: #0B1120;
       color: #F8FAFC;
       overflow-x: hidden;
@@ -120,46 +117,52 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between select-none bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-slate-100">
+<body class="bf-theme-dark min-h-screen flex flex-col justify-between select-none bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-slate-100">
 
   <!-- Top Navigation Header -->
-  <header class="w-full border-b border-slate-800/80 bg-slate-900/70 backdrop-blur-md sticky top-0 z-40 px-4 lg:px-8 py-3">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 via-sky-400 to-indigo-500 flex items-center justify-center shadow-lg shadow-sky-500/20 font-black text-slate-950 text-lg">
-          ⚡
+  <header class="bf-topbar bf-topbar-dark w-full border-b border-slate-800/80 bg-slate-900/85 backdrop-blur-md sticky top-0 z-40 px-4 lg:px-8 py-2.5">
+    <div class="w-full max-w-7xl mx-auto">
+      <div class="flex items-center justify-between gap-3 flex-wrap">
+        <div class="flex items-center gap-3">
+          <a href="../../index.html" class="bf-brand" title="Beflower 과학 시뮬레이션 랩 홈으로">
+            <span class="bf-brand-logo" aria-hidden="true">🌸</span>
+            <span class="bf-brand-text">
+              <span class="bf-brand-title">Beflower의 과학 시뮬레이션 랩</span>
+              <span class="bf-brand-sub">⚡ 중2 과학 · 물리 (전기와 자기 단원 마무리)</span>
+            </span>
+          </a>
         </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">2022 개정 교육과정</span>
-            <span class="text-xs text-slate-400 hidden sm:inline">중학교 2학년 과학 · 단원 14</span>
+
+        <nav class="bf-nav" aria-label="전역 사이트 메뉴">
+          <a href="../../index.html">🏠 홈</a>
+          <a class="active" href="../../index.html#sims">🧪 시뮬레이션</a>
+          <a href="../../index.html#coding">💻 프로그램 수업</a>
+          <a href="../../index.html#games">🎮 게임</a>
+        </nav>
+
+        <!-- Progress Bar & Slide Selector -->
+        <div class="flex items-center gap-2.5">
+          <div class="hidden md:flex items-center gap-2 bg-slate-800/90 px-3 py-1.5 rounded-lg border border-slate-700">
+            <span class="text-xs text-slate-400">슬라이드</span>
+            <select id="slideJumpSelect" onchange="goToSlide(parseInt(this.value))" class="bg-transparent text-xs font-semibold text-sky-300 focus:outline-none cursor-pointer">
+              <!-- Populated by JS -->
+            </select>
           </div>
-          <h1 class="text-sm sm:text-base font-bold text-white tracking-tight">전기와 자기 (Electricity & Magnetism) 단원 마무리</h1>
+
+          <button onclick="toggleTocModal()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 transition flex items-center gap-1.5">
+            <span>☰</span> <span class="hidden sm:inline">전체 목차</span>
+          </button>
+
+          <div class="text-right min-w-[64px]">
+            <span id="slideCounter" class="text-sm font-black text-sky-400">01</span>
+            <span class="text-xs text-slate-400"> / 15</span>
+          </div>
         </div>
       </div>
-
-      <!-- Progress Bar & Slide Selector -->
-      <div class="flex items-center gap-3">
-        <div class="hidden md:flex items-center gap-2 bg-slate-800/90 px-3 py-1.5 rounded-lg border border-slate-700">
-          <span class="text-xs text-slate-400">슬라이드 이동</span>
-          <select id="slideJumpSelect" onchange="goToSlide(parseInt(this.value))" class="bg-transparent text-xs font-semibold text-sky-300 focus:outline-none cursor-pointer">
-            <!-- Populated by JS -->
-          </select>
-        </div>
-
-        <button onclick="toggleTocModal()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 transition flex items-center gap-1.5">
-          <span>☰</span> <span class="hidden sm:inline">전체 목차</span>
-        </button>
-
-        <div class="text-right min-w-[72px]">
-          <span id="slideCounter" class="text-sm font-black text-sky-400">01</span>
-          <span class="text-xs text-slate-500"> / 15</span>
-        </div>
+      <!-- Thin top progress indicator -->
+      <div class="w-full h-1 bg-slate-800 mt-2 rounded-full overflow-hidden">
+        <div id="topProgressBar" class="h-full bg-gradient-to-r from-emerald-400 via-sky-400 to-pink-400 transition-all duration-300" style="width: 6.66%"></div>
       </div>
-    </div>
-    <!-- Thin top progress indicator -->
-    <div class="w-full h-1 bg-slate-800 mt-2.5 rounded-full overflow-hidden max-w-7xl mx-auto">
-      <div id="topProgressBar" class="h-full bg-gradient-to-r from-amber-400 via-sky-400 to-indigo-500 transition-all duration-300" style="width: 6.66%"></div>
     </div>
   </header>
 
@@ -1532,10 +1535,16 @@
   <!-- Bottom Navigation Bar -->
   <footer class="w-full border-t border-slate-800/80 bg-slate-900/80 backdrop-blur-md sticky bottom-0 z-40 px-4 lg:px-8 py-3">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-      <button id="prevSlideBtn" onclick="prevSlide()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:pointer-events-none border border-slate-700 text-xs sm:text-sm font-bold text-slate-200 transition flex items-center gap-2">
-        <span>←</span>
-        <span>이전 슬라이드</span>
-      </button>
+      <div class="flex items-center gap-2">
+        <a href="../../index.html" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs sm:text-sm font-bold text-slate-200 transition flex items-center gap-1.5">
+          <span>🏠</span>
+          <span class="hidden sm:inline">홈으로</span>
+        </a>
+        <button id="prevSlideBtn" onclick="prevSlide()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:pointer-events-none border border-slate-700 text-xs sm:text-sm font-bold text-slate-200 transition flex items-center gap-2">
+          <span>←</span>
+          <span>이전 슬라이드</span>
+        </button>
+      </div>
 
       <!-- Slide Dots -->
       <div id="slideDotsContainer" class="hidden sm:flex items-center gap-1.5">
