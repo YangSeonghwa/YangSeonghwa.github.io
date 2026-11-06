@@ -5,22 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#f4f9f6">
 <title>수박 터뜨리기 | Beflower 게임 놀이터</title>
+<script>
+  (function() {
+    try {
+      var saved = localStorage.getItem("bf-theme");
+      var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      var theme = saved ? saved : (prefersDark ? "dark" : "light");
+      document.documentElement.setAttribute("data-bf-theme", theme);
+      document.documentElement.classList.toggle("bf-theme-dark", theme === "dark");
+      document.documentElement.classList.toggle("bf-theme-light", theme !== "dark");
+    } catch (e) {}
+  })();
+</script>
 <link rel="stylesheet" href="../../assets/css/beflower.css">
 <style>
 :root{--bg:var(--bf-bg);--ink:var(--bf-ink);--sub:var(--bf-sub);--green:var(--bf-main);--red:#e85d5d;--line:var(--bf-line);--gold:#ffd166}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 0,#eef7f3 0,var(--bf-bg) 55%,#e8f7e9 100%);font-family:var(--bf-font-sans);color:var(--ink)}
+body{margin:0;min-height:100vh;background-color:var(--bf-bg);background-image:var(--bf-bg-mesh);font-family:var(--bf-font-sans);color:var(--ink)}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:760px;margin:0 auto;padding:24px 16px 32px}
 header.game-hero{text-align:center;margin-bottom:20px}
 .eyebrow{display:inline-block;padding:5px 13px;border-radius:999px;background:var(--bf-main-soft);color:var(--bf-main);font-size:13px;font-weight:800}
 h1{font-size:clamp(30px,6vw,46px);margin:10px 0 4px;letter-spacing:-1.5px}
 header.game-hero p{color:var(--sub);margin:0}
-.panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:clamp(16px,4vw,28px);box-shadow:0 12px 35px #76501b12}
+.panel{background:var(--bf-surface);border:1px solid var(--line);border-radius:24px;padding:clamp(16px,4vw,28px);box-shadow:var(--bf-shadow-md)}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
-.stat{background:#fff9ef;border:1px solid var(--line);border-radius:15px;text-align:center;padding:10px 6px}
+.stat{background:var(--bf-surface-soft);border:1px solid var(--line);border-radius:15px;text-align:center;padding:10px 6px}
 .stat span{display:block;color:var(--sub);font-size:12px;font-weight:700}
-.stat strong{display:block;font-size:clamp(22px,5vw,30px);font-variant-numeric:tabular-nums}
+.stat strong{display:block;font-size:clamp(22px,5vw,30px);font-variant-numeric:tabular-nums;color:var(--ink)}
 #time{color:var(--red)}#score{color:var(--green)}
 .board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,3vw,18px);padding:clamp(10px,3vw,18px);border-radius:22px;background:linear-gradient(145deg,#d8f1c9,#b9e3a8);border:4px solid #a4d28e;box-shadow:inset 0 4px 12px #397d5620}
 .target{position:relative;aspect-ratio:1;border:2px solid #b7dca7;border-radius:24px;background:linear-gradient(145deg,#fffdf4,#f4ffe9);cursor:pointer;touch-action:manipulation;overflow:hidden;display:grid;place-items:center;transition:transform .12s,border-color .12s}
@@ -35,12 +47,12 @@ header.game-hero p{color:var(--sub);margin:0}
 .controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:20px}
 button.action{border:0;border-radius:999px;padding:12px 26px;font:inherit;font-weight:800;cursor:pointer;transition:transform .15s,filter .15s}
 button.action:hover{transform:translateY(-2px);filter:brightness(1.03)}
-#start{background:var(--green);color:#fff;box-shadow:0 5px 14px #23865340}
-#reset{background:#fff0e5;color:#a84d36}
-#start:focus-visible,#reset:focus-visible{outline:3px solid #26352d;outline-offset:3px}
+#start{background:var(--green);color:#fff;box-shadow:0 5px 14px var(--bf-main-glow)}
+#reset{background:var(--bf-surface-soft);color:var(--ink);border:1px solid var(--line)}
+#start:focus-visible,#reset:focus-visible{outline:3px solid var(--green);outline-offset:3px}
 .message{text-align:center;min-height:28px;margin:14px 0 0;color:var(--sub);font-weight:700}
-.how{margin-top:18px;padding:15px 18px;border-radius:16px;background:#fff8e8;color:#68542a;font-size:14px;line-height:1.8}
-.how b{color:#4c3b17}
+.how{margin-top:18px;padding:15px 18px;border-radius:16px;background:var(--bf-amber-soft);color:var(--ink);font-size:14px;line-height:1.8;border:1px solid rgba(245,158,11,.3)}
+.how b{color:var(--green)}
 footer{text-align:center;color:var(--sub);font-size:12px;margin-top:20px}
 @media(max-width:420px){body{padding:16px 10px 32px}.stats{gap:6px}.stat{padding:8px 3px}.board{gap:8px;padding:8px}.target{border-radius:18px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
@@ -56,11 +68,17 @@ footer{text-align:center;color:var(--sub);font-size:12px;margin-top:20px}
         <span class="bf-brand-sub">게임 놀이터 · 수박 터뜨리기</span>
       </span>
     </a>
-    <div class="bf-nav">
-      <a href="../../index.html">🏠 홈</a>
-      <a href="../../index.html#sims">🧪 시뮬레이션</a>
-      <a href="../../index.html#coding">💻 프로그램 수업</a>
-      <a class="active" href="../../index.html#games">🎮 게임</a>
+    <div class="bf-topbar-actions">
+      <div class="bf-nav">
+        <a href="../../index.html">🏠 홈</a>
+        <a href="../../index.html#sims">🧪 시뮬레이션</a>
+        <a href="../../index.html#coding">💻 프로그램 수업</a>
+        <a class="active" href="../../index.html#games">🎮 게임</a>
+      </div>
+      <button type="button" class="bf-theme-toggle" id="themeToggle" aria-label="다크 모드 전환" title="라이트/다크 테마 전환">
+        <span class="bf-theme-icon" id="themeIcon" aria-hidden="true">🌙</span>
+        <span class="bf-theme-label" id="themeLabel">다크</span>
+      </button>
     </div>
   </div>
 </nav>
@@ -179,6 +197,26 @@ footer{text-align:center;color:var(--sub);font-size:12px;margin-top:20px}
     messageEl.textContent = "준비됐나요? 게임 시작을 눌러 보세요!";
     startBtn.textContent = "게임 시작";
   });
+
+  const themeToggle = document.getElementById("themeToggle");
+  function syncThemeBtn() {
+    const dark = document.documentElement.getAttribute("data-bf-theme") === "dark";
+    const ic = document.getElementById("themeIcon");
+    const lb = document.getElementById("themeLabel");
+    if (ic) ic.textContent = dark ? "☀️" : "🌙";
+    if (lb) lb.textContent = dark ? "라이트" : "다크";
+  }
+  syncThemeBtn();
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      const next = document.documentElement.getAttribute("data-bf-theme") === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-bf-theme", next);
+      document.documentElement.classList.toggle("bf-theme-dark", next === "dark");
+      document.documentElement.classList.toggle("bf-theme-light", next !== "dark");
+      try { localStorage.setItem("bf-theme", next); } catch (_) {}
+      syncThemeBtn();
+    });
+  }
 })();
 </script>
 </body>

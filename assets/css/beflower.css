@@ -1,71 +1,109 @@
 /* ==========================================================================
-   Beflower Design System (beflower.css) v1.0
+   Beflower Design System (beflower.css) v2.0
    Project: yangseonghwa.github.io (Beflower의 과학 시뮬레이션 랩)
    Description: 사이트 전체 페이지(메인 허브, 과학 시뮬레이션, 수업 발표 슬라이드,
-                학생 인쇄용 활동지, 미니 게임)의 일관된 디자인 시스템(컬러 팔레트,
-                타이포그래피, 공통 헤더·네비게이션·푸터·슬라이드 컨트롤 바·컴포넌트).
+                학생 인쇄용 활동지, 미니 게임)의 모던 디자인 시스템.
+                - 다크 모드(수동 토글 + OS prefers-color-scheme 자동 감지)
+                - 글래스모피즘(Glassmorphism) 및 입체 그림자 토큰
+                - 세련된 한글 타이포그래피(Pretendard Variable + 시스템 폴백)
+                - 마이크로 인터랙션 & 스크롤 리빌 애니메이션
    ========================================================================== */
 
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+
 :root {
+  color-scheme: light;
+
   /* 1. Brand & Core Color Palette (Light Mode Default) */
-  --bf-bg: #f4f9f6;
+  --bf-bg: #f3f8f5;
+  --bf-bg-mesh: radial-gradient(at 12% 8%, rgba(31, 138, 112, 0.09) 0px, transparent 48%),
+                radial-gradient(at 88% 14%, rgba(240, 143, 176, 0.10) 0px, transparent 46%),
+                radial-gradient(at 50% 90%, rgba(2, 132, 199, 0.07) 0px, transparent 52%);
   --bf-surface: #ffffff;
-  --bf-surface-soft: #eef7f3;
-  --bf-surface-muted: #f8fcfa;
-  --bf-ink: #1d2a30;
-  --bf-sub: #5a6b72;
-  --bf-muted: #7f9199;
-  --bf-line: #d9e8e1;
-  --bf-line-strong: #bdd5ca;
+  --bf-surface-elevated: rgba(255, 255, 255, 0.88);
+  --bf-surface-soft: #eaf5f0;
+  --bf-surface-muted: #f7fbf9;
+  --bf-glass: rgba(255, 255, 255, 0.82);
+  --bf-glass-border: rgba(255, 255, 255, 0.65);
+
+  --bf-ink: #132229;
+  --bf-sub: #4b5e67;
+  --bf-muted: #768b94;
+  --bf-line: #d6e7df;
+  --bf-line-strong: #b4d1c4;
 
   /* Brand Primary & Accents */
-  --bf-main: #1f8a70;          /* Beflower Emerald */
-  --bf-main-hover: #176f59;
-  --bf-main-soft: #e3f5ef;
-  --bf-navy: #0f2a44;          /* Deep Science Navy */
-  --bf-pink: #f08fb0;          /* Blossom Pink */
-  --bf-pink-hover: #df7398;
-  --bf-pink-soft: #fdebf1;
+  --bf-main: #188067;          /* Beflower Emerald */
+  --bf-main-hover: #126652;
+  --bf-main-soft: #dff4ec;
+  --bf-main-glow: rgba(24, 128, 103, 0.24);
+  --bf-navy: #0c233b;          /* Deep Science Navy */
+  --bf-pink: #ec7ea5;          /* Blossom Pink */
+  --bf-pink-hover: #d9608b;
+  --bf-pink-soft: #fce8f0;
   --bf-sky: #0284c7;           /* Physics Sky */
   --bf-sky-soft: #e0f2fe;
   --bf-amber: #f59e0b;         /* Energy Amber */
   --bf-amber-soft: #fef3c7;
+  --bf-purple: #7c3aed;        /* Space Violet */
+  --bf-purple-soft: #ede9fe;
   --bf-danger: #e11d48;
   --bf-danger-soft: #ffe4e6;
   --bf-success: #10b981;
   --bf-success-soft: #d1fae5;
 
-  /* 2. Subject & Category Tag Palette */
-  --bf-tag-physics: #e3f0ff;
-  --bf-tag-physics-ink: #1d4ed8;
-  --bf-tag-chem: #fff0dc;
-  --bf-tag-chem-ink: #b45309;
-  --bf-tag-bio: #e2f6e6;
-  --bf-tag-bio-ink: #15803d;
-  --bf-tag-earth: #efe6ff;
-  --bf-tag-earth-ink: #6d28d9;
-  --bf-tag-coding: #ffe7f0;
-  --bf-tag-coding-ink: #be185d;
-  --bf-tag-game: #fef3c7;
-  --bf-tag-game-ink: #92400e;
+  /* 2. Subject & Category Tag Palette (Light Mode) */
+  --bf-tag-physics: #e0f2fe;
+  --bf-tag-physics-ink: #0369a1;
+  --bf-tag-physics-border: rgba(3, 105, 161, 0.2);
 
-  /* 3. Typography Stack (Offline-safe System Font Stack) */
-  --bf-font-sans: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --bf-tag-chem: #ffedd5;
+  --bf-tag-chem-ink: #c2410c;
+  --bf-tag-chem-border: rgba(194, 65, 12, 0.2);
+
+  --bf-tag-bio: #dcfce7;
+  --bf-tag-bio-ink: #15803d;
+  --bf-tag-bio-border: rgba(21, 128, 61, 0.2);
+
+  --bf-tag-earth: #f3e8ff;
+  --bf-tag-earth-ink: #6d28d9;
+  --bf-tag-earth-border: rgba(109, 40, 217, 0.2);
+
+  --bf-tag-coding: #fce7f3;
+  --bf-tag-coding-ink: #be185d;
+  --bf-tag-coding-border: rgba(190, 24, 93, 0.2);
+
+  --bf-tag-game: #fef3c7;
+  --bf-tag-game-ink: #b45309;
+  --bf-tag-game-border: rgba(180, 83, 9, 0.2);
+
+  --bf-tag-grade: #edf4f1;
+  --bf-tag-grade-ink: #374b54;
+
+  /* 3. Typography Stack (Pretendard Variable + Offline-safe System Fallback) */
+  --bf-font-sans: "Pretendard Variable", "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --bf-font-mono: "JetBrains Mono", "D2Coding", "Consolas", "SFMono-Regular", monospace;
 
-  /* 4. Elevation, Radius & Layout Tokens */
-  --bf-radius-sm: 10px;
-  --bf-radius-md: 14px;
-  --bf-radius-lg: 20px;
-  --bf-radius-xl: 26px;
+  /* 4. Elevation, Radius, Transitions & Layout Tokens */
+  --bf-radius-xs: 8px;
+  --bf-radius-sm: 12px;
+  --bf-radius-md: 16px;
+  --bf-radius-lg: 22px;
+  --bf-radius-xl: 28px;
   --bf-radius-pill: 999px;
-  --bf-shadow-sm: 0 2px 8px rgba(15, 42, 68, 0.05);
-  --bf-shadow-md: 0 8px 24px rgba(15, 42, 68, 0.08);
-  --bf-shadow-lg: 0 18px 48px rgba(15, 42, 68, 0.14);
-  --bf-topbar-height: 58px;
-  --bf-max-width: 1120px;
 
-  /* Legacy Variable Aliases (for backward compatibility across pages) */
+  --bf-shadow-xs: 0 1px 3px rgba(12, 35, 59, 0.04);
+  --bf-shadow-sm: 0 4px 12px rgba(12, 35, 59, 0.06);
+  --bf-shadow-md: 0 10px 30px -4px rgba(12, 35, 59, 0.08), 0 4px 12px -2px rgba(12, 35, 59, 0.04);
+  --bf-shadow-lg: 0 22px 50px -10px rgba(12, 35, 59, 0.15), 0 8px 20px -4px rgba(12, 35, 59, 0.06);
+  --bf-shadow-glow: 0 14px 34px -6px rgba(24, 128, 103, 0.25);
+
+  --bf-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --bf-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --bf-topbar-height: 62px;
+  --bf-max-width: 1140px;
+
+  /* Legacy Variable Aliases (for backward compatibility across all subpages) */
   --bg: var(--bf-bg);
   --card: var(--bf-surface);
   --soft: var(--bf-surface-soft);
@@ -76,30 +114,79 @@
   --line: var(--bf-line);
 }
 
-/* Dark Theme Variant (for Space / Physics / Immersive Presentation Decks) */
+/* ==========================================================================
+   Dark Theme Variant (Explicit Toggle + OS Preference Fallback)
+   ========================================================================== */
 html.bf-theme-dark,
 body.bf-theme-dark,
 [data-bf-theme="dark"] {
-  --bf-bg: #080f1e;
-  --bf-surface: #111c35;
-  --bf-surface-soft: #1a2849;
-  --bf-surface-muted: #0d162b;
-  --bf-ink: #f8fafc;
+  color-scheme: dark;
+
+  --bf-bg: #070e1b;
+  --bf-bg-mesh: radial-gradient(at 15% 10%, rgba(52, 211, 153, 0.11) 0px, transparent 48%),
+                radial-gradient(at 85% 12%, rgba(244, 114, 182, 0.10) 0px, transparent 46%),
+                radial-gradient(at 50% 88%, rgba(56, 189, 248, 0.09) 0px, transparent 55%);
+  --bf-surface: #0f1b31;
+  --bf-surface-elevated: rgba(18, 31, 56, 0.88);
+  --bf-surface-soft: #172644;
+  --bf-surface-muted: #0b1426;
+  --bf-glass: rgba(15, 27, 49, 0.82);
+  --bf-glass-border: rgba(148, 163, 184, 0.16);
+
+  --bf-ink: #f1f5f9;
   --bf-sub: #cbd5e1;
   --bf-muted: #94a3b8;
-  --bf-line: #26365c;
-  --bf-line-strong: #384f82;
+  --bf-line: #22345a;
+  --bf-line-strong: #354f84;
+
   --bf-main: #34d399;
   --bf-main-hover: #10b981;
   --bf-main-soft: rgba(52, 211, 153, 0.15);
+  --bf-main-glow: rgba(52, 211, 153, 0.28);
+  --bf-navy: #061021;
+  --bf-pink: #f472b6;
+  --bf-pink-hover: #ec4899;
+  --bf-pink-soft: rgba(244, 114, 182, 0.16);
   --bf-sky: #38bdf8;
   --bf-sky-soft: rgba(56, 189, 248, 0.16);
   --bf-amber: #fbbf24;
   --bf-amber-soft: rgba(251, 191, 36, 0.16);
-  --bf-pink: #f472b6;
-  --bf-pink-soft: rgba(244, 114, 182, 0.16);
-  --bf-shadow-md: 0 12px 32px rgba(0, 0, 0, 0.45);
-  --bf-shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.65);
+  --bf-purple: #a78bfa;
+  --bf-purple-soft: rgba(167, 139, 250, 0.16);
+
+  /* Dark-mode Subject & Category Tag Palette */
+  --bf-tag-physics: rgba(56, 189, 248, 0.16);
+  --bf-tag-physics-ink: #7dd3fc;
+  --bf-tag-physics-border: rgba(56, 189, 248, 0.32);
+
+  --bf-tag-chem: rgba(251, 146, 60, 0.16);
+  --bf-tag-chem-ink: #fdba74;
+  --bf-tag-chem-border: rgba(251, 146, 60, 0.32);
+
+  --bf-tag-bio: rgba(52, 211, 153, 0.16);
+  --bf-tag-bio-ink: #6ee7b7;
+  --bf-tag-bio-border: rgba(52, 211, 153, 0.32);
+
+  --bf-tag-earth: rgba(167, 139, 250, 0.18);
+  --bf-tag-earth-ink: #c4b5fd;
+  --bf-tag-earth-border: rgba(167, 139, 250, 0.34);
+
+  --bf-tag-coding: rgba(244, 114, 182, 0.16);
+  --bf-tag-coding-ink: #f9a8d4;
+  --bf-tag-coding-border: rgba(244, 114, 182, 0.32);
+
+  --bf-tag-game: rgba(251, 191, 36, 0.16);
+  --bf-tag-game-ink: #fde68a;
+  --bf-tag-game-border: rgba(251, 191, 36, 0.32);
+
+  --bf-tag-grade: rgba(148, 163, 184, 0.16);
+  --bf-tag-grade-ink: #e2e8f0;
+
+  --bf-shadow-xs: 0 2px 6px rgba(0, 0, 0, 0.35);
+  --bf-shadow-sm: 0 6px 16px rgba(0, 0, 0, 0.4);
+  --bf-shadow-md: 0 14px 34px rgba(0, 0, 0, 0.5);
+  --bf-shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.68);
+  --bf-shadow-glow: 0 14px 36px -6px rgba(52, 211, 153, 0.28);
 
   /* Re-bind Legacy Variable Aliases for Dark Theme */
   --bg: var(--bf-bg);
@@ -112,8 +199,77 @@ body.bf-theme-dark,
   --line: var(--bf-line);
 }
 
+/* Automatic OS Dark Mode when user has not explicitly forced Light Mode */
+@media (prefers-color-scheme: dark) {
+  html:not([data-bf-theme="light"]):not(.bf-theme-light) {
+    color-scheme: dark;
+    --bf-bg: #070e1b;
+    --bf-bg-mesh: radial-gradient(at 15% 10%, rgba(52, 211, 153, 0.11) 0px, transparent 48%),
+                  radial-gradient(at 85% 12%, rgba(244, 114, 182, 0.10) 0px, transparent 46%),
+                  radial-gradient(at 50% 88%, rgba(56, 189, 248, 0.09) 0px, transparent 55%);
+    --bf-surface: #0f1b31;
+    --bf-surface-elevated: rgba(18, 31, 56, 0.88);
+    --bf-surface-soft: #172644;
+    --bf-surface-muted: #0b1426;
+    --bf-glass: rgba(15, 27, 49, 0.82);
+    --bf-glass-border: rgba(148, 163, 184, 0.16);
+    --bf-ink: #f1f5f9;
+    --bf-sub: #cbd5e1;
+    --bf-muted: #94a3b8;
+    --bf-line: #22345a;
+    --bf-line-strong: #354f84;
+    --bf-main: #34d399;
+    --bf-main-hover: #10b981;
+    --bf-main-soft: rgba(52, 211, 153, 0.15);
+    --bf-main-glow: rgba(52, 211, 153, 0.28);
+    --bf-navy: #061021;
+    --bf-pink: #f472b6;
+    --bf-pink-hover: #ec4899;
+    --bf-pink-soft: rgba(244, 114, 182, 0.16);
+    --bf-sky: #38bdf8;
+    --bf-sky-soft: rgba(56, 189, 248, 0.16);
+    --bf-amber: #fbbf24;
+    --bf-amber-soft: rgba(251, 191, 36, 0.16);
+    --bf-purple: #a78bfa;
+    --bf-purple-soft: rgba(167, 139, 250, 0.16);
+    --bf-tag-physics: rgba(56, 189, 248, 0.16);
+    --bf-tag-physics-ink: #7dd3fc;
+    --bf-tag-physics-border: rgba(56, 189, 248, 0.32);
+    --bf-tag-chem: rgba(251, 146, 60, 0.16);
+    --bf-tag-chem-ink: #fdba74;
+    --bf-tag-chem-border: rgba(251, 146, 60, 0.32);
+    --bf-tag-bio: rgba(52, 211, 153, 0.16);
+    --bf-tag-bio-ink: #6ee7b7;
+    --bf-tag-bio-border: rgba(52, 211, 153, 0.32);
+    --bf-tag-earth: rgba(167, 139, 250, 0.18);
+    --bf-tag-earth-ink: #c4b5fd;
+    --bf-tag-earth-border: rgba(167, 139, 250, 0.34);
+    --bf-tag-coding: rgba(244, 114, 182, 0.16);
+    --bf-tag-coding-ink: #f9a8d4;
+    --bf-tag-coding-border: rgba(244, 114, 182, 0.32);
+    --bf-tag-game: rgba(251, 191, 36, 0.16);
+    --bf-tag-game-ink: #fde68a;
+    --bf-tag-game-border: rgba(251, 191, 36, 0.32);
+    --bf-tag-grade: rgba(148, 163, 184, 0.16);
+    --bf-tag-grade-ink: #e2e8f0;
+    --bf-shadow-xs: 0 2px 6px rgba(0, 0, 0, 0.35);
+    --bf-shadow-sm: 0 6px 16px rgba(0, 0, 0, 0.4);
+    --bf-shadow-md: 0 14px 34px rgba(0, 0, 0, 0.5);
+    --bf-shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.68);
+    --bf-shadow-glow: 0 14px 36px -6px rgba(52, 211, 153, 0.28);
+    --bg: var(--bf-bg);
+    --card: var(--bf-surface);
+    --soft: var(--bf-surface-soft);
+    --ink: var(--bf-ink);
+    --sub: var(--bf-sub);
+    --main: var(--bf-main);
+    --pink: var(--bf-pink);
+    --line: var(--bf-line);
+  }
+}
+
 /* ==========================================================================
-   Base Reset & Typography
+   Base Reset & Refined Typography
    ========================================================================== */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -122,14 +278,49 @@ body.bf-theme-dark,
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   margin: 0;
   font-family: var(--bf-font-sans);
   background-color: var(--bf-bg);
+  background-image: var(--bf-bg-mesh);
+  background-attachment: fixed;
   color: var(--bf-ink);
   line-height: 1.65;
+  letter-spacing: -0.015em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  transition: background-color 0.28s ease, color 0.28s ease;
+}
+
+::selection {
+  background: var(--bf-main);
+  color: #ffffff;
+}
+
+/* Accessibility Skip Link */
+.bf-skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  z-index: 999;
+  padding: 10px 18px;
+  background: var(--bf-main);
+  color: #ffffff;
+  font-weight: 800;
+  border-radius: var(--bf-radius-pill);
+  text-decoration: none;
+  box-shadow: var(--bf-shadow-md);
+  transition: top 0.2s ease;
+}
+
+.bf-skip-link:focus {
+  top: 12px;
 }
 
 /* ==========================================================================
@@ -141,21 +332,23 @@ body {
   z-index: 100;
   width: 100%;
   min-height: var(--bf-topbar-height);
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--bf-glass);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
   border-bottom: 1px solid var(--bf-line);
-  padding: 8px 16px;
+  padding: 8px 18px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
+html.bf-theme-dark .bf-topbar,
 body.bf-theme-dark .bf-topbar,
 [data-bf-theme="dark"] .bf-topbar,
 .bf-topbar.bf-topbar-dark {
-  background: rgba(8, 15, 30, 0.88);
-  border-bottom-color: rgba(148, 163, 184, 0.2);
+  background: rgba(7, 14, 27, 0.84);
+  border-bottom-color: rgba(148, 163, 184, 0.16);
   color: #f1f5f9;
 }
 
@@ -179,17 +372,22 @@ body.bf-theme-dark .bf-topbar,
 .bf-brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 11px;
   text-decoration: none;
   color: inherit;
   min-width: 0;
+  transition: transform 0.2s var(--bf-ease-out);
+}
+
+.bf-brand:hover {
+  transform: translateY(-1px);
 }
 
 .bf-brand-logo {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--bf-navy), var(--bf-main) 65%, var(--bf-pink));
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #0f2a44 0%, #188067 60%, #ec7ea5 100%);
   color: #ffffff;
   display: inline-flex;
   align-items: center;
@@ -197,7 +395,7 @@ body.bf-theme-dark .bf-topbar,
   font-size: 18px;
   font-weight: 800;
   flex-shrink: 0;
-  box-shadow: 0 3px 10px rgba(31, 138, 112, 0.28);
+  box-shadow: 0 4px 12px rgba(24, 128, 103, 0.3);
 }
 
 .bf-brand-text {
@@ -208,15 +406,16 @@ body.bf-theme-dark .bf-topbar,
 }
 
 .bf-brand-title {
-  font-size: 15px;
+  font-size: 15.5px;
   font-weight: 800;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.025em;
   color: var(--bf-ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+html.bf-theme-dark .bf-brand-title,
 body.bf-theme-dark .bf-brand-title,
 [data-bf-theme="dark"] .bf-brand-title,
 .bf-topbar.bf-topbar-dark .bf-brand-title {
@@ -225,6 +424,7 @@ body.bf-theme-dark .bf-brand-title,
 
 .bf-brand-sub {
   font-size: 11.5px;
+  font-weight: 500;
   color: var(--bf-sub);
   white-space: nowrap;
   overflow: hidden;
@@ -248,15 +448,15 @@ body.bf-theme-dark .bf-brand-sub,
 .bf-nav a {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 6px 12px;
+  gap: 5px;
+  padding: 6px 13px;
   border-radius: var(--bf-radius-pill);
   font-size: 13px;
   font-weight: 700;
   color: var(--bf-sub);
   text-decoration: none;
   border: 1px solid transparent;
-  transition: all 0.18s ease;
+  transition: all 0.2s var(--bf-ease-out);
   white-space: nowrap;
 }
 
@@ -264,7 +464,8 @@ body.bf-theme-dark .bf-brand-sub,
 .bf-nav a:focus-visible {
   color: var(--bf-main);
   background: var(--bf-main-soft);
-  border-color: rgba(31, 138, 112, 0.25);
+  border-color: rgba(24, 128, 103, 0.25);
+  transform: translateY(-1px);
   outline: none;
 }
 
@@ -273,14 +474,17 @@ body.bf-theme-dark .bf-brand-sub,
   background: var(--bf-main);
   color: #ffffff;
   border-color: var(--bf-main);
+  box-shadow: 0 3px 10px var(--bf-main-glow);
 }
 
+html.bf-theme-dark .bf-nav a,
 body.bf-theme-dark .bf-nav a,
 [data-bf-theme="dark"] .bf-nav a,
 .bf-topbar.bf-topbar-dark .bf-nav a {
   color: #cbd5e1;
 }
 
+html.bf-theme-dark .bf-nav a:hover,
 body.bf-theme-dark .bf-nav a:hover,
 [data-bf-theme="dark"] .bf-nav a:hover,
 .bf-topbar.bf-topbar-dark .bf-nav a:hover {
@@ -289,12 +493,13 @@ body.bf-theme-dark .bf-nav a:hover,
   border-color: rgba(56, 189, 248, 0.35);
 }
 
+html.bf-theme-dark .bf-nav a.active,
 body.bf-theme-dark .bf-nav a.active,
 [data-bf-theme="dark"] .bf-nav a.active,
 .bf-topbar.bf-topbar-dark .bf-nav a.active {
-  background: #0284c7;
+  background: linear-gradient(135deg, #10b981, #0284c7);
   color: #ffffff;
-  border-color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.45);
 }
 
 .bf-topbar-actions {
@@ -303,19 +508,68 @@ body.bf-theme-dark .bf-nav a.active,
   gap: 8px;
 }
 
+/* Theme Toggle Button (.bf-theme-toggle) */
+.bf-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 13px;
+  border-radius: var(--bf-radius-pill);
+  border: 1px solid var(--bf-line-strong);
+  background: var(--bf-surface);
+  color: var(--bf-ink);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--bf-shadow-xs);
+  transition: all 0.22s var(--bf-ease-out);
+  white-space: nowrap;
+}
+
+.bf-theme-toggle:hover,
+.bf-theme-toggle:focus-visible {
+  border-color: var(--bf-main);
+  background: var(--bf-main-soft);
+  color: var(--bf-main);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.bf-theme-toggle .bf-theme-icon {
+  font-size: 15px;
+  line-height: 1;
+  transition: transform 0.35s var(--bf-ease-spring);
+}
+
+.bf-theme-toggle:hover .bf-theme-icon {
+  transform: rotate(18deg) scale(1.1);
+}
+
 /* ==========================================================================
    2. Standardized Page Hero / Header (.bf-page-header)
    ========================================================================== */
 .bf-page-header {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--bf-navy), var(--bf-main) 68%, var(--bf-pink));
+  background: linear-gradient(135deg, #0b2239 0%, #188067 64%, #ec7ea5 100%);
   color: #ffffff;
-  padding: 28px 20px 32px;
-  border-radius: 0 0 28px 28px;
+  padding: 34px 20px 38px;
+  border-radius: 0 0 32px 32px;
   box-shadow: var(--bf-shadow-md);
   text-align: center;
-  margin-bottom: 22px;
+  margin-bottom: 26px;
+}
+
+.bf-page-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 25%, rgba(255, 255, 255, 0.16), transparent 45%),
+              radial-gradient(circle at 80% 75%, rgba(56, 189, 248, 0.2), transparent 50%);
+  pointer-events: none;
 }
 
 .bf-page-header-inner {
@@ -329,25 +583,26 @@ body.bf-theme-dark .bf-nav a.active,
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 14px;
+  padding: 5px 15px;
   border-radius: var(--bf-radius-pill);
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.38);
-  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   font-size: 13px;
   font-weight: 700;
   color: #ffffff;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .bf-page-header h1 {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   font-size: clamp(24px, 4.5vw, 38px);
   font-weight: 800;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.03em;
   color: #ffffff;
-  line-height: 1.25;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+  line-height: 1.24;
+  text-shadow: 0 3px 16px rgba(0, 0, 0, 0.25);
 }
 
 .bf-page-header p {
@@ -363,42 +618,69 @@ body.bf-theme-dark .bf-nav a.active,
 .bf-container {
   max-width: var(--bf-max-width);
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 18px;
 }
 
 .bf-card {
   background: var(--bf-surface);
   border: 1px solid var(--bf-line);
   border-radius: var(--bf-radius-lg);
-  padding: 22px;
+  padding: 24px;
   box-shadow: var(--bf-shadow-md);
+  transition: transform 0.24s var(--bf-ease-out), box-shadow 0.24s var(--bf-ease-out), border-color 0.24s ease, background-color 0.25s ease;
 }
 
 .bf-badge {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   font-size: 12px;
   font-weight: 700;
-  padding: 3px 10px;
+  padding: 4px 11px;
   border-radius: var(--bf-radius-pill);
   background: var(--bf-surface-soft);
   color: var(--bf-main);
+  border: 1px solid transparent;
+  line-height: 1.3;
 }
 
-.bf-badge.물리, .bf-badge.physics { background: var(--bf-tag-physics); color: var(--bf-tag-physics-ink); }
-.bf-badge.화학, .bf-badge.chem    { background: var(--bf-tag-chem); color: var(--bf-tag-chem-ink); }
-.bf-badge.생명, .bf-badge.bio     { background: var(--bf-tag-bio); color: var(--bf-tag-bio-ink); }
-.bf-badge.지구과학, .bf-badge.earth { background: var(--bf-tag-earth); color: var(--bf-tag-earth-ink); }
-.bf-badge.코딩, .bf-badge.coding  { background: var(--bf-tag-coding); color: var(--bf-tag-coding-ink); }
-.bf-badge.게임, .bf-badge.game    { background: var(--bf-tag-game); color: var(--bf-tag-game-ink); }
+.bf-badge.물리, .bf-badge.physics {
+  background: var(--bf-tag-physics);
+  color: var(--bf-tag-physics-ink);
+  border-color: var(--bf-tag-physics-border);
+}
+.bf-badge.화학, .bf-badge.chem {
+  background: var(--bf-tag-chem);
+  color: var(--bf-tag-chem-ink);
+  border-color: var(--bf-tag-chem-border);
+}
+.bf-badge.생명, .bf-badge.bio {
+  background: var(--bf-tag-bio);
+  color: var(--bf-tag-bio-ink);
+  border-color: var(--bf-tag-bio-border);
+}
+.bf-badge.지구과학, .bf-badge.earth {
+  background: var(--bf-tag-earth);
+  color: var(--bf-tag-earth-ink);
+  border-color: var(--bf-tag-earth-border);
+}
+.bf-badge.코딩, .bf-badge.coding {
+  background: var(--bf-tag-coding);
+  color: var(--bf-tag-coding-ink);
+  border-color: var(--bf-tag-coding-border);
+}
+.bf-badge.게임, .bf-badge.game {
+  background: var(--bf-tag-game);
+  color: var(--bf-tag-game-ink);
+  border-color: var(--bf-tag-game-border);
+}
 
 .bf-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 9px 18px;
+  gap: 7px;
+  padding: 10px 20px;
   border-radius: var(--bf-radius-pill);
   border: 1.5px solid var(--bf-main);
   background: var(--bf-surface);
@@ -408,19 +690,20 @@ body.bf-theme-dark .bf-nav a.active,
   font-weight: 700;
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.16s ease;
+  transition: all 0.2s var(--bf-ease-out);
 }
 
 .bf-btn:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
   background: var(--bf-main-soft);
+  box-shadow: var(--bf-shadow-sm);
 }
 
 .bf-btn.bf-btn-primary {
   background: var(--bf-main);
   color: #ffffff;
   border-color: var(--bf-main);
-  box-shadow: 0 4px 12px rgba(31, 138, 112, 0.25);
+  box-shadow: 0 6px 16px var(--bf-main-glow);
 }
 
 .bf-btn.bf-btn-primary:hover {
@@ -432,14 +715,14 @@ body.bf-theme-dark .bf-nav a.active,
   background: var(--bf-pink);
   color: #ffffff;
   border-color: var(--bf-pink);
-  box-shadow: 0 4px 12px rgba(240, 143, 176, 0.35);
+  box-shadow: 0 6px 16px rgba(236, 126, 165, 0.35);
 }
 
 .bf-callout {
   border-left: 5px solid var(--bf-main);
   background: var(--bf-surface-soft);
   border-radius: var(--bf-radius-md);
-  padding: 12px 16px;
+  padding: 13px 18px;
   margin: 12px 0;
   font-size: 14.5px;
 }
@@ -447,7 +730,7 @@ body.bf-theme-dark .bf-nav a.active,
 .bf-callout.warn {
   border-left-color: var(--bf-amber);
   background: var(--bf-amber-soft);
-  color: #78350f;
+  color: var(--bf-ink);
 }
 
 /* ==========================================================================
@@ -463,9 +746,9 @@ body.bf-theme-dark .bf-nav a.active,
   align-items: center;
   gap: 10px;
   padding: 0 16px;
-  background: rgba(15, 42, 68, 0.88);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(12, 35, 59, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid rgba(255, 255, 255, 0.15);
   color: #ffffff;
   z-index: 90;
@@ -513,19 +796,22 @@ body.bf-theme-dark .bf-nav a.active,
    5. Unified Site Footer (.bf-footer)
    ========================================================================== */
 .bf-footer {
-  margin-top: 40px;
-  padding: 28px 16px 40px;
+  margin-top: 48px;
+  padding: 34px 18px 46px;
   border-top: 1px solid var(--bf-line);
   text-align: center;
   color: var(--bf-sub);
   font-size: 13.5px;
-  background: rgba(255, 255, 255, 0.55);
+  background: var(--bf-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
+html.bf-theme-dark .bf-footer,
 body.bf-theme-dark .bf-footer,
 [data-bf-theme="dark"] .bf-footer {
-  background: rgba(8, 15, 30, 0.7);
-  border-top-color: rgba(148, 163, 184, 0.2);
+  background: rgba(7, 14, 27, 0.78);
+  border-top-color: rgba(148, 163, 184, 0.16);
 }
 
 .bf-footer-inner {
@@ -534,21 +820,21 @@ body.bf-theme-dark .bf-footer,
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .bf-footer-links {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px 16px;
+  gap: 8px 18px;
 }
 
 .bf-footer-links a {
   color: var(--bf-sub);
   text-decoration: none;
   font-weight: 600;
-  transition: color 0.15s ease;
+  transition: color 0.18s ease, transform 0.18s ease;
 }
 
 .bf-footer-links a:hover {
@@ -556,9 +842,60 @@ body.bf-theme-dark .bf-footer,
 }
 
 /* ==========================================================================
-   6. Responsive & Print Rules
+   6. Animations & Scroll Reveal Utilities
    ========================================================================== */
-@media (max-width: 680px) {
+@keyframes bfFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bfFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes bfPulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(24, 128, 103, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(24, 128, 103, 0);
+  }
+}
+
+.bf-animate-in {
+  animation: bfFadeUp 0.55s var(--bf-ease-out) both;
+}
+
+.bf-float {
+  animation: bfFloat 4.5s ease-in-out infinite;
+}
+
+.bf-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s var(--bf-ease-out), transform 0.6s var(--bf-ease-out);
+}
+
+.bf-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   7. Responsive & Accessibility / Print Rules
+   ========================================================================== */
+@media (max-width: 720px) {
   .bf-topbar {
     padding: 8px 12px;
   }
@@ -566,8 +903,14 @@ body.bf-theme-dark .bf-footer,
     display: none;
   }
   .bf-nav a {
-    padding: 5px 9px;
+    padding: 5px 10px;
     font-size: 12px;
+  }
+  .bf-theme-toggle .bf-theme-label {
+    display: none;
+  }
+  .bf-theme-toggle {
+    padding: 0 10px;
   }
   .bf-slide-bar {
     gap: 6px;
@@ -580,15 +923,30 @@ body.bf-theme-dark .bf-footer,
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .bf-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 @media print {
   .bf-topbar,
   .bf-slide-bar,
   .bf-footer,
+  .bf-theme-toggle,
   .no-print {
     display: none !important;
   }
   body {
     background: #ffffff !important;
+    background-image: none !important;
     color: #000000 !important;
     overflow: visible !important;
   }

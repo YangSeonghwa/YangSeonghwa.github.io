@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>학생 활동지 | ChatGPT와 GitHub로 내 홈페이지 바이브 코딩하기 · Beflower</title>
+<script>
+  (function() {
+    try {
+      var saved = localStorage.getItem("bf-theme");
+      var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      var theme = saved ? saved : (prefersDark ? "dark" : "light");
+      document.documentElement.setAttribute("data-bf-theme", theme);
+      document.documentElement.classList.toggle("bf-theme-dark", theme === "dark");
+      document.documentElement.classList.toggle("bf-theme-light", theme !== "dark");
+    } catch (e) {}
+  })();
+</script>
 <link rel="stylesheet" href="../../assets/css/beflower.css">
 <style>
   body {
@@ -77,7 +89,7 @@
   }
   td {
     height: 40px;
-    background: #ffffff;
+    background: var(--bf-surface);
   }
   .note {
     background: var(--bf-surface-soft);
@@ -99,8 +111,9 @@
     margin-top: 24px;
   }
   @media print {
-    body {
-      background: #ffffff;
+    body, .worksheet-sheet, td {
+      background: #ffffff !important;
+      color: #000000 !important;
     }
     .worksheet-wrap {
       margin: 0;
@@ -135,6 +148,10 @@
       <a href="index.html">📊 발표 슬라이드</a>
     </div>
     <div class="bf-topbar-actions">
+      <button type="button" class="bf-theme-toggle" id="themeToggle" aria-label="다크 모드 전환" title="라이트/다크 테마 전환">
+        <span class="bf-theme-icon" id="themeIcon" aria-hidden="true">🌙</span>
+        <span class="bf-theme-label" id="themeLabel">다크</span>
+      </button>
       <button type="button" class="bf-btn bf-btn-primary" onclick="window.print()">🖨️ 활동지 인쇄</button>
     </div>
   </div>
@@ -213,5 +230,25 @@
     <div>© Beflower · AI와 함께 만드는 과학·프로그램 수업 연구실</div>
   </div>
 </footer>
+<script>
+(function() {
+  var btn = document.getElementById("themeToggle");
+  function sync() {
+    var dark = document.documentElement.getAttribute("data-bf-theme") === "dark";
+    var ic = document.getElementById("themeIcon"), lb = document.getElementById("themeLabel");
+    if (ic) ic.textContent = dark ? "☀️" : "🌙";
+    if (lb) lb.textContent = dark ? "라이트" : "다크";
+  }
+  sync();
+  if (btn) btn.addEventListener("click", function() {
+    var next = document.documentElement.getAttribute("data-bf-theme") === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-bf-theme", next);
+    document.documentElement.classList.toggle("bf-theme-dark", next === "dark");
+    document.documentElement.classList.toggle("bf-theme-light", next !== "dark");
+    try { localStorage.setItem("bf-theme", next); } catch (e) {}
+    sync();
+  });
+})();
+</script>
 </body>
 </html>

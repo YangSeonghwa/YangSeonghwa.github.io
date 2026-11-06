@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>주지운 일어나라 | Beflower 미니 인터랙티브</title>
+<script>
+  (function() {
+    try {
+      var saved = localStorage.getItem("bf-theme");
+      var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      var theme = saved ? saved : (prefersDark ? "dark" : "light");
+      document.documentElement.setAttribute("data-bf-theme", theme);
+      document.documentElement.classList.toggle("bf-theme-dark", theme === "dark");
+      document.documentElement.classList.toggle("bf-theme-light", theme !== "dark");
+    } catch (e) {}
+  })();
+</script>
 <link rel="stylesheet" href="assets/css/beflower.css">
 <style>
 body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:var(--bf-bg);font-family:var(--bf-font-sans);color:var(--bf-ink);user-select:none}
@@ -40,11 +52,17 @@ svg{width:min(84vw,360px);height:auto}
         <span class="bf-brand-sub">미니 인터랙티브 · 깨우기 체험</span>
       </span>
     </a>
-    <div class="bf-nav">
-      <a href="index.html">🏠 홈</a>
-      <a href="index.html#sims">🧪 시뮬레이션</a>
-      <a href="index.html#coding">💻 프로그램 수업</a>
-      <a class="active" href="index.html#games">🎮 게임</a>
+    <div class="bf-topbar-actions">
+      <div class="bf-nav">
+        <a href="index.html">🏠 홈</a>
+        <a href="index.html#sims">🧪 시뮬레이션</a>
+        <a href="index.html#coding">💻 프로그램 수업</a>
+        <a class="active" href="index.html#games">🎮 게임</a>
+      </div>
+      <button type="button" class="bf-theme-toggle" id="themeToggle" aria-label="다크 모드 전환" title="라이트/다크 테마 전환">
+        <span class="bf-theme-icon" id="themeIcon" aria-hidden="true">🌙</span>
+        <span class="bf-theme-label" id="themeLabel">다크</span>
+      </button>
     </div>
   </div>
 </nav>
@@ -106,6 +124,24 @@ head.addEventListener('click',function(){
 document.getElementById('reset').addEventListener('click',function(){
  taps=0;scene.classList.remove('awake');fill.style.width='0';msg.textContent='캐릭터를 톡톡 눌러 깨워 보세요! (0/5)';
 });
+(function(){
+  var btn=document.getElementById('themeToggle');
+  function sync(){
+    var dark=document.documentElement.getAttribute('data-bf-theme')==='dark';
+    var ic=document.getElementById('themeIcon'),lb=document.getElementById('themeLabel');
+    if(ic)ic.textContent=dark?'☀️':'🌙';
+    if(lb)lb.textContent=dark?'라이트':'다크';
+  }
+  sync();
+  if(btn)btn.addEventListener('click',function(){
+    var next=document.documentElement.getAttribute('data-bf-theme')==='dark'?'light':'dark';
+    document.documentElement.setAttribute('data-bf-theme',next);
+    document.documentElement.classList.toggle('bf-theme-dark',next==='dark');
+    document.documentElement.classList.toggle('bf-theme-light',next!=='dark');
+    try{localStorage.setItem('bf-theme',next);}catch(e){}
+    sync();
+  });
+})();
 </script>
 </body>
 </html>
