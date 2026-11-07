@@ -1179,7 +1179,6 @@
           <a href="https://github.com/YangSeonghwa" target="_blank" rel="noopener">🐙 GitHub 프로필</a>
           <a href="https://github.com/YangSeonghwa/education" target="_blank" rel="noopener">📂 education 저장소</a>
           <a href="templates/simulation-template.html">🎨 디자인 템플릿 미리보기</a>
-          <a href="wakeup.html">🌱 잠자는 꽃 깨우기 미니 체험</a>
         </div>
       </div>
     </div>
@@ -1434,15 +1433,7 @@ fetch("games.json", { cache: "no-cache" })
     const box = $("gameList");
     if (!box || !Array.isArray(list) || !list.length) return;
     box.innerHTML = "";
-    const allGames = [
-      ...list,
-      {
-        icon: "🌸",
-        title: "잠자는 꽃 깨우기",
-        desc: "클릭할수록 화면이 흔들리며 잠든 꽃봉오리가 활짝 피어나는 미니 인터랙티브!",
-        url: "wakeup.html"
-      }
-    ];
+    const allGames = [...list];
     if ($("statGameCount")) $("statGameCount").textContent = allGames.length;
     allGames.forEach(item => {
       const el = document.createElement("a");

@@ -44,7 +44,6 @@ projects/yangseonghwa.github.io/
   sims.json              ← 과학 시뮬레이션 목록
   lessons.json           ← 프로그램 수업 목록
   games.json             ← 게임 목록
-  wakeup.html            ← 1학년 아침 자습 루틴 안내 보드
   grade1/ grade2/        ← 학년별 과학 시뮬레이션 및 수업 발표 자료 (grade3는 아직 없음)
   grade2/star-brightness/index.html     ← 중2 별의 밝기와 등급 수업 발표(11장) + 역제곱 법칙·등급 비교 시뮬레이션
   grade2/star-color-distance/index.html ← 중2 천체의 색깔과 별까지의 거리 판별 수업 발표(10장) + 색깔·절대등급·10pc 거리 시뮬레이션
