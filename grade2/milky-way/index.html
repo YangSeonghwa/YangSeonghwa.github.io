@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>우리은하의 구조와 크기 - 중학교 2학년 과학</title>
+  <meta name="description" content="위에서 본 우리은하와 옆에서 본 우리은하의 구조(막대나선은하, 지름 30,000 pc, 태양계 위치 8,500 pc, 별 약 2,000억 개) 및 여름철·겨울철 밤하늘 은하수 차이를 탐구하는 중학교 2학년 과학 인터랙티브 수업 자료입니다.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="../../assets/css/beflower.css">
+  <style>
+    :root {
+      --bg-deep: #060919;
+      --bg-panel: rgba(15, 23, 42, 0.84);
+      --bg-card: rgba(30, 41, 59, 0.72);
+      --accent-blue: #38bdf8;
+      --accent-gold: #fbbf24;
+      --accent-red: #f87171;
+      --accent-purple: #a855f7;
+      --accent-emerald: #34d399;
+      --text-main: #f8fafc;
+      --text-sub: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border-glass: rgba(148, 163, 184, 0.22);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at 18% 18%, #172554 0%, #090d24 48%, #040711 100%);
+      color: var(--text-main);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Top Header */
+    .top-header.bf-topbar {
+      position: relative;
+      z-index: 20;
+      height: 58px;
+      padding: 0 20px;
+      background: rgba(6, 9, 25, 0.88) !important;
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-glass);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .header-right-tools {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .unit-badge {
+      background: rgba(168, 85, 247, 0.16);
+      border: 1px solid rgba(168, 85, 247, 0.42);
+      color: #e9d5ff;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .icon-btn {
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid var(--border-glass);
+      color: var(--text-sub);
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .icon-btn:hover, .icon-btn.active {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: var(--accent-blue);
+      color: #fff;
+    }
+
+    /* Deck Layout */
+    .deck-viewport {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 24px;
+    }
+    .slide {
+      display: none;
+      width: 100%;
+      max-width: 1240px;
+      height: 100%;
+      max-height: 790px;
+      background: var(--bg-panel);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--border-glass);
+      border-radius: 24px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+      padding: 28px 36px;
+      overflow-y: auto;
+      flex-direction: column;
+      justify-content: space-between;
+      animation: slideFadeIn 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .slide.active {
+      display: flex;
+    }
+    @keyframes slideFadeIn {
+      from { opacity: 0; transform: translateY(10px) scale(0.99); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Slide Header */
+    .slide-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+      padding-bottom: 12px;
+      flex-shrink: 0;
+    }
+    .slide-step {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .slide-title {
+      font-size: 1.62rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+    .slide-subtitle {
+      font-size: 0.94rem;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    /* Grid & Cards */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 14px;
+      min-height: 0;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      align-items: stretch;
+    }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 16px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .card-highlight {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.14), rgba(168, 85, 247, 0.12));
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+    .card-gold {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.14), rgba(248, 113, 113, 0.1));
+      border-color: rgba(251, 191, 36, 0.42);
+    }
+    .card-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card p, .card li {
+      font-size: 0.93rem;
+      line-height: 1.58;
+      color: var(--text-sub);
+    }
+    .card ul {
+      padding-left: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* Badges & Callouts */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+    .badge-blue { background: rgba(56, 189, 248, 0.18); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.4); }
+    .badge-gold { background: rgba(251, 191, 36, 0.18); color: #fde047; border: 1px solid rgba(251, 191, 36, 0.4); }
+    .badge-red { background: rgba(248, 113, 113, 0.18); color: #fca5a5; border: 1px solid rgba(248, 113, 113, 0.4); }
+    .badge-green { background: rgba(52, 211, 153, 0.18); color: #6ee7b7; border: 1px solid rgba(52, 211, 153, 0.4); }
+    .badge-purple { background: rgba(168, 85, 247, 0.18); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.4); }
+
+    .formula-box {
+      background: rgba(6, 9, 25, 0.78);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 14px;
+      padding: 13px 18px;
+      text-align: center;
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .formula-box .hl-gold { color: var(--accent-gold); font-weight: 800; }
+    .formula-box .hl-blue { color: var(--accent-blue); font-weight: 800; }
+    .formula-box .hl-red { color: var(--accent-red); font-weight: 800; }
+    .formula-box .hl-green { color: var(--accent-emerald); font-weight: 800; }
+
+    /* Stat Metric Boxes */
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .metric-pill {
+      background: rgba(15, 23, 42, 0.88);
+      border: 1px solid rgba(56, 189, 248, 0.34);
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 4px;
+    }
+    .metric-pill .m-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+    .metric-pill .m-val {
+      font-size: 1.38rem;
+      font-weight: 900;
+      color: var(--accent-gold);
+      letter-spacing: -0.02em;
+    }
+    .metric-pill .m-sub {
+      font-size: 0.78rem;
+      color: var(--text-sub);
+    }
+
+    /* Interactive Controls & Simulations */
+    .sim-layout {
+      display: grid;
+      grid-template-columns: 1.25fr 0.95fr;
+      gap: 18px;
+      align-items: stretch;
+      flex: 1;
+      min-height: 0;
+    }
+    .sim-canvas-wrap {
+      position: relative;
+      background: radial-gradient(circle at center, #0d1530 0%, #040711 100%);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 14px;
+      min-height: 320px;
+    }
+    .sim-canvas-wrap canvas {
+      width: 100%;
+      height: 100%;
+      flex: 1;
+      display: block;
+      border-radius: 10px;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      background: rgba(15, 23, 42, 0.72);
+      padding: 11px 13px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+    }
+    .control-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--text-sub);
+    }
+    .control-val {
+      color: var(--accent-gold);
+      font-weight: 800;
+      font-size: 0.92rem;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent-blue);
+      cursor: pointer;
+    }
+    .preset-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+    .preset-btn {
+      flex: 1;
+      min-width: 82px;
+      padding: 7px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border-glass);
+      background: rgba(30, 41, 59, 0.88);
+      color: var(--text-sub);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      text-align: center;
+    }
+    .preset-btn:hover, .preset-btn.active {
+      background: rgba(56, 189, 248, 0.22);
+      border-color: var(--accent-blue);
+      color: #fff;
+    }
+    .preset-btn.gold.active {
+      background: rgba(251, 191, 36, 0.24);
+      border-color: var(--accent-gold);
+      color: #fef08a;
+    }
+
+    /* Tables */
+    .sci-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .sci-table th, .sci-table td {
+      padding: 10px 12px;
+      text-align: center;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+    }
+    .sci-table th {
+      background: rgba(15, 23, 42, 0.92);
+      color: var(--accent-blue);
+      font-weight: 700;
+    }
+    .sci-table tr:nth-child(even) td {
+      background: rgba(15, 23, 42, 0.38);
+    }
+
+    /* External Resource Cards */
+    .ext-link-card {
+      background: rgba(15, 23, 42, 0.82);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      border-radius: 14px;
+      padding: 13px 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text-main);
+      transition: all 0.2s ease;
+    }
+    .ext-link-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-gold);
+      background: rgba(30, 41, 59, 0.92);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    }
+    .ext-link-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .ext-link-title {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .ext-link-desc {
+      font-size: 0.82rem;
+      color: var(--text-sub);
+      line-height: 1.48;
+    }
+    .ext-link-url {
+      font-size: 0.74rem;
+      color: var(--accent-blue);
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Quiz Styles */
+    .quiz-container {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .quiz-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      padding: 15px 17px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .quiz-q {
+      font-size: 0.93rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.45;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+    }
+    .quiz-opt {
+      padding: 8px 10px;
+      border-radius: 9px;
+      border: 1px solid var(--border-glass);
+      background: rgba(15, 23, 42, 0.75);
+      color: var(--text-sub);
+      font-size: 0.83rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.18s ease;
+    }
+    .quiz-opt:hover {
+      border-color: var(--accent-blue);
+      color: #fff;
+    }
+    .quiz-opt.correct {
+      background: rgba(52, 211, 153, 0.22);
+      border-color: var(--accent-emerald);
+      color: #6ee7b7;
+    }
+    .quiz-opt.wrong {
+      background: rgba(248, 113, 113, 0.22);
+      border-color: var(--accent-red);
+      color: #fca5a5;
+    }
+    .quiz-feedback {
+      font-size: 0.81rem;
+      line-height: 1.45;
+      color: var(--accent-gold);
+      min-height: 1.2em;
+    }
+
+    /* Teacher Note Drawer */
+    .teacher-drawer {
+      display: none;
+      background: rgba(15, 23, 42, 0.96);
+      border-top: 2px solid var(--accent-gold);
+      padding: 10px 24px;
+      font-size: 0.85rem;
+      color: #fde68a;
+      z-index: 25;
+    }
+    .teacher-drawer.show {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    /* Bottom Navigation */
+    .deck-footer {
+      position: relative;
+      z-index: 20;
+      height: 58px;
+      background: rgba(6, 9, 25, 0.9);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border-glass);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+    }
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-btn {
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border-glass);
+      background: rgba(30, 41, 59, 0.9);
+      color: #fff;
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.2s ease;
+    }
+    .nav-btn:hover:not(:disabled) {
+      background: var(--accent-blue);
+      color: #060919;
+      border-color: var(--accent-blue);
+    }
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .progress-wrap {
+      flex: 1;
+      max-width: 420px;
+      margin: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .progress-bar-bg {
+      flex: 1;
+      height: 7px;
+      background: rgba(148, 163, 184, 0.2);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+      width: 10%;
+      transition: width 0.25s ease;
+    }
+    .slide-counter {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    @media (max-width: 980px) {
+      .grid-2, .grid-3, .sim-layout, .quiz-container, .metric-strip {
+        grid-template-columns: 1fr;
+      }
+      .slide { padding: 20px; }
+      .slide-title { font-size: 1.32rem; }
+    }
+
+    @media print {
+      body { height: auto; overflow: visible; background: #060919; }
+      .top-header, .deck-footer, .teacher-drawer, #starfield { display: none !important; }
+      .deck-viewport { display: block; padding: 0; }
+      .slide {
+        display: flex !important;
+        page-break-after: always;
+        max-height: none;
+        height: auto;
+        margin-bottom: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="starfield"></canvas>
+
+  <!-- Beflower Common Top Header -->
+  <header class="top-header bf-topbar bf-topbar-fixed bf-topbar-dark">
+    <div class="bf-topbar-inner" style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <a class="bf-brand" href="../../index.html" aria-label="Beflower 홈으로 이동">
+          <span class="bf-brand-logo" aria-hidden="true">🌸</span>
+          <span class="bf-brand-text">
+            <span class="bf-brand-title">Beflower</span>
+            <span class="bf-brand-subtitle">Middle School Science</span>
+          </span>
+        </a>
+        <span class="unit-badge"><i class="fa-solid fa-galaxy"></i> 중2 과학 · VII. 별과 우주 · 03. 우리은하의 구조와 크기</span>
+      </div>
+
+      <nav class="bf-nav" aria-label="주요 메뉴" style="display:flex;align-items:center;gap:12px;">
+        <a class="bf-nav-link" href="../../index.html">홈</a>
+        <a class="bf-nav-link is-active" href="../../index.html#sims">시뮬레이션</a>
+        <a class="bf-nav-link" href="../../index.html#coding">바이브코딩</a>
+        <a class="bf-nav-link" href="../../index.html#games">게임</a>
+      </nav>
+
+      <div class="header-right-tools">
+        <button class="icon-btn" id="btnTeacherNote" title="교사용 지도 노트 (단축키 N)">
+          <i class="fa-solid fa-chalkboard-user"></i> 교사 노트 (N)
+        </button>
+        <button class="icon-btn" id="btnFullscreen" title="전체화면 전환 (단축키 F)">
+          <i class="fa-solid fa-expand"></i> 전체화면
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Teacher Guidance Drawer -->
+  <div class="teacher-drawer" id="teacherDrawer">
+    <div id="teacherNoteText">
+      <strong>💡 수업 가이드:</strong> 슬라이드 4의 입체 시뮬레이터로 <strong>위에서 본 모습(막대나선은하)</strong>과 <strong>옆에서 본 모습(가운데가 볼록한 원반)</strong>을 직접 전환해 보고, 슬라이드 7에서 <strong>여름철(은하 중심 방향) vs 겨울철(은하 외곽 방향)</strong> 은하수 차이를 비교하세요.
+    </div>
+    <span class="badge badge-gold">단축키: ← / → 슬라이드 이동 · N 교사노트 · F 전체화면</span>
+  </div>
+
+  <!-- Main Slide Deck Viewport -->
+  <main class="deck-viewport">
+
+    <!-- ==================== SLIDE 1: 도입 & 교과서 핵심 수치 ==================== -->
+    <section class="slide active" data-note="도입 질문: '여름밤 시골 하늘에서 볼 수 있는 희뿌연 강물 같은 은하수(Milky Way)는 사실 무엇일까요?' 우리은하 속에 속한 우리가 우리은하 내부를 바라본 모습임을 안내합니다.">
+      <div class="slide-header">
+        <div>
+          <div class="slide-step"><i class="fa-solid fa-shuttle-space"></i> STEP 01 · 단원 도입 및 학습 목표</div>
+          <h1 class="slide-title">우리은하의 구조와 크기</h1>
+          <p class="slide-subtitle">태양계가 속해 있는 거대한 별들의 도시, '우리은하(Milky Way Galaxy)'를 위·옆·내부에서 탐구해 봅시다.</p>
+        </div>
+        <span class="badge badge-purple">중학교 2학년 과학 · 별과 우주</span>
+      </div>
+
+      <div class="slide-body">
+        <!-- 교과서 기준 3대 핵심 수치 스트립 -->
+        <div class="metric-strip">
+          <div class="metric-pill">
+            <span class="m-label"><i class="fa-solid fa-star"></i> 우리은하에 포함된 별의 개수</span>
+            <span class="m-val">약 2,000억 개</span>
+            <span class="m-sub">태양과 같은 항성·성단·성운·성간 물질로 구성</span>
+          </div>
+          <div class="metric-pill">
+            <span class="m-label"><i class="fa-solid fa-ruler-horizontal"></i> 우리은하의 전체 지름</span>
+            <span class="m-val">약 30,000 pc</span>
+            <span class="m-sub">약 10만 광년 (빛으로 10만 년 걸리는 크기)</span>
+          </div>
+          <div class="metric-pill">
+            <span class="m-label"><i class="fa-solid fa-sun"></i> 은하 중심 ~ 태양계 거리</span>
+            <span class="m-val">약 8,500 pc</span>
+            <span class="m-sub">약 2.8만 광년 (중심에서 벗어난 나선팔에 위치)</span>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card card-highlight">
+            <div class="card-title"><i class="fa-solid fa-bullseye" style="color:var(--accent-blue)"></i> 오늘의 핵심 학습 목표 3가지</div>
+            <ul>
+              <li><strong>1. 우리은하의 모양과 구조:</strong> 우리은하를 <strong>위에서 본 모습(막대나선은하)</strong>과 <strong>옆에서 본 모습(가운데가 볼록한 원반 모양)</strong>으로 구분하여 설명할 수 있다.</li>
+              <li><strong>2. 우리은하의 크기와 태양계의 위치:</strong> 별의 수(약 <strong>2,000억 개</strong>), 은하 지름(<strong>30,000 pc</strong>), 은하 중심에서 태양계까지의 거리(<strong>8,500 pc</strong>)를 정확히 이해한다.</li>
+              <li><strong>3. 여름철 vs 겨울철 밤하늘 은하수:</strong> 계절에 따라 밤하늘에 보이는 우리은하(은하수)의 밝기와 폭이 다른 이유를 <strong>태양계의 위치와 시선 방향</strong>으로 설명할 수 있다.</li>
+            </ul>
+          </div>
+
+          <div class="card card-gold">
+            <div class="card-title"><i class="fa-solid fa-circle-question" style="color:var(--accent-gold)"></i> 왜 밤하늘의 은하수는 계절마다 다르게 보일까?</div>
+            <p>
+              "은하(Galaxy)는 수많은 별, 성단, 성운, 성간 물질이 중력으로 묶여 있는 거대한 천체 집단입니다. 그중 <strong>태양계가 속해 있는 은하를 '우리은하'</strong>라고 부릅니다."
+            </p>
+            <div class="formula-box" style="margin-top:auto;">
+              ☀️ 태양계는 우리은하의 정중앙이 아니라,<br>
+              중심에서 <span class="hl-gold">8,500 pc</span> 떨어진 <span class="hl-blue">나선팔</span>에 위치합니다!
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 2: 위에서 본 우리은하의 구조 ==================== -->
+    <section class="slide" data-note="위에서 본 우리은하의 핵심 키워드는 ① 막대 모양의 중심부(팽대부), ② 중심부 양끝에서 휘감겨 나오는 나선팔, ③ 지름 30,000 pc, ④ 중심에서 8,500 pc 떨어진 나선팔에 위치한 태양계입니다.">
+      <div class="slide-header">
+        <div>
+          <div class="slide-step"><i class="fa-solid fa-eye"></i> STEP 02 · 위에서 본 우리은하 (Top-Down View)</div>
+          <h2 class="slide-title">위에서 본 우리은하: 거대한 막대나선은하</h2>
+          <p class="slide-subtitle">우리은하를 위(북극 방향)에서 내려다보면 중심이 막대 모양이고 나선팔이 휘감긴 <strong>막대나선은하</strong>입니다.</p>
+        </div>
+        <span class="badge badge-blue">핵심 모양: 막대나선은하</span>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2" style="align-items:center;">
+          <!-- SVG Diagram: Top-down Milky Way -->
+          <div class="card" style="align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle at center,#111a3a 0%,#050814 100%);">
+            <svg viewBox="0 0 460 320" width="100%" style="max-height:290px;">
+              <defs>
+                <radialGradient id="coreGlowTop" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#fffbeb" stop-opacity="1"/>
+                  <stop offset="35%" stop-color="#fde047" stop-opacity="0.85"/>
+                  <stop offset="70%" stop-color="#f59e0b" stop-opacity="0.28"/>
+                  <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+                </radialGradient>
+                <filter id="blurArm">
+                  <feGaussianBlur stdDeviation="4"/>
+                </filter>
+              </defs>
+              <!-- Outer Disk Halo Ring -->
+              <circle cx="230" cy="152" r="120" fill="none" stroke="rgba(56,189,248,0.18)" stroke-dasharray="4 4"/>
+              <!-- Spiral Arms (4 major arms) -->
+              <g filter="url(#blurArm)" opacity="0.82">
+                <path d="M 185 138 C 145 100, 185 45, 255 48 C 325 52, 360 115, 338 175" fill="none" stroke="#60a5fa" stroke-width="14" stroke-linecap="round"/>
+                <path d="M 275 166 C 315 204, 275 258, 205 255 C 135 252, 100 188, 122 128" fill="none" stroke="#60a5fa" stroke-width="14" stroke-linecap="round"/>
+                <path d="M 195 162 C 140 185, 118 115, 152 72 C 188 32, 275 28, 328 78" fill="none" stroke="#818cf8" stroke-width="10" stroke-linecap="round"/>
+                <path d="M 265 142 C 320 118, 342 188, 308 232 C 272 272, 185 276, 132 226" fill="none" stroke="#818cf8" stroke-width="10" stroke-linecap="round"/>
+              </g>
+              <!-- Central Bar (막대 모양 중심부) -->
+              <g transform="rotate(-22 230 152)">
+                <rect x="172" y="136" width="116" height="32" rx="16" fill="url(#coreGlowTop)"/>
+              </g>
+              <circle cx="230" cy="152" r="28" fill="url(#coreGlowTop)"/>
+
+              <!-- Solar System Marker (중심에서 8,500 pc) -->
+              <circle cx="230" cy="212" r="7" fill="#fbbf24" stroke="#fff" stroke-width="2"/>
+              <circle cx="230" cy="212" r="13" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3 2"/>
+              <text x="248" y="216" fill="#fef08a" font-size="12" font-weight="800">☀️ 태양계 (나선팔 위치)</text>
+
+              <!-- Distance Line: Center to Sun (8,500 pc) -->
+              <line x1="230" y1="152" x2="230" y2="212" stroke="#f87171" stroke-width="2" stroke-dasharray="3 2"/>
+              <rect x="128" y="172" width="94" height="22" rx="6" fill="rgba(15,23,42,0.9)" stroke="#f87171"/>
+              <text x="175" y="187" fill="#fca5a5" font-size="11" font-weight="800" text-anchor="middle">약 8,500 pc</text>
+
+              <!-- Label: Central Bar -->
+              <line x1="230" y1="142" x2="295" y2="102" stroke="#fde047" stroke-width="1.5"/>
+              <text x="300" y="100" fill="#fde047" font-size="11.5" font-weight="800">막대 모양 중심부(팽대부)</text>
+
+              <!-- Diameter Ruler: 30,000 pc -->
+              <line x1="110" y1="292" x2="350" y2="292" stroke="#38bdf8" stroke-width="2"/>
+              <line x1="110" y1="285" x2="110" y2="299" stroke="#38bdf8" stroke-width="2"/>
+              <line x1="350" y1="285" x2="350" y2="299" stroke="#38bdf8" stroke-width="2"/>
+              <rect x="165" y="279" width="130" height="24" rx="6" fill="#090d24" stroke="#38bdf8"/>
+              <text x="230" y="295" fill="#7dd3fc" font-size="12" font-weight="800" text-anchor="middle">은하 지름 약 30,000 pc</text>
+            </svg>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="card card-highlight">
+              <div class="card-title"><i class="fa-solid fa-compass" style="color:var(--accent-blue)"></i> 위에서 본 우리은하의 4가지 특징</div>
+              <ul>
+                <li><strong>① 막대 모양의 중심부(팽대부):</strong> 은하 중심에 나이가 많고 붉은 별들이 길쭉한 <strong>막대 모양</strong>으로 빽빽하게 모여 있습니다.</li>
+                <li><strong>② 휘감긴 나선팔:</strong> 막대 모양 중심부의 양 끝에서 여러 개의 <strong>나선팔</strong>이 소용돌이치듯 뻗어 나와 있습니다. (젊고 푸른 별·성간 물질·산개 성단 풍부)</li>
+                <li><strong>③ 은하의 지름:</strong> 한쪽 끝에서 반대쪽 끝까지의 지름은 약 <strong style="color:var(--accent-gold);">30,000 pc (약 10만 광년)</strong>입니다.</li>
+                <li><strong>④ 태양계의 위치:</strong> 은하 중심이 아니라, 중심에서 약 <strong style="color:var(--accent-gold);">8,500 pc (약 2.8만 광년)</strong> 떨어진 <strong>나선팔</strong>에 위치합니다.</li>
+              </ul>
+            </div>
+
+            <div class="formula-box">
+              위에서 본 모양 = <span class="hl-gold">막대 모양 중심부</span> + <span class="hl-blue">회오리 모양 나선팔</span> ➔ <span class="hl-green">막대나선은하</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 3: 옆에서 본 우리은하의 구조 ==================== -->
+    <section class="slide" data-note="옆에서 본 우리은하는 '가운데가 볼록한 원반 모양'입니다. 은하 원반과 팽대부를 둥글게 감싸는 구형의 영역을 '헤일로(Halo)'라고 하며, 이곳에 구상 성단이 고르게 분포함을 강조하세요.">
+      <div class="slide-header">
+        <div>
+          <div class="slide-step"><i class="fa-solid fa-layer-group"></i> STEP 03 · 옆에서 본 우리은하 (Edge-On View)</div>
+          <h2 class="slide-title">옆에서 본 우리은하: 가운데가 볼록한 원반 모양</h2>
+          <p class="slide-subtitle">우리은하를 옆에서 바라보면 <strong>가운데(중심부)가 볼록한 납작한 원반 모양</strong>이며, 구형의 <strong>헤일로</strong>가 감싸고 있습니다.</p>
+        </div>
+        <span class="badge badge-gold">핵심 모양: 가운데가 볼록한 원반</span>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2" style="align-items:center;">
+          <!-- SVG Diagram: Edge-on Milky Way -->
+          <div class="card" style="align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle at center,#111a3a 0%,#050814 100%);">
+            <svg viewBox="0 0 460 320" width="100%" style="max-height:290px;">
+              <defs>
+                <radialGradient id="bulgeGlowSide" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#fffbeb" stop-opacity="1"/>
+                  <stop offset="45%" stop-color="#fbbf24" stop-opacity="0.82"/>
+                  <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <!-- Spherical Halo (헤일로) -->
+              <ellipse cx="230" cy="148" rx="155" ry="108" fill="rgba(168,85,247,0.07)" stroke="rgba(168,85,247,0.45)" stroke-dasharray="5 4"/>
+              <text x="230" y="58" fill="#d8b4fe" font-size="11.5" font-weight="800" text-anchor="middle">헤일로 (Halo) — 구상 성단 분포 영역</text>
+
+              <!-- Globular Clusters in Halo (구상 성단) -->
+              <g fill="#fde047" stroke="#f59e0b" stroke-width="1">
+                <circle cx="150" cy="95" r="4.5"/><circle cx="295" cy="88" r="4.5"/>
+                <circle cx="185" cy="76" r="4"/><circle cx="275" cy="205" r="4.5"/>
+                <circle cx="165" cy="202" r="4"/><circle cx="322" cy="122" r="3.8"/>
+                <circle cx="122" cy="168" r="3.8"/><circle cx="225" cy="222" r="4.2"/>
+              </g>
+              <text x="335" y="92" fill="#fde047" font-size="10.5" font-weight="700">● 구상 성단</text>
+
+              <!-- Galactic Disk (은하 원반) -->
+              <ellipse cx="230" cy="148" rx="155" ry="13" fill="#60a5fa" opacity="0.78"/>
+              <!-- Dark Dust Lane in Disk -->
+              <rect x="82" y="146" width="296" height="4" rx="2" fill="#090d24" opacity="0.8"/>
+
+              <!-- Central Bulge (볼록한 중심부 / 팽대부) -->
+              <ellipse cx="230" cy="148" rx="52" ry="34" fill="url(#bulgeGlowSide)"/>
+
+              <!-- Solar System Position in Disk (8,500 pc from center) -->
+              <circle cx="302" cy="148" r="6.5" fill="#fbbf24" stroke="#fff" stroke-width="2"/>
+              <text x="315" y="132" fill="#fef08a" font-size="11.5" font-weight="800">☀️ 태양계</text>
+
+              <!-- Center to Solar System distance: 8,500 pc -->
+              <line x1="230" y1="186" x2="302" y2="186" stroke="#f87171" stroke-width="2"/>
+              <line x1="230" y1="148" x2="230" y2="191" stroke="#f87171" stroke-width="1.2" stroke-dasharray="3 2"/>
+              <line x1="302" y1="148" x2="302" y2="191" stroke="#f87171" stroke-width="1.2" stroke-dasharray="3 2"/>
+              <text x="266" y="203" fill="#fca5a5" font-size="11" font-weight="800" text-anchor="middle">약 8,500 pc</text>
+
+              <!-- Total Diameter: 30,000 pc -->
+              <line x1="75" y1="286" x2="385" y2="286" stroke="#38bdf8" stroke-width="2"/>
+              <line x1="75" y1="279" x2="75" y2="293" stroke="#38bdf8" stroke-width="2"/>
+              <line x1="385" y1="279" x2="385" y2="293" stroke="#38bdf8" stroke-width="2"/>
+              <rect x="160" y="273" width="140" height="24" rx="6" fill="#090d24" stroke="#38bdf8"/>
+              <text x="230" y="289" fill="#7dd3fc" font-size="12" font-weight="800" text-anchor="middle">은하 지름 약 30,000 pc</text>
+            </svg>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="card card-gold">
+              <div class="card-title"><i class="fa-solid fa-Compact-disc" style="color:var(--accent-gold)"></i> 옆에서 본 우리은하의 구조와 천체 분포</div>
+              <ul>
+                <li><strong>① 중심부(팽대부):</strong> 은하의 한가운데가 위아래로 볼록하게 부풀어 오른 부분으로, 나이가 많은 별들이 밀집해 있습니다.</li>
+                <li><strong>② 은하 원반(나선팔 포함):</strong> 중심부를 둘러싼 납작한 원반 모양 영역입니다. 성간 물질이 많고 <strong>산개 성단</strong>과 <strong>성운</strong>이 집중적으로 분포합니다.</li>
+                <li><strong>③ 헤일로(Halo):</strong> 은하 원반과 중심부를 둥글게 감싸고 있는 거대한 구형의 영역으로, 수만~수십만 개의 별이 공 모양으로 모인 <strong>구상 성단</strong>이 주로 분포합니다.</li>
+                <li><strong>④ 치수 기억하기:</strong> 원반 전체 지름은 약 <strong>30,000 pc</strong>, 은하 중심에서 태양계까지의 거리는 약 <strong>8,500 pc</strong>입니다.</li>
+              </ul>
+            </div>
+
+            <div class="formula-box">
+              위에서 보면 <span class="hl-blue">막대나선 모양</span> · 옆에서 보면 <span class="hl-gold">가운데가 볼록한 원반 모양</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 4: 인터랙티브 시뮬레이션 1 (위/옆/입체 구조 실험실) ==================== -->
+    <section class="slide" data-note="학생들이 직접 [위에서 본 모습]과 [옆에서 본 모습] 버튼을 눌러 시점을 전환하거나, 기울기 슬라이더(0°~90°)를 움직여 3차원 막대나선은하가 옆에서 볼 때 왜 가운데가 볼록한 원반으로 보이는지 직관적으로 확인하게 하세요.">
+      <div class="slide-header">
+        <div>
+          <div class="slide-step"><i class="fa-solid fa-cubes"></i> STEP 04 · 인터랙티브 실험실 ①</div>
+          <h2 class="slide-title">우리은하 3D 구조 & 크기 입체 시뮬레이터</h2>
+          <p class="slide-subtitle">시점(위에서 보기 ↔ 옆에서 보기)과 구성 요소를 선택하며 2,000억 개의 별이 이루는 우리은하를 탐험해 보세요.</p>
+        </div>
+        <span class="badge badge-green">실시간 3D 투영 시뮬레이션</span>
+      </div>
+
+      <div class="slide-body">
+        <div class="sim-layout">
+          <!-- Left: Interactive Canvas -->
+          <div class="sim-canvas-wrap">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px;">
+              <span class="badge badge-blue" id="galViewBadge">현재 시점: 위에서 본 모습 (기울기 0°)</span>
+              <span class="badge badge-gold">별 약 2,000억 개 · 지름 30,000 pc · 태양계 8,500 pc</span>
+            </div>
+            <canvas id="galaxy3dCanvas" width="640" height="360"></canvas>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.79rem;color:var(--text-muted);margin-top:6px;">
+              <span>💡 캔버스 위에서 마우스를 드래그해도 은하 기울기를 조절할 수 있습니다.</span>
+              <span id="galHighlightTag" style="color:var(--accent-gold);font-weight:700;">전체 구조 표시 중</span>
+            </div>
+          </div>
+
+          <!-- Right: Controls & Structural Info -->
+          <div style="display:flex;flex-direction:column;gap:10px;justify-content:space-between;">
+            <div class="control-group">
+              <div class="control-label">
+                <span><i class="fa-solid fa-video"></i> 관측 시점 빠른 전환</span>
+                <span class="control-val" id="tiltAngleVal">0° (위에서 본 모습)</span>
+              </div>
+              <div class="preset-row">
+                <button class="preset-btn active" data-view="top" id="btnViewTop">위에서 본 모습 (0°)</button>
+                <button class="preset-btn" data-view="iso" id="btnViewIso">비스듬히 보기 (55°)</button>
+                <button class="preset-btn" data-view="side" id="btnViewSide">옆에서 본 모습 (90°)</button>
+              </div>
+              <input type="range" id="tiltSlider" min="0" max="90" step="1" value="0">
+            </div>
+
+            <div class="control-group">
+              <div class="control-label">
+                <span><i class="fa-solid fa-magnifying-glass-location"></i> 우리은하 세부 구조 하이라이트</span>
+              </div>
+              <div class="preset-row">
+                <button class="preset-btn gold active" data-part="all">전체 보기</button>
+                <button class="preset-btn gold" data-part="bar">중심부(막대)</button>
+                <button class="preset-btn gold" data-part="arms">나선팔·원반</button>
+                <button class="preset-btn gold" data-part="halo">헤일로·구상성단</button>
+                <button class="preset-btn gold" data-part="sun">태양계(8,500 pc)</button>
+              </div>
+            </div>
+
+            <div class="control-group" style="flex-direction:row;align-items:center;justify-content:space-between;">
+              <label style="display:flex;align-items:center;gap:7px;font-size:0.84rem;font-weight:700;cursor:pointer;">
+                <input type="checkbox" id="chkRuler" checked style="accent-color:var(--accent-gold);width:16px;height:16px;">
+                치수 눈금자 표시 (30,000 pc / 8,500 pc)
+              </label>
+              <label style="display:flex;align-items:center;gap:7px;font-size:0.84rem;font-weight:700;cursor:pointer;">
+                <input type="checkbox" id="chkRotate" checked style="accent-color:var(--accent-blue);width:16px;height:16px;">
+                은하 회전 애니메이션
+              </label>
+            </div>
+
+            <div class="card card-highlight" id="partDetailBox" style="padding:13px 16px;gap:6px;">
+              <div class="card-title" id="partDetailTitle" style="font-size:0.98rem;">
+                <i class="fa-solid fa-circle-info" style="color:var(--accent-blue)"></i> 우리은하 전체 구조 요약
+              </div>
+              <p id="partDetailDesc" style="font-size:0.86rem;line-height:1.5;">
+                우리은하는 약 <strong>2,000억 개</strong>의 별을 포함하는 거대한 <strong>막대나선은하</strong>입니다. 지름은 약 <strong>30,000 pc(약 10만 광년)</strong>이며, 태양계는 중심에서 약 <strong>8,500 pc</strong> 떨어진 나선팔에 자리 잡고 있습니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 5: 은하수(Milky Way)와 암흑 성운 ==================== -->
+    <section class="slide" data-note="외부에서 우리은하를 찍은 사진은 실제로는 존재할 수 없습니다(우리가 은하 안에 있기 때문). 우리가 지구 밤하늘에서 보는 우리은하의 모습이 바로 '은하수'임을 설명하세요.">
+      <div class="slide-header">
+        <div>
+          <div class="slide-step"><i class="fa-solid fa-moon"></i> STEP 05 · 지구에서 바라본 우리은하 (은하수)</div>
+          <h2 class="slide-title">우리은하 내부에서 본 모습: 밤하늘의 은하수</h2>
+          <p class="slide-subtitle">태양계가 우리은하의 원반 내부에 있기 때문에, 지구에서 본 우리은하는 하늘을 가로지르는 희뿌연 띠 모양의 <strong>은하수(Milky Way)</strong>로 보입니다.</p>
+        </div>
+        <span class="badge badge-purple">우리은하 = 은하수</span>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card card-highlight">
+            <div class="card-title"><i class="fa-solid fa-question-circle" style="color:var(--accent-blue)"></i> Q1. 왜 우리은하는 밤하늘에서 띠 모양(은하수)으로 보일까?</div>
+            <p>
+              우리은하는 옆에서 보면 <strong>납작한 원반 모양</strong>이고, 태양계는 그 원반 내부(중심에서 <strong>8,500 pc</strong> 떨어진 곳)에 들어 있습니다.
+            </p>
+            <ul>
+              <li>따라서 원반 평면 방향을 바라보면 약 <strong>2,000억 개</strong>의 별들이 시선 방향에 겹쳐 보여 <strong>하늘을 가로지르는 희뿌연 빛의 띠(은하수)</strong>로 관측됩니다.</li>
+              <li>반면 원반의 위아래(수직) 방향을 바라보면 별의 밀도가 낮아 별이 드문드문 보입니다.</li>
+            </ul>
+            <div class="formula-box" style="margin-top:auto;">
+              은하 원반 내부에서 원반 면을 바라봄 ➔ <span class="hl-gold">희뿌연 띠 모양의 은하수</span> 관측!
+            </div>
+          </div>
+
+          <div class="card card-gold">
+            <div class="card-title"><i class="fa-solid fa-cloud-moon" style="color:var(--accent-gold)"></i> Q2. 은하수 중간중간이 검게 끊어져 보이는 까닭은?</div>
+            <p>
+              밝게 빛나는 은하수 사진을 자세히 보면 가운데에 검은 구름 같은 띠가 군데군데 가려져 있는 모습을 볼 수 있습니다.
+            </p>
+            <ul>
+              <li>별이 없는 빈 공간이 아니라, 은하 원반(나선팔)에 많이 분포하는 <strong>성간 물질(우주 먼지와 티끌)</strong>이 모여 <strong>암흑 성운</strong>을 이루기 때문입니다.</li>
+              <li>이 성간 먼지들이 뒤쪽에서 오는 수많은 별빛을 가로막아 흡수·차단하므로 우리 눈에 어둡게 끊어진 띠처럼 보입니다.</li>
+            </ul>
+            <div class="formula-box" style="margin-top:auto;">
+              은하수 속 검은 띠 = <span class="hl-red">성간 물질(암흑 성운)</span>이 뒤쪽 별빛을 차단한 영역!
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 6: 여름철 밤하늘 vs 겨울철 밤하늘 우리은하 비교 ==================== -->
+    <section class="slide" data-note="시험 최다 빈출 포인트입니다! 왜 여름철 은하수가 겨울철보다 훨씬 밝고 폭이 넓은지 '태양계의 위치(중심에서 8,500 pc 치우침)'와 '밤하늘 시선 방향(중심 방향 vs 외곽 방향)'으로 비교하세요.">
+      <div class="slide-header">
+        <div>
+          <div class="slide-step"><i class="fa-solid fa-scale-balanced"></i> STEP 06 · 계절에 따른 은하수 관측 비교</div>
+          <h2 class="slide-title">여름철 밤하늘 은하수 vs 겨울철 밤하늘 은하수</h2>
+          <p class="slide-subtitle">태양계가 은하 중심에서 <strong>8,500 pc</strong> 벗어나 있기 때문에, 계절에 따라 밤하늘에서 바라보는 우리은하의 방향이 달라집니다.</p>
+        </div>
+        <span class="badge badge-red">교과서 핵심 비교</span>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <!-- 여름철 은하수 -->
+          <div class="card card-gold">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div class="card-title"><i class="fa-solid fa-sun" style="color:var(--accent-gold)"></i> 여름철 밤하늘에 보이는 우리은하</div>
+              <span class="badge badge-gold">궁수자리 방향 (은하 중심)</span>
+            </div>
+            <ul>
+              <li><strong>시선 방향:</strong> 지구의 밤 쪽이 <strong style="color:var(--accent-gold);">우리은하의 중심부(팽대부, 궁수자리 방향)</strong>를 향합니다.</li>
+              <li><strong>별의 밀도:</strong> 약 2,000억 개의 별과 성단·성운이 가장 빽빽하게 밀집한 은하 중심 핵을 바라봅니다.</li>
+              <li><strong>관측 특징:</strong> 은하수가 <strong style="color:#fff;">매우 밝고, 폭(너비)이 넓으며 뚜렷하게</strong> 보입니다. (성간 물질에 의한 검은 암흑 성운 띠도 선명하게 관측됨)</li>
+            </ul>
+            <div class="formula-box" style="margin-top:auto;">
+              여름철 밤하늘 = <span class="hl-gold">은하 중심 방향(궁수자리)</span> ➔ <span class="hl-green">밝고 폭이 넓은 은하수!</span>
+            </div>
+          </div>
+
+          <!-- 겨울철 은하수 -->
+          <div class="card card-highlight">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div class="card-title"><i class="fa-solid fa-snowflake" style="color:var(--accent-blue)"></i> 겨울철 밤하늘에 보이는 우리은하</div>
+              <span class="badge badge-blue">오리온자리 방향 (은하 외곽)</span>
+            </div>
+            <ul>
+              <li><strong>시선 방향:</strong> 지구의 밤 쪽이 우리은하 중심의 반대쪽인 <strong style="color:var(--accent-blue);">은하 외곽 나선팔 방향(오리온자리·쌍둥이자리 방향)</strong>을 향합니다.</li>
+              <li><strong>별의 밀도:</strong> 은하 가장자리 외곽 쪽은 중심부에 비해 별의 개수와 밀도가 훨씬 적습니다.</li>
+              <li><strong>관측 특징:</strong> 여름철에 비해 은하수가 <strong style="color:#fff;">희미하고, 폭(너비)이 좁게</strong> 보입니다.</li>
+            </ul>
+            <div class="formula-box" style="margin-top:auto;">
+              겨울철 밤하늘 = <span class="hl-blue">은하 외곽 방향(오리온자리)</span> ➔ <span class="hl-red">희미하고 폭이 좁은 은하수!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 핵심 비교 요약 표 -->
+        <table class="sci-table">
+          <thead>
+            <tr>
+              <th>비교 항목</th>
+              <th>☀️ 여름철 밤하늘 은하수</th>
+              <th>❄️ 겨울철 밤하늘 은하수</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>지구 밤하늘의 시선 방향</strong></td>
+              <td><strong style="color:var(--accent-gold);">우리은하 중심 방향</strong> (궁수자리·백조자리 방향)</td>
+              <td><strong style="color:var(--accent-blue);">우리은하 반대쪽 외곽 방향</strong> (오리온자리·마차부자리 방향)</td>
+            </tr>
+            <tr>
+              <td><strong>시선 방향에 있는 별의 수</strong></td>
+              <td>매우 많음 (중심 팽대부 + 여러 나선팔 중첩)</td>
+              <td>상대적으로 적음 (바깥쪽 나선팔만 분포)</td>
+            </tr>
+            <tr>
+              <td><strong>은하수의 밝기와 폭(너비)</strong></td>
+              <td><strong style="color:#6ee7b7;">매우 밝고 폭이 넓으며 뚜렷함</strong></td>
+              <td><strong style="color:#fca5a5;">희미하고 폭이 좁게 보임</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 7: 인터랙티브 시뮬레이션 2 (여름 vs 겨울 은하수 관측 시뮬레이터) ==================== -->
+    <section class="slide" data-note="왼쪽 캔버스에서는 우리은하 내 태양계(중심에서 8,500 pc)에서 지구가 바라보는 밤하늘 시선 방향을 보여주고, 오른쪽 캔버스에서는 그 시선에서 실제로 보이는 밤하늘 은하수의 폭과 밝기를 실시간으로 비교합니다.">
+      <div class="slide-header">
+        <div>
+          <div class="slide-step"><i class="fa-solid fa-binoculars"></i> STEP 07 · 인터랙티브 실험실 ②</div>
+          <h2 class="slide-title">여름철 vs 겨울철 밤하늘 은하수 관측 시뮬레이터</h2>
+          <p class="slide-subtitle">계절(지구의 공전 위치와 밤하늘 시선 방향)을 바꾸며 우리은하 중심을 볼 때와 외곽을 볼 때 은하수가 어떻게 달라지는지 실험해 보세요.</p>
+        </div>
+        <span class="badge badge-gold">양방향 연동 시뮬레이션</span>
+      </div>
+
+      <div class="slide-body">
+        <div class="sim-layout" style="grid-template-columns: 1fr 1fr;">
+          <!-- Left Canvas: Galactic Orbit & Viewing Direction -->
+          <div class="sim-canvas-wrap">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <span class="badge badge-blue"><i class="fa-solid fa-satellite"></i> ① 우리은하 내 시선 방향 (위에서 본 모습)</span>
+              <span class="badge badge-gold" id="seasonDirBadge">시선: 은하 중심 방향 (여름철)</span>
+            </div>
+            <canvas id="seasonGalaxyCanvas" width="520" height="270"></canvas>
+            <div style="font-size:0.79rem;color:var(--text-sub);margin-top:6px;">
+              ☀️ 태양계(중심에서 <strong>8,500 pc</strong>)를 기준으로 지구의 밤(태양 반대쪽)이 향하는 방향을 부채꼴로 표시합니다.
+            </div>
+          </div>
+
+          <!-- Right Canvas: Simulated Night Sky Panorama -->
+          <div class="sim-canvas-wrap">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <span class="badge badge-purple"><i class="fa-solid fa-star-and-crescent"></i> ② 지구 밤하늘에 보이는 은하수 파노라마</span>
+              <span class="badge badge-green" id="skyStatusBadge">밝기: 매우 밝음 · 폭: 넓음</span>
+            </div>
+            <canvas id="seasonSkyCanvas" width="520" height="270"></canvas>
+            <div style="font-size:0.79rem;color:var(--text-sub);margin-top:6px;" id="skyConstellationNote">
+              🌌 <strong>여름철 대표 별자리:</strong> 궁수자리(은하 중심), 백조자리, 독수리자리, 거문고자리 (암흑 성운 검은 띠 뚜렷)
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Control Strip for Season Simulator -->
+        <div class="grid-2" style="gap:14px;">
+          <div class="control-group">
+            <div class="control-label">
+              <span><i class="fa-solid fa-calendar-days"></i> 관측 계절 및 밤하늘 시선 방향 선택</span>
+              <span class="control-val" id="seasonAngleText">여름철 (은하 중심 방향 0°)</span>
+            </div>
+            <div class="preset-row">
+              <button class="preset-btn gold active" id="btnSeasonSummer">☀️ 여름철 밤하늘 (은하 중심 방향)</button>
+              <button class="preset-btn" id="btnSeasonAutumn">🍂 봄·가을철 (중간 방향)</button>
+              <button class="preset-btn" id="btnSeasonWinter">❄️ 겨울철 밤하늘 (은하 외곽 방향)</button>
+            </div>
+            <input type="range" id="seasonSlider" min="0" max="180" step="1" value="0">
+          </div>
+
+          <div class="card card-highlight" style="padding:12px 16px;justify-content:center;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <strong style="color:#fff;font-size:0.92rem;" id="seasonSummaryTitle">☀️ 여름철 밤하늘 관측 분석 결과</strong>
+              <label style="font-size:0.8rem;color:var(--text-sub);display:flex;align-items:center;gap:6px;cursor:pointer;">
+                <input type="checkbox" id="chkConstellations" checked style="accent-color:var(--accent-gold);"> 별자리 가이드선 표시
+              </label>
+            </div>
+            <p id="seasonSummaryDesc" style="font-size:0.85rem;line-height:1.48;">
+              태양계(중심에서 <strong>8,500 pc</strong>)에서 <strong>우리은하 중심(궁수자리 방향)</strong>을 바라보므로, 약 2,000억 개의 별이 밀집한 중심 팽대부가 시야에 들어와 <strong>은하수가 매우 밝고 폭이 넓게</strong> 관측됩니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 8: 우리은하 구성 천체 & 우주/외부은하 시뮬레이션 링크 허브 ==================== -->
+    <section class="slide" data-note="우리은하를 이루는 성단(산개 성단 vs 구상 성단)과 성운을 간단히 정리하고, 학생들이 직접 외부 은하와 실제 우리은하 데이터를 조작해 볼 수 있는 공신력 있는 천문 시뮬레이션 사이트 5곳을 소개합니다.">
+      <div class="slide-header">
+        <div>
+          <div class="slide-step"><i class="fa-solid fa-globe"></i> STEP 08 · 우리은하의 구성 천체 & 외부 은하 탐험 링크</div>
+          <h2 class="slide-title">우리은하 구성 천체 정리 & 우주 탐험 시뮬레이션 허브</h2>
+          <p class="slide-subtitle">우리은하 내부의 성단·성운 분포를 비교하고, 실제 천문 데이터로 구현된 <strong>우리은하 및 외부 은하 시뮬레이션 웹사이트</strong>를 직접 체험해 보세요.</p>
+        </div>
+        <span class="badge badge-blue">확장 탐구 & 웹 시뮬레이터</span>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2" style="grid-template-columns: 0.95fr 1.25fr;">
+          <!-- Left: Milky Way Constituent Objects Summary -->
+          <div class="card card-highlight" style="justify-content:space-between;">
+            <div>
+              <div class="card-title"><i class="fa-solid fa-braille" style="color:var(--accent-gold)"></i> 우리은하를 이루는 성단과 성운의 분포</div>
+              <p style="font-size:0.85rem;margin-bottom:8px;">
+                우리은하에는 약 <strong>2,000억 개의 별</strong>뿐만 아니라 성단과 성운이 특정 위치에 규칙적으로 분포합니다.
+              </p>
+              <table class="sci-table" style="font-size:0.81rem;">
+                <thead>
+                  <tr>
+                    <th>구분</th>
+                    <th>특징 및 별의 색</th>
+                    <th>주요 분포 위치</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong style="color:#7dd3fc;">산개 성단</strong></td>
+                    <td>수십~수만 개의 별이 엉성하게 모임 (젊고 푸른 별)</td>
+                    <td><strong>은하 원반 (나선팔)</strong></td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color:#fde047;">구상 성단</strong></td>
+                    <td>수만~수십만 개의 별이 공 모양으로 빽빽이 모임 (늙고 붉은 별)</td>
+                    <td><strong>은하 중심부 & 헤일로</strong></td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color:#d8b4fe;">성운</strong></td>
+                    <td>방출·반사·암흑 성운 (성간 물질 밀집)</td>
+                    <td><strong>은하 원반 (나선팔)</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="formula-box" style="font-size:0.88rem;padding:10px 12px;">
+              우주에는 우리은하 바깥에도 안드로메다 은하 등 수많은 <span class="hl-gold">외부 은하</span>가 존재합니다!
+            </div>
+          </div>
+
+          <!-- Right: External Interactive Websites & Simulations -->
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <div style="font-size:0.88rem;font-weight:800;color:var(--accent-gold);display:flex;align-items:center;gap:7px;">
+              <i class="fa-solid fa-up-right-from-square"></i> 우리은하 & 외부 은하를 직접 관찰하는 추천 시뮬레이션 사이트 (클릭 시 새 창 이동)
+            </div>
+
+            <div class="grid-2" style="gap:9px;">
+              <a class="ext-link-card" href="https://stellarium-web.org/" target="_blank" rel="noopener noreferrer">
+                <div class="ext-link-top">
+                  <span class="ext-link-title"><i class="fa-solid fa-moon" style="color:#38bdf8;"></i> Stellarium Web</span>
+                  <span class="badge badge-blue">실시간 밤하늘</span>
+                </div>
+                <p class="ext-link-desc">날짜와 계절(여름·겨울)을 바꾸며 실제 밤하늘의 은하수(궁수자리·오리온자리)와 안드로메다 은하 등 외부 은하를 관측하는 웹 천체투영관입니다.</p>
+                <span class="ext-link-url">stellarium-web.org <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+              </a>
+
+              <a class="ext-link-card" href="https://stars.chromeexperiments.com/" target="_blank" rel="noopener noreferrer">
+                <div class="ext-link-top">
+                  <span class="ext-link-title"><i class="fa-solid fa-cubes-stacked" style="color:#fbbf24;"></i> 100,000 Stars</span>
+                  <span class="badge badge-gold">3D 우리은하 투어</span>
+                </div>
+                <p class="ext-link-desc">구글 크롬 실험실의 3D 인터랙티브 우리은하 지도입니다. 태양계에서 출발해 줌아웃하며 지름 30,000 pc(10만 광년)의 막대나선은하 전체 모습을 입체로 체험합니다.</p>
+                <span class="ext-link-url">stars.chromeexperiments.com <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+              </a>
+
+              <a class="ext-link-card" href="https://science.nasa.gov/universe/galaxies/" target="_blank" rel="noopener noreferrer">
+                <div class="ext-link-top">
+                  <span class="ext-link-title"><i class="fa-solid fa-user-astronaut" style="color:#f87171;"></i> NASA Galaxies & Eyes</span>
+                  <span class="badge badge-red">NASA 공식 자료</span>
+                </div>
+                <p class="ext-link-desc">허블·제임스 웹 우주망원경이 촬영한 다양한 외부 은하(나선은하, 막대나선은하, 타원은하, 불규칙은하)와 우리은하 구조 해설을 제공합니다.</p>
+                <span class="ext-link-url">science.nasa.gov/universe/galaxies <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+              </a>
+
+              <a class="ext-link-card" href="https://sky.esa.int/" target="_blank" rel="noopener noreferrer">
+                <div class="ext-link-top">
+                  <span class="ext-link-title"><i class="fa-solid fa-satellite-dish" style="color:#34d399;"></i> ESASky & WorldWide Telescope</span>
+                  <span class="badge badge-green">실제 관측 지도</span>
+                </div>
+                <p class="ext-link-desc">유럽우주국(ESA)의 가이아(Gaia) 위성 데이터로 완성한 실제 은하수 전천 파노라마와 외부 은하, 성단, 성운을 파장별로 탐사할 수 있습니다.</p>
+                <span class="ext-link-url">sky.esa.int <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 9: 형성 평가 퀴즈 (4문항) ==================== -->
+    <section class="slide" data-note="오늘 배운 우리은하의 모양(막대나선은하/원반 모양), 교과서 핵심 수치(2,000억 개, 30,000 pc, 8,500 pc), 여름철과 겨울철 은하수의 차이를 4문항으로 점검합니다.">
+      <div class="slide-header">
+        <div>
+          <div class="slide-step"><i class="fa-solid fa-clipboard-check"></i> STEP 09 · 형성 평가 퀴즈</div>
+          <h2 class="slide-title">개념 확인 퀴즈 (4문항)</h2>
+          <p class="slide-subtitle">선택지를 클릭하여 정답과 해설을 즉시 확인해 보세요.</p>
+        </div>
+        <span class="badge badge-gold" id="quizScoreBadge">점수: 0 / 4</span>
+      </div>
+
+      <div class="slide-body">
+        <div class="quiz-container">
+          <!-- Q1 -->
+          <div class="quiz-card" data-answer="1">
+            <div class="quiz-q">Q1. 우리은하를 위에서 본 모습과 옆에서 본 모습을 바르게 짝지은 것은?</div>
+            <div class="quiz-options">
+              <button class="quiz-opt" data-idx="0">① 위: 타원 모양 / 옆: 구형</button>
+              <button class="quiz-opt" data-idx="1">② 위: 막대나선 모양 / 옆: 가운데가 볼록한 원반 모양</button>
+              <button class="quiz-opt" data-idx="2">③ 위: 원반 모양 / 옆: 막대나선 모양</button>
+              <button class="quiz-opt" data-idx="3">④ 위: 불규칙 모양 / 옆: 평평한 판 모양</button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="quiz-card" data-answer="2">
+            <div class="quiz-q">Q2. 교과서 기준 우리은하의 크기와 별의 개수에 대한 설명으로 옳은 것은?</div>
+            <div class="quiz-options">
+              <button class="quiz-opt" data-idx="0">① 별의 개수는 약 200만 개이다.</button>
+              <button class="quiz-opt" data-idx="1">② 우리은하의 지름은 약 8,500 pc이다.</button>
+              <button class="quiz-opt" data-idx="2">③ 별은 약 2,000억 개, 지름은 약 30,000 pc이다.</button>
+              <button class="quiz-opt" data-idx="3">④ 태양계는 우리은하의 정중앙(중심부)에 위치한다.</button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="quiz-card" data-answer="0">
+            <div class="quiz-q">Q3. 우리은하의 중심에서 태양계까지의 거리와 태양계가 위치한 곳은?</div>
+            <div class="quiz-options">
+              <button class="quiz-opt" data-idx="0">① 약 8,500 pc 떨어진 나선팔</button>
+              <button class="quiz-opt" data-idx="1">② 약 30,000 pc 떨어진 헤일로</button>
+              <button class="quiz-opt" data-idx="2">③ 약 8,500 pc 떨어진 헤일로 외곽</button>
+              <button class="quiz-opt" data-idx="3">④ 약 30,000 pc 떨어진 막대 중심부</button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="quiz-card" data-answer="3">
+            <div class="quiz-q">Q4. 겨울철보다 여름철 밤하늘에서 은하수가 더 밝고 폭이 넓게 보이는 까닭은?</div>
+            <div class="quiz-options">
+              <button class="quiz-opt" data-idx="0">① 여름철에 지구와 태양 사이의 거리가 가까워져서</button>
+              <button class="quiz-opt" data-idx="1">② 여름철에는 성간 물질이 모두 사라지기 때문에</button>
+              <button class="quiz-opt" data-idx="2">③ 여름철에는 우리은하의 외곽(오리온자리 방향)을 바라보기 때문에</button>
+              <button class="quiz-opt" data-idx="3">④ 여름철에는 별이 밀집한 우리은하 중심(궁수자리 방향)을 바라보기 때문에</button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 10: 단원 핵심 총정리 ==================== -->
+    <section class="slide" data-note="수업을 마무리하며 우리은하의 모양, 교과서 3대 수치(2,000억 개, 30,000 pc, 8,500 pc), 여름철/겨울철 은하수 비교를 한눈에 복습합니다.">
+      <div class="slide-header">
+        <div>
+          <div class="slide-step"><i class="fa-solid fa-graduation-cap"></i> STEP 10 · 단원 핵심 요약</div>
+          <h2 class="slide-title">한 장으로 끝내는 '우리은하의 구조와 크기' 총정리</h2>
+          <p class="slide-subtitle">오늘 배운 핵심 개념과 수치를 마지막으로 점검해 봅시다.</p>
+        </div>
+        <span class="badge badge-green">수업 완료!</span>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card card-highlight">
+            <div class="card-title"><i class="fa-solid fa-eye" style="color:var(--accent-blue)"></i> 1. 우리은하의 모양과 구조</div>
+            <ul>
+              <li><strong>분류:</strong> <strong>막대나선은하</strong></li>
+              <li><strong>위에서 본 모습:</strong> 막대 모양의 중심부(팽대부) 양끝에서 나선팔이 휘감겨 나오는 모습</li>
+              <li><strong>옆에서 본 모습:</strong> 가운데가 볼록한 납작한 원반 모양 (+ 구형의 헤일로가 감쌈)</li>
+              <li><strong>성단 분포:</strong> 산개 성단·성운은 <strong>나선팔(원반)</strong>, 구상 성단은 <strong>중심부와 헤일로</strong>에 주로 분포</li>
+            </ul>
+          </div>
+
+          <div class="card card-gold">
+            <div class="card-title"><i class="fa-solid fa-ruler-combined" style="color:var(--accent-gold)"></i> 2. 교과서 핵심 수치 3가지</div>
+            <ul>
+              <li><strong>별의 개수:</strong> 약 <strong style="color:var(--accent-gold);">2,000억 개</strong></li>
+              <li><strong>우리은하 지름:</strong> 약 <strong style="color:var(--accent-gold);">30,000 pc</strong> (약 10만 광년)</li>
+              <li><strong>태양계의 위치:</strong> 은하 중심에서 약 <strong style="color:var(--accent-gold);">8,500 pc</strong> (약 2.8만 광년) 떨어진 <strong>나선팔</strong>에 위치</li>
+            </ul>
+          </div>
+
+          <div class="card card-highlight">
+            <div class="card-title"><i class="fa-solid fa-cloud-moon" style="color:var(--accent-purple)"></i> 3. 여름 vs 겨울 밤하늘 은하수</div>
+            <ul>
+              <li><strong>은하수:</strong> 우리은하 내부(태양계)에서 바라본 우리은하의 모습 (검은 띠는 성간 물질이 별빛을 가린 것)</li>
+              <li><strong>여름철 밤하늘:</strong> <strong>은하 중심(궁수자리) 방향</strong> 관측 ➔ 은하수가 <strong>매우 밝고 폭이 넓음</strong></li>
+              <li><strong>겨울철 밤하늘:</strong> <strong>은하 외곽(오리온자리) 방향</strong> 관측 ➔ 은하수가 <strong>희미하고 폭이 좁음</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="formula-box" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <span>🚀 <strong>VII. 별과 우주 단원 학습 연계:</strong> 별의 밝기와 거리 ➔ 별의 색과 표면 온도 ➔ <strong>우리은하의 구조와 크기</strong></span>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <a href="../star-brightness/index.html" class="nav-btn" style="text-decoration:none;font-size:0.8rem;">
+              <i class="fa-solid fa-arrow-left"></i> 01. 별의 밝기와 거리
+            </a>
+            <a href="../star-color-distance/index.html" class="nav-btn" style="text-decoration:none;font-size:0.8rem;">
+              <i class="fa-solid fa-arrow-left"></i> 02. 연주 시차와 표면 온도
+            </a>
+            <a href="../../index.html#sims" class="nav-btn" style="text-decoration:none;font-size:0.8rem;background:var(--accent-blue);color:#060919;">
+              <i class="fa-solid fa-list"></i> 전체 시뮬레이션 목록
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Deck Footer Navigation -->
+  <footer class="deck-footer">
+    <div class="nav-controls">
+      <button class="nav-btn" id="btnPrevSlide"><i class="fa-solid fa-chevron-left"></i> 이전</button>
+      <button class="nav-btn" id="btnNextSlide">다음 <i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBarFill"></div>
+      </div>
+      <span class="slide-counter" id="slideCounter">1 / 10</span>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--text-muted);">
+      <span>중2 과학 · 우리은하의 구조와 크기</span>
+    </div>
+  </footer>
+
+  <script>
+    /* =========================================================================
+       1. Background Starfield Animation
+       ========================================================================= */
+    (function initStarfield() {
+      const canvas = document.getElementById('starfield');
+      const ctx = canvas.getContext('2d');
+      let stars = [];
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        stars = Array.from({ length: 120 }, () => ({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.5 + 0.3,
+          a: Math.random() * 0.8 + 0.2,
+          s: Math.random() * 0.015 + 0.004
+        }));
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (const st of stars) {
+          st.a += st.s;
+          const alpha = 0.25 + Math.abs(Math.sin(st.a)) * 0.7;
+          ctx.fillStyle = `rgba(226, 232, 240, ${alpha.toFixed(2)})`;
+          ctx.beginPath();
+          ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    /* =========================================================================
+       2. Slide Deck Navigation, Teacher Notes & Fullscreen
+       ========================================================================= */
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const btnPrev = document.getElementById('btnPrevSlide');
+    const btnNext = document.getElementById('btnNextSlide');
+    const progressBarFill = document.getElementById('progressBarFill');
+    const slideCounter = document.getElementById('slideCounter');
+    const teacherDrawer = document.getElementById('teacherDrawer');
+    const teacherNoteText = document.getElementById('teacherNoteText');
+    const btnTeacherNote = document.getElementById('btnTeacherNote');
+    const btnFullscreen = document.getElementById('btnFullscreen');
+
+    let currentSlide = 0;
+
+    function updateSlideDeck(idx) {
+      currentSlide = Math.max(0, Math.min(slides.length - 1, idx));
+      slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+      btnPrev.disabled = currentSlide === 0;
+      btnNext.disabled = currentSlide === slides.length - 1;
+      const pct = ((currentSlide + 1) / slides.length) * 100;
+      progressBarFill.style.width = `${pct}%`;
+      slideCounter.textContent = `${currentSlide + 1} / ${slides.length}`;
+      const note = slides[currentSlide].getAttribute('data-note') || '';
+      teacherNoteText.innerHTML = `<strong>💡 교사용 지도 포인트 (Slide ${currentSlide + 1}):</strong> ${note}`;
+    }
+
+    btnPrev.addEventListener('click', () => updateSlideDeck(currentSlide - 1));
+    btnNext.addEventListener('click', () => updateSlideDeck(currentSlide + 1));
+
+    btnTeacherNote.addEventListener('click', () => {
+      teacherDrawer.classList.toggle('show');
+      btnTeacherNote.classList.toggle('active');
+    });
+
+    btnFullscreen.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT') return;
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') updateSlideDeck(currentSlide + 1);
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') updateSlideDeck(currentSlide - 1);
+      if (e.key === 'n' || e.key === 'N') btnTeacherNote.click();
+      if (e.key === 'f' || e.key === 'F') btnFullscreen.click();
+    });
+
+    updateSlideDeck(0);
+
+    /* =========================================================================
+       3. Interactive Simulation 1: 3D/2D Milky Way Structure & Size Explorer (Slide 4)
+       ========================================================================= */
+    (function initGalaxy3DSim() {
+      const canvas = document.getElementById('galaxy3dCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      const tiltSlider = document.getElementById('tiltSlider');
+      const tiltAngleVal = document.getElementById('tiltAngleVal');
+      const galViewBadge = document.getElementById('galViewBadge');
+      const galHighlightTag = document.getElementById('galHighlightTag');
+      const chkRuler = document.getElementById('chkRuler');
+      const chkRotate = document.getElementById('chkRotate');
+      const partDetailTitle = document.getElementById('partDetailTitle');
+      const partDetailDesc = document.getElementById('partDetailDesc');
+
+      const btnViewTop = document.getElementById('btnViewTop');
+      const btnViewIso = document.getElementById('btnViewIso');
+      const btnViewSide = document.getElementById('btnViewSide');
+      const partButtons = Array.from(document.querySelectorAll('[data-part]'));
+
+      let tiltDeg = 0; // 0 = Top-down, 90 = Edge-on (Side view)
+      let activePart = 'all';
+      let rotAngle = 0;
+
+      // Generate synthetic galaxy particles
+      const MAX_R = 128; // corresponds to radius 15,000 pc (diameter 30,000 pc)
+      const SUN_R = MAX_R * (8500 / 15000); // 8,500 pc from center (~72.5 px)
+
+      const armParticles = [];
+      const barParticles = [];
+      const globularClusters = [];
+
+      // 1) Bar / Bulge particles
+      for (let i = 0; i < 240; i++) {
+        const u = (Math.random() - 0.5) * 74;
+        const v = (Math.random() - 0.5) * 24;
+        const z = (Math.random() - 0.5) * 28 * Math.exp(-(u * u) / 1800);
+        const angleBar = -0.38;
+        const x = u * Math.cos(angleBar) - v * Math.sin(angleBar);
+        const y = u * Math.sin(angleBar) + v * Math.cos(angleBar);
+        barParticles.push({
+          x, y, z,
+          size: Math.random() * 2.2 + 1.2,
+          color: Math.random() > 0.3 ? '#fde047' : '#fb923c'
+        });
+      }
+
+      // 2) Spiral Arm & Disk particles (4 arms)
+      for (let arm = 0; arm < 4; arm++) {
+        const armOffset = (arm * Math.PI) / 2;
+        for (let i = 0; i < 155; i++) {
+          const frac = i / 155;
+          const r = 24 + frac * (MAX_R - 24);
+          const theta = armOffset + frac * 2.55 + (Math.random() - 0.5) * 0.36;
+          const x = r * Math.cos(theta);
+          const y = r * Math.sin(theta);
+          const z = (Math.random() - 0.5) * 9;
+          const isNebula = Math.random() < 0.11;
+          armParticles.push({
+            x, y, z,
+            size: isNebula ? 3.2 : (Math.random() * 1.7 + 0.8),
+            color: isNebula ? '#f472b6' : (Math.random() > 0.25 ? '#7dd3fc' : '#e0f2fe'),
+            isNebula
+          });
+        }
+      }
+
+      // 3) Halo Globular Clusters (구상 성단)
+      for (let i = 0; i < 26; i++) {
+        const phi = Math.acos(2 * Math.random() - 1);
+        const theta = Math.random() * Math.PI * 2;
+        const r = 38 + Math.random() * 88;
+        globularClusters.push({
+          x: r * Math.sin(phi) * Math.cos(theta),
+          y: r * Math.sin(phi) * Math.sin(theta),
+          z: r * Math.cos(phi) * 0.78
+        });
+      }
+
+      const partDescriptions = {
+        all: {
+          tag: '전체 구조 표시 중',
+          title: '우리은하 전체 구조 (막대나선은하)',
+          desc: '우리은하는 약 <strong>2,000억 개</strong>의 별을 포함하는 거대한 <strong>막대나선은하</strong>입니다. 지름은 약 <strong>30,000 pc(약 10만 광년)</strong>이며, 태양계는 중심에서 약 <strong>8,500 pc</strong> 떨어진 나선팔에 자리 잡고 있습니다.'
+        },
+        bar: {
+          tag: '① 중심부(막대 모양·팽대부) 강조',
+          title: '중심부 (막대 구조 · 팽대부)',
+          desc: '위에서 보면 <strong>길쭉한 막대 모양</strong>이고, 옆에서 보면 <strong>가운데가 볼록하게 부풀어 오른 형태(팽대부)</strong>입니다. 나이가 많고 온도가 비교적 낮은 붉은색·노란색 별들과 구상 성단이 밀집해 있습니다.'
+        },
+        arms: {
+          tag: '② 나선팔 및 은하 원반 강조',
+          title: '나선팔과 은하 원반 (산개 성단 · 성운 분포)',
+          desc: '막대 모양 중심부 양끝에서 소용돌이치듯 뻗어 나온 <strong>나선팔</strong>은 옆에서 보면 <strong>납작한 원반</strong>을 이룹니다. 성간 물질이 풍부하여 젊은 푸른 별, <strong>산개 성단</strong>, <strong>성운</strong>이 주로 분포합니다.'
+        },
+        halo: {
+          tag: '③ 헤일로 및 구상 성단 강조',
+          title: '헤일로 (Halo)와 구상 성단',
+          desc: '은하 원반과 중심부를 둥글게 감싸는 거대한 구형의 영역을 <strong>헤일로</strong>라고 합니다. 이곳에는 수만~수십만 개의 늙은 별들이 공 모양으로 빽빽하게 모인 <strong>구상 성단</strong>이 고르게 분포합니다.'
+        },
+        sun: {
+          tag: '④ 태양계의 위치 (중심에서 8,500 pc) 강조',
+          title: '태양계의 위치 (은하 중심에서 약 8,500 pc)',
+          desc: '태양계는 우리은하의 중심에 있지 않고, 중심에서 약 <strong>8,500 pc(약 2.8만 광년)</strong> 떨어진 <strong>나선팔(오리온 팔)</strong>에 위치합니다. 이 비대칭 위치 때문에 계절마다 은하수의 모습이 다르게 보입니다.'
+        }
+      };
+
+      function updateViewLabels() {
+        let modeText = '자유 입체 시점';
+        if (tiltDeg <= 8) modeText = '위에서 본 모습 (막대나선은하)';
+        else if (tiltDeg >= 82) modeText = '옆에서 본 모습 (가운데가 볼록한 원반)';
+        tiltAngleVal.textContent = `${tiltDeg}° (${modeText})`;
+        galViewBadge.textContent = `현재 시점: ${modeText} (기울기 ${tiltDeg}°)`;
+
+        btnViewTop.classList.toggle('active', tiltDeg <= 8);
+        btnViewIso.classList.toggle('active', tiltDeg > 8 && tiltDeg < 82);
+        btnViewSide.classList.toggle('active', tiltDeg >= 82);
+      }
+
+      tiltSlider.addEventListener('input', () => {
+        tiltDeg = Number(tiltSlider.value);
+        updateViewLabels();
+      });
+
+      btnViewTop.addEventListener('click', () => {
+        tiltDeg = 0;
+        tiltSlider.value = '0';
+        updateViewLabels();
+      });
+      btnViewIso.addEventListener('click', () => {
+        tiltDeg = 55;
+        tiltSlider.value = '55';
+        updateViewLabels();
+      });
+      btnViewSide.addEventListener('click', () => {
+        tiltDeg = 90;
+        tiltSlider.value = '90';
+        updateViewLabels();
+      });
+
+      partButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          partButtons.forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          activePart = btn.getAttribute('data-part');
+          const info = partDescriptions[activePart];
+          galHighlightTag.textContent = info.tag;
+          partDetailTitle.innerHTML = `<i class="fa-solid fa-circle-info" style="color:var(--accent-gold)"></i> ${info.title}`;
+          partDetailDesc.innerHTML = info.desc;
+        });
+      });
+
+      // Drag on canvas to tilt
+      let isDragging = false;
+      let startY = 0;
+      let startTilt = 0;
+      canvas.addEventListener('pointerdown', (e) => {
+        isDragging = true;
+        startY = e.clientY;
+        startTilt = tiltDeg;
+      });
+      window.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        const dy = e.clientY - startY;
+        tiltDeg = Math.max(0, Math.min(90, Math.round(startTilt + dy * 0.45)));
+        tiltSlider.value = String(tiltDeg);
+        updateViewLabels();
+      });
+      window.addEventListener('pointerup', () => { isDragging = false; });
+
+      function projectPoint(x, y, z, radTilt, rot) {
+        const cosR = Math.cos(rot);
+        const sinR = Math.sin(rot);
+        const rx = x * cosR - y * sinR;
+        const ry = x * sinR + y * cosR;
+        const px = rx;
+        const py = ry * Math.cos(radTilt) - z * Math.sin(radTilt);
+        return { px, py };
+      }
+
+      function renderGalaxy() {
+        const w = canvas.width;
+        const h = canvas.height;
+        const cx = w * 0.5;
+        const cy = h * 0.47;
+
+        ctx.clearRect(0, 0, w, h);
+
+        if (chkRotate.checked) {
+          rotAngle += 0.0035;
+        }
+        const radTilt = (tiltDeg * Math.PI) / 180;
+
+        // 1) Halo boundary (헤일로)
+        const haloAlpha = activePart === 'halo' ? 0.55 : (activePart === 'all' ? 0.22 : 0.08);
+        ctx.save();
+        ctx.strokeStyle = `rgba(168, 85, 247, ${haloAlpha})`;
+        ctx.fillStyle = `rgba(168, 85, 247, ${haloAlpha * 0.18})`;
+        ctx.lineWidth = activePart === 'halo' ? 2.2 : 1.2;
+        ctx.setLineDash([5, 4]);
+        ctx.beginPath();
+        const haloRy = MAX_R * Math.cos(radTilt) + 92 * Math.sin(radTilt);
+        ctx.ellipse(cx, cy, MAX_R + 12, Math.max(76, haloRy), 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+
+        // 2) Spiral arms & disk particles
+        const armAlpha = (activePart === 'all' || activePart === 'arms') ? 0.85 : 0.16;
+        for (const p of armParticles) {
+          const { px, py } = projectPoint(p.x, p.y, p.z, radTilt, rotAngle);
+          ctx.globalAlpha = armAlpha;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(cx + px, cy + py, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Edge-on dark dust lane when tilted near 90 deg
+        if (tiltDeg > 62) {
+          const laneOpacity = ((tiltDeg - 62) / 28) * (activePart === 'arms' || activePart === 'all' ? 0.72 : 0.25);
+          ctx.fillStyle = `rgba(4, 7, 17, ${laneOpacity.toFixed(2)})`;
+          ctx.fillRect(cx - MAX_R, cy - 3, MAX_R * 2, 6);
+        }
+
+        // 3) Central Bar / Bulge glow & particles
+        const barAlpha = (activePart === 'all' || activePart === 'bar') ? 0.95 : 0.2;
+        ctx.save();
+        ctx.globalAlpha = barAlpha;
+        const grad = ctx.createRadialGradient(cx, cy, 4, cx, cy, 48);
+        grad.addColorStop(0, 'rgba(255, 251, 235, 0.95)');
+        grad.addColorStop(0.45, 'rgba(251, 191, 36, 0.65)');
+        grad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 48, 0, Math.PI * 2);
+        ctx.fill();
+
+        for (const b of barParticles) {
+          const { px, py } = projectPoint(b.x, b.y, b.z, radTilt, rotAngle);
+          ctx.fillStyle = b.color;
+          ctx.beginPath();
+          ctx.arc(cx + px, cy + py, b.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+
+        // 4) Globular Clusters in Halo (구상 성단)
+        const gcAlpha = (activePart === 'all' || activePart === 'halo') ? 0.95 : 0.15;
+        ctx.save();
+        ctx.globalAlpha = gcAlpha;
+        for (const gc of globularClusters) {
+          const { px, py } = projectPoint(gc.x, gc.y, gc.z, radTilt, rotAngle * 0.4);
+          ctx.fillStyle = '#fde047';
+          ctx.strokeStyle = '#f59e0b';
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.arc(cx + px, cy + py, activePart === 'halo' ? 4.8 : 3.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        // 5) Solar System position (중심에서 8,500 pc 떨어진 나선팔)
+        const sunPos = projectPoint(SUN_R, 0, 0, radTilt, rotAngle * 0.25 + 0.65);
+        const sx = cx + sunPos.px;
+        const sy = cy + sunPos.py;
+
+        ctx.save();
+        // Distance line from Galactic Center to Sun (8,500 pc)
+        if (chkRuler.checked || activePart === 'sun') {
+          ctx.strokeStyle = '#f87171';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([4, 3]);
+          ctx.beginPath();
+          ctx.moveTo(cx, cy);
+          ctx.lineTo(sx, sy);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          const mx = (cx + sx) / 2;
+          const my = (cy + sy) / 2;
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+          ctx.strokeStyle = '#f87171';
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.roundRect(mx - 42, my - 22, 84, 20, 5);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = '#fca5a5';
+          ctx.font = 'bold 11px Pretendard, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('약 8,500 pc', mx, my - 8);
+        }
+
+        // Sun marker
+        ctx.fillStyle = '#fbbf24';
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(sx, sy, activePart === 'sun' ? 8 : 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#fef08a';
+        ctx.font = 'bold 12px Pretendard, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('☀️ 태양계 (나선팔)', sx + 11, sy + 4);
+        ctx.restore();
+
+        // 6) Total Diameter Ruler (30,000 pc)
+        if (chkRuler.checked) {
+          const ry = h - 22;
+          ctx.save();
+          ctx.strokeStyle = '#38bdf8';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(cx - MAX_R, ry);
+          ctx.lineTo(cx + MAX_R, ry);
+          ctx.moveTo(cx - MAX_R, ry - 6);
+          ctx.lineTo(cx - MAX_R, ry + 6);
+          ctx.moveTo(cx + MAX_R, ry - 6);
+          ctx.lineTo(cx + MAX_R, ry + 6);
+          ctx.stroke();
+
+          ctx.fillStyle = 'rgba(6, 9, 25, 0.92)';
+          ctx.strokeStyle = '#38bdf8';
+          ctx.beginPath();
+          ctx.roundRect(cx - 88, ry - 12, 176, 22, 6);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#7dd3fc';
+          ctx.font = 'bold 12px Pretendard, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('우리은하 지름 약 30,000 pc', cx, ry + 3);
+          ctx.restore();
+        }
+
+        requestAnimationFrame(renderGalaxy);
+      }
+
+      updateViewLabels();
+      renderGalaxy();
+    })();
+
+    /* =========================================================================
+       4. Interactive Simulation 2: Summer vs Winter Night Sky Milky Way (Slide 7)
+       ========================================================================= */
+    (function initSeasonMilkyWaySim() {
+      const galCanvas = document.getElementById('seasonGalaxyCanvas');
+      const skyCanvas = document.getElementById('seasonSkyCanvas');
+      if (!galCanvas || !skyCanvas) return;
+
+      const galCtx = galCanvas.getContext('2d');
+      const skyCtx = skyCanvas.getContext('2d');
+
+      const seasonSlider = document.getElementById('seasonSlider');
+      const btnSummer = document.getElementById('btnSeasonSummer');
+      const btnAutumn = document.getElementById('btnSeasonAutumn');
+      const btnWinter = document.getElementById('btnSeasonWinter');
+      const chkConstellations = document.getElementById('chkConstellations');
+
+      const seasonDirBadge = document.getElementById('seasonDirBadge');
+      const skyStatusBadge = document.getElementById('skyStatusBadge');
+      const seasonAngleText = document.getElementById('seasonAngleText');
+      const skyConstellationNote = document.getElementById('skyConstellationNote');
+      const seasonSummaryTitle = document.getElementById('seasonSummaryTitle');
+      const seasonSummaryDesc = document.getElementById('seasonSummaryDesc');
+
+      // 0 = Summer (looking toward galactic center), 180 = Winter (looking toward outer edge)
+      let seasonDeg = 0;
+
+      // Pre-generate background stars for the night sky panorama
+      const skyStars = Array.from({ length: 340 }, () => ({
+        x: Math.random(),
+        y: Math.random(),
+        r: Math.random() * 1.6 + 0.4,
+        inBand: Math.abs(Math.random() - 0.5) < 0.24
+      }));
+
+      function updateSeasonUI() {
+        // Compute factor: 1.0 = pure summer (galactic center), 0.0 = pure winter (outer edge)
+        const centerFactor = (Math.cos((seasonDeg * Math.PI) / 180) + 1) / 2;
+
+        btnSummer.classList.toggle('active', seasonDeg <= 35);
+        btnSummer.classList.toggle('gold', seasonDeg <= 35);
+        btnAutumn.classList.toggle('active', seasonDeg > 35 && seasonDeg < 145);
+        btnAutumn.classList.toggle('gold', seasonDeg > 35 && seasonDeg < 145);
+        btnWinter.classList.toggle('active', seasonDeg >= 145);
+        btnWinter.classList.toggle('gold', seasonDeg >= 145);
+
+        if (seasonDeg <= 35) {
+          seasonDirBadge.textContent = '시선: 우리은하 중심 방향 (여름철)';
+          skyStatusBadge.textContent = '은하수 밝기: 매우 밝음 · 폭: 매우 넓음';
+          seasonAngleText.textContent = `여름철 (은하 중심 방향 ${seasonDeg}°)`;
+          skyConstellationNote.innerHTML = '🌌 <strong>여름철 밤하늘 별자리:</strong> 궁수자리(은하 중심 방향), 백조자리, 독수리자리 — 성간 물질에 의한 검은 암흑 성운 띠가 선명하게 보입니다.';
+          seasonSummaryTitle.textContent = '☀️ 여름철 밤하늘 관측 분석 (우리은하 중심 방향)';
+          seasonSummaryDesc.innerHTML = '태양계(중심에서 <strong>8,500 pc</strong>)에서 <strong>우리은하 중심부(궁수자리 방향)</strong>를 바라봅니다. 약 <strong>2,000억 개</strong>의 별이 밀집한 중심 팽대부를 향하므로 <strong>은하수가 매우 밝고 폭이 넓으며 뚜렷하게</strong> 관측됩니다.';
+        } else if (seasonDeg >= 145) {
+          seasonDirBadge.textContent = '시선: 우리은하 외곽 방향 (겨울철)';
+          skyStatusBadge.textContent = '은하수 밝기: 희미함 · 폭: 좁음';
+          seasonAngleText.textContent = `겨울철 (은하 외곽 방향 ${seasonDeg}°)`;
+          skyConstellationNote.innerHTML = '❄️ <strong>겨울철 밤하늘 별자리:</strong> 오리온자리(은하 외곽 방향), 큰개자리, 쌍둥이자리 — 은하 중심 반대쪽 외곽을 보므로 은하수가 좁고 희미합니다.';
+          seasonSummaryTitle.textContent = '❄️ 겨울철 밤하늘 관측 분석 (우리은하 외곽 방향)';
+          seasonSummaryDesc.innerHTML = '태양계에서 우리은하 중심의 반대쪽인 <strong>은하 외곽 나선팔 방향(오리온자리 방향)</strong>을 바라봅니다. 중심부에 비해 별의 밀도가 훨씬 낮아 <strong>은하수가 희미하고 폭이 좁게</strong> 관측됩니다.';
+        } else {
+          seasonDirBadge.textContent = '시선: 은하 나선팔 측면 방향 (봄·가을철)';
+          skyStatusBadge.textContent = '은하수 밝기: 보통 · 폭: 중간';
+          seasonAngleText.textContent = `봄·가을철 전환 구간 (${seasonDeg}°)`;
+          skyConstellationNote.innerHTML = '🍂 <strong>봄·가을철 밤하늘:</strong> 은하 중심(여름)과 은하 외곽(겨울)의 중간 방향을 바라보아 은하수의 밝기와 폭이 중간 정도로 나타납니다.';
+          seasonSummaryTitle.textContent = '🍂 계절 전환 구간 관측 분석';
+          seasonSummaryDesc.innerHTML = '지구가 공전함에 따라 밤하늘 시선이 은하 중심 방향(여름)에서 은하 외곽 방향(겨울)으로 점차 이동하면서 은하수의 밝기와 두께가 연속적으로 변합니다.';
+        }
+
+        drawGalacticView(centerFactor);
+        drawSkyPanorama(centerFactor);
+      }
+
+      function drawGalacticView(centerFactor) {
+        const w = galCanvas.width;
+        const h = galCanvas.height;
+        const cx = w * 0.42;
+        const cy = h * 0.5;
+        galCtx.clearRect(0, 0, w, h);
+
+        const R = 105; // 15,000 pc radius (30,000 pc diameter)
+        // Outer Galaxy disk
+        const diskGrad = galCtx.createRadialGradient(cx, cy, 6, cx, cy, R);
+        diskGrad.addColorStop(0, 'rgba(254, 240, 138, 0.95)');
+        diskGrad.addColorStop(0.28, 'rgba(251, 191, 36, 0.55)');
+        diskGrad.addColorStop(0.68, 'rgba(56, 189, 248, 0.25)');
+        diskGrad.addColorStop(1, 'rgba(56, 189, 248, 0.03)');
+        galCtx.fillStyle = diskGrad;
+        galCtx.beginPath();
+        galCtx.arc(cx, cy, R, 0, Math.PI * 2);
+        galCtx.fill();
+
+        // Spiral arms sketch
+        galCtx.strokeStyle = 'rgba(125, 211, 252, 0.35)';
+        galCtx.lineWidth = 7;
+        for (let a = 0; a < 4; a++) {
+          galCtx.beginPath();
+          for (let t = 0; t <= 1; t += 0.05) {
+            const r = 16 + t * (R - 18);
+            const ang = (a * Math.PI) / 2 + t * 2.2;
+            const px = cx + r * Math.cos(ang);
+            const py = cy + r * Math.sin(ang);
+            if (t === 0) galCtx.moveTo(px, py);
+            else galCtx.lineTo(px, py);
+          }
+          galCtx.stroke();
+        }
+
+        // Central Bar
+        galCtx.save();
+        galCtx.translate(cx, cy);
+        galCtx.rotate(-0.35);
+        galCtx.fillStyle = 'rgba(253, 224, 71, 0.88)';
+        galCtx.beginPath();
+        galCtx.roundRect(-28, -9, 56, 18, 9);
+        galCtx.fill();
+        galCtx.restore();
+
+        // Galactic Center Label
+        galCtx.fillStyle = '#fde047';
+        galCtx.font = 'bold 11px Pretendard, sans-serif';
+        galCtx.textAlign = 'center';
+        galCtx.fillText('은하 중심(팽대부)', cx, cy - 16);
+
+        // Solar System at 8,500 pc to the right of center
+        const sunX = cx + R * (8500 / 15000);
+        const sunY = cy;
+
+        // Viewing Cone from Solar System
+        // seasonDeg = 0 -> looks LEFT (angle PI, toward Galactic Center)
+        // seasonDeg = 180 -> looks RIGHT (angle 0, toward Outer Edge)
+        const lookAngle = Math.PI - (seasonDeg * Math.PI) / 180;
+        const coneSpread = 0.48;
+        const coneLen = 115;
+
+        const coneGrad = galCtx.createRadialGradient(sunX, sunY, 4, sunX, sunY, coneLen);
+        if (centerFactor >= 0.5) {
+          coneGrad.addColorStop(0, 'rgba(251, 191, 36, 0.55)');
+          coneGrad.addColorStop(1, 'rgba(251, 191, 36, 0.02)');
+        } else {
+          coneGrad.addColorStop(0, 'rgba(56, 189, 248, 0.5)');
+          coneGrad.addColorStop(1, 'rgba(56, 189, 248, 0.02)');
+        }
+
+        galCtx.fillStyle = coneGrad;
+        galCtx.beginPath();
+        galCtx.moveTo(sunX, sunY);
+        galCtx.arc(sunX, sunY, coneLen, lookAngle - coneSpread, lookAngle + coneSpread);
+        galCtx.closePath();
+        galCtx.fill();
+
+        galCtx.strokeStyle = centerFactor >= 0.5 ? '#fbbf24' : '#38bdf8';
+        galCtx.lineWidth = 2;
+        galCtx.beginPath();
+        galCtx.moveTo(sunX, sunY);
+        galCtx.lineTo(sunX + Math.cos(lookAngle) * coneLen, sunY + Math.sin(lookAngle) * coneLen);
+        galCtx.stroke();
+
+        // Distance marker: 8,500 pc
+        galCtx.strokeStyle = '#f87171';
+        galCtx.lineWidth = 1.5;
+        galCtx.setLineDash([3, 3]);
+        galCtx.beginPath();
+        galCtx.moveTo(cx, cy + 22);
+        galCtx.lineTo(sunX, sunY + 22);
+        galCtx.stroke();
+        galCtx.setLineDash([]);
+        galCtx.fillStyle = '#fca5a5';
+        galCtx.font = 'bold 10.5px Pretendard, sans-serif';
+        galCtx.fillText('8,500 pc', (cx + sunX) / 2, cy + 35);
+
+        // Solar System Point
+        galCtx.fillStyle = '#fbbf24';
+        galCtx.strokeStyle = '#fff';
+        galCtx.lineWidth = 2;
+        galCtx.beginPath();
+        galCtx.arc(sunX, sunY, 6.5, 0, Math.PI * 2);
+        galCtx.fill();
+        galCtx.stroke();
+        galCtx.fillStyle = '#fff';
+        galCtx.font = 'bold 11px Pretendard, sans-serif';
+        galCtx.fillText('☀️ 태양계', sunX, sunY - 12);
+
+        // Direction guide labels on left & right
+        galCtx.fillStyle = '#fde047';
+        galCtx.textAlign = 'left';
+        galCtx.fillText('◀ 여름 밤하늘 시선 (은하 중심 · 궁수자리)', 12, 22);
+        galCtx.fillStyle = '#7dd3fc';
+        galCtx.textAlign = 'right';
+        galCtx.fillText('겨울 밤하늘 시선 (은하 외곽 · 오리온자리) ▶', w - 12, h - 12);
+      }
+
+      function drawSkyPanorama(centerFactor) {
+        const w = skyCanvas.width;
+        const h = skyCanvas.height;
+        skyCtx.clearRect(0, 0, w, h);
+
+        // Night sky background
+        const skyBg = skyCtx.createLinearGradient(0, 0, 0, h);
+        skyBg.addColorStop(0, '#030613');
+        skyBg.addColorStop(1, '#0b132b');
+        skyCtx.fillStyle = skyBg;
+        skyCtx.fillRect(0, 0, w, h);
+
+        // Milky Way diagonal band width & brightness depend on centerFactor (1 = Summer wide/bright, 0 = Winter narrow/faint)
+        const bandHalfWidth = 24 + centerFactor * 52; // 24px in winter, 76px in summer
+        const bandAlpha = 0.16 + centerFactor * 0.58;
+
+        skyCtx.save();
+        skyCtx.translate(w / 2, h / 2);
+        skyCtx.rotate(-0.28);
+
+        // Outer diffuse Milky Way band
+        const mwGrad = skyCtx.createLinearGradient(0, -bandHalfWidth, 0, bandHalfWidth);
+        mwGrad.addColorStop(0, 'rgba(125, 211, 252, 0)');
+        mwGrad.addColorStop(0.25, `rgba(147, 197, 253, ${(bandAlpha * 0.55).toFixed(2)})`);
+        mwGrad.addColorStop(0.5, `rgba(254, 240, 138, ${bandAlpha.toFixed(2)})`);
+        mwGrad.addColorStop(0.75, `rgba(147, 197, 253, ${(bandAlpha * 0.55).toFixed(2)})`);
+        mwGrad.addColorStop(1, 'rgba(125, 211, 252, 0)');
+        skyCtx.fillStyle = mwGrad;
+        skyCtx.fillRect(-w, -bandHalfWidth, w * 2, bandHalfWidth * 2);
+
+        // Galactic Bulge Core Glow (visible in Summer!)
+        if (centerFactor > 0.15) {
+          const coreGrad = skyCtx.createRadialGradient(20, 4, 5, 20, 4, 115 * centerFactor + 20);
+          coreGrad.addColorStop(0, `rgba(255, 251, 235, ${(centerFactor * 0.92).toFixed(2)})`);
+          coreGrad.addColorStop(0.45, `rgba(251, 191, 36, ${(centerFactor * 0.65).toFixed(2)})`);
+          coreGrad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+          skyCtx.fillStyle = coreGrad;
+          skyCtx.beginPath();
+          skyCtx.ellipse(20, 4, 135 * centerFactor + 20, bandHalfWidth * 0.85, 0, 0, Math.PI * 2);
+          skyCtx.fill();
+        }
+
+        // Dark Dust Lanes (암흑 성운 검은 띠 - prominent in Summer)
+        if (centerFactor > 0.2) {
+          skyCtx.fillStyle = `rgba(4, 7, 17, ${(centerFactor * 0.78).toFixed(2)})`;
+          skyCtx.beginPath();
+          skyCtx.ellipse(-10, 0, 155, 8 + centerFactor * 9, 0.04, 0, Math.PI * 2);
+          skyCtx.fill();
+          skyCtx.beginPath();
+          skyCtx.ellipse(65, -6, 95, 6 + centerFactor * 7, -0.06, 0, Math.PI * 2);
+          skyCtx.fill();
+        }
+
+        skyCtx.restore();
+
+        // Stars in panorama
+        const starLimit = Math.floor(110 + centerFactor * 230);
+        for (let i = 0; i < starLimit; i++) {
+          const st = skyStars[i];
+          const sx = st.x * w;
+          const sy = st.y * h;
+          skyCtx.fillStyle = st.inBand && centerFactor > 0.5 ? '#fef08a' : '#e2e8f0';
+          skyCtx.beginPath();
+          skyCtx.arc(sx, sy, st.r, 0, Math.PI * 2);
+          skyCtx.fill();
+        }
+
+        // Constellation overlay
+        if (chkConstellations.checked) {
+          skyCtx.save();
+          if (centerFactor >= 0.5) {
+            // Summer constellations: Sagittarius (궁수자리) & Cygnus (백조자리)
+            skyCtx.strokeStyle = 'rgba(251, 191, 36, 0.75)';
+            skyCtx.lineWidth = 1.5;
+            // Sagittarius teapot near core
+            const sag = [[275, 165], [305, 148], [322, 168], [295, 182], [275, 165], [255, 155]];
+            skyCtx.beginPath();
+            sag.forEach(([x, y], idx) => (idx === 0 ? skyCtx.moveTo(x, y) : skyCtx.lineTo(x, y)));
+            skyCtx.stroke();
+            skyCtx.fillStyle = '#fde047';
+            skyCtx.font = 'bold 11.5px Pretendard, sans-serif';
+            skyCtx.fillText('✨ 궁수자리 (우리은하 중심 방향)', 235, 204);
+
+            // Cygnus cross
+            const cyg = [[145, 72], [175, 96], [205, 120], [175, 96], [155, 116], [195, 76]];
+            skyCtx.beginPath();
+            cyg.forEach(([x, y], idx) => (idx === 0 ? skyCtx.moveTo(x, y) : skyCtx.lineTo(x, y)));
+            skyCtx.stroke();
+            skyCtx.fillText('✨ 백조자리', 135, 58);
+          } else {
+            // Winter constellations: Orion (오리온자리) & Canis Major (큰개자리)
+            skyCtx.strokeStyle = 'rgba(56, 189, 248, 0.8)';
+            skyCtx.lineWidth = 1.5;
+            const ori = [[210, 82], [255, 88], [242, 125], [225, 125], [210, 82], [225, 125], [212, 168], [252, 165], [242, 125]];
+            skyCtx.beginPath();
+            ori.forEach(([x, y], idx) => (idx === 0 ? skyCtx.moveTo(x, y) : skyCtx.lineTo(x, y)));
+            skyCtx.stroke();
+            // Orion's 3 belt stars
+            [[226, 125], [234, 125], [242, 125]].forEach(([x, y]) => {
+              skyCtx.fillStyle = '#7dd3fc';
+              skyCtx.beginPath();
+              skyCtx.arc(x, y, 2.5, 0, Math.PI * 2);
+              skyCtx.fill();
+            });
+            skyCtx.fillStyle = '#7dd3fc';
+            skyCtx.font = 'bold 11.5px Pretendard, sans-serif';
+            skyCtx.fillText('❄️ 오리온자리 (우리은하 외곽 방향)', 175, 192);
+          }
+          skyCtx.restore();
+        }
+
+        // Width indicator arrow on right side of sky canvas
+        const indX = w - 34;
+        skyCtx.save();
+        skyCtx.strokeStyle = centerFactor >= 0.5 ? '#34d399' : '#f87171';
+        skyCtx.lineWidth = 2.2;
+        skyCtx.beginPath();
+        skyCtx.moveTo(indX, h / 2 - bandHalfWidth * 0.85);
+        skyCtx.lineTo(indX, h / 2 + bandHalfWidth * 0.85);
+        skyCtx.stroke();
+        skyCtx.fillStyle = '#fff';
+        skyCtx.font = 'bold 10.5px Pretendard, sans-serif';
+        skyCtx.textAlign = 'right';
+        skyCtx.fillText(centerFactor >= 0.5 ? '폭 넓음' : '폭 좁음', indX - 6, h / 2 + 4);
+        skyCtx.restore();
+      }
+
+      seasonSlider.addEventListener('input', () => {
+        seasonDeg = Number(seasonSlider.value);
+        updateSeasonUI();
+      });
+      btnSummer.addEventListener('click', () => {
+        seasonDeg = 0;
+        seasonSlider.value = '0';
+        updateSeasonUI();
+      });
+      btnAutumn.addEventListener('click', () => {
+        seasonDeg = 90;
+        seasonSlider.value = '90';
+        updateSeasonUI();
+      });
+      btnWinter.addEventListener('click', () => {
+        seasonDeg = 180;
+        seasonSlider.value = '180';
+        updateSeasonUI();
+      });
+      chkConstellations.addEventListener('change', updateSeasonUI);
+
+      updateSeasonUI();
+    })();
+
+    /* =========================================================================
+       5. Formative Quiz Logic (Slide 9)
+       ========================================================================= */
+    (function initQuiz() {
+      const quizCards = Array.from(document.querySelectorAll('.quiz-card'));
+      const scoreBadge = document.getElementById('quizScoreBadge');
+      const explanations = [
+        '정답! 우리은하를 위에서 보면 중심이 막대 모양인 막대나선은하이고, 옆에서 보면 가운데가 볼록한 원반 모양입니다.',
+        '정답! 우리은하에는 약 2,000억 개의 별이 있으며, 전체 지름은 약 30,000 pc(약 10만 광년)입니다.',
+        '정답! 태양계는 우리은하 중심에서 약 8,500 pc 떨어진 나선팔에 위치하고 있습니다.',
+        '정답! 여름철 밤하늘은 별이 빽빽하게 밀집한 우리은하 중심(궁수자리 방향)을 향하므로 겨울철보다 은하수가 훨씬 밝고 폭이 넓게 보입니다.'
+      ];
+      const solved = new Array(quizCards.length).fill(false);
+
+      quizCards.forEach((card, qIdx) => {
+        const answer = Number(card.getAttribute('data-answer'));
+        const opts = Array.from(card.querySelectorAll('.quiz-opt'));
+        const fb = card.querySelector('.quiz-feedback');
+
+        opts.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const picked = Number(btn.getAttribute('data-idx'));
+            opts.forEach((b) => b.classList.remove('correct', 'wrong'));
+            if (picked === answer) {
+              btn.classList.add('correct');
+              fb.style.color = '#6ee7b7';
+              fb.textContent = `⭕ ${explanations[qIdx]}`;
+              solved[qIdx] = true;
+            } else {
+              btn.classList.add('wrong');
+              fb.style.color = '#fca5a5';
+              fb.textContent = '❌ 다시 생각해 보세요! 위/옆에서 본 모양과 교과서 기준 수치(2,000억 개, 30,000 pc, 8,500 pc)를 떠올려 보세요.';
+              solved[qIdx] = false;
+            }
+            const score = solved.filter(Boolean).length;
+            scoreBadge.textContent = `점수: ${score} / ${quizCards.length}`;
+          });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
