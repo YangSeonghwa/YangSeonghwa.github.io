@@ -3,8 +3,8 @@
 <head>
 <meta charset='UTF-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>AI 바이브 코딩과 GitHub CLI 배포 | 미래 가치와 프로그램 수업</title>
-<meta name='description' content='내가 즐거워하는 분야와 AI 바이브 코딩, VS Code와 GitHub CLI를 이용한 배포 수업 발표 자료'>
+<title>AI 바이브 코딩과 GitHub CLI 배포 | 미래 가치와 프로그램 수업 · Beflower</title>
+<meta name='description' content='중학생 눈높이에 맞춘 AI 바이브 코딩, VS Code Copilot 프롬프트 예시, GitHub CLI 설치·로그인 상세 가이드, 게임 세이브(Commit)와 우주 정거장(Push) 비유로 배우는 배포 수업 발표 자료'>
 <link rel='stylesheet' href='../../assets/css/beflower.css'>
 <script>
 (function(){
@@ -19,48 +19,305 @@
 })();
 </script>
 <style>
-:root{--ink:var(--bf-ink);--sub:var(--bf-sub);--main:var(--bf-main);--pink:var(--bf-pink);--line:var(--bf-line);--card:var(--bf-surface);--soft:var(--bf-surface-soft)}
+:root{
+  --ink:var(--bf-ink);
+  --sub:var(--bf-sub);
+  --main:var(--bf-main);
+  --pink:var(--bf-pink);
+  --line:var(--bf-line);
+  --card:var(--bf-surface);
+  --soft:var(--bf-surface-soft);
+}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{font-family:var(--bf-font-sans);background:linear-gradient(135deg,var(--bf-navy),var(--bf-main) 70%);color:var(--ink);overflow:hidden}
-.deck{position:relative;height:100%;display:flex;align-items:center;justify-content:center;padding:68px 18px 70px}
-.slide{display:none;width:min(1100px,100%);max-height:100%;overflow:auto;background:var(--card);border-radius:24px;padding:clamp(20px,4vw,48px);box-shadow:0 20px 60px rgba(0,0,0,.35);animation:in .35s ease}
+body{
+  font-family:var(--bf-font-sans);
+  background:linear-gradient(135deg,var(--bf-navy),var(--bf-main) 75%);
+  color:var(--ink);
+  overflow:hidden;
+}
+.deck{
+  position:relative;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:68px 18px 66px;
+}
+.slide{
+  display:none;
+  width:min(1120px,100%);
+  max-height:100%;
+  overflow-y:auto;
+  background:var(--card);
+  border-radius:24px;
+  padding:clamp(18px,3.6vw,42px);
+  box-shadow:0 20px 60px rgba(0,0,0,.38);
+  animation:in .32s ease;
+}
 .slide.on{display:block}
-@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.kicker{display:inline-block;padding:4px 14px;border-radius:999px;background:var(--soft);border:1px solid var(--line);color:var(--main);font-weight:700;font-size:clamp(12px,1.6vw,15px)}
-h1{font-size:clamp(28px,5.4vw,54px);margin:14px 0 10px;line-height:1.25;letter-spacing:-.5px}
-h2{font-size:clamp(22px,3.6vw,36px);margin:12px 0 14px;color:var(--main);line-height:1.3}
-p,li{font-size:clamp(15px,2.1vw,22px);line-height:1.7}
-ul,ol{padding-left:1.3em;margin:8px 0}
-li{margin:6px 0}
-.lead{color:var(--sub)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:14px}
-.box{border:1px solid var(--line);border-radius:16px;padding:16px 18px;background:var(--soft)}
-.box h3{margin:0 0 6px;font-size:clamp(17px,2.4vw,24px)}
-.box p,.box li{font-size:clamp(14px,1.9vw,19px);margin:4px 0}
-.step{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:var(--main);color:#fff;font-weight:800;margin-right:8px}
-.flow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin:18px 0}
-.node{padding:14px 18px;border-radius:14px;background:var(--soft);border:2px solid var(--main);font-weight:700;text-align:center;font-size:clamp(14px,2vw,20px)}
-.arrow{font-size:28px;color:var(--pink)}
-.prompt{white-space:pre-wrap;background:#14222c;color:#e6f4ee;border-radius:14px;padding:16px 18px;font-size:clamp(13px,1.8vw,18px);line-height:1.65;border-left:6px solid var(--pink);margin:12px 0}
-.warn{border-left:6px solid var(--bf-amber);background:var(--bf-amber-soft);color:var(--ink);border-radius:12px;padding:4px 16px;margin:12px 0}
-.ok{border-left:6px solid var(--main);background:var(--bf-main-soft);color:var(--ink);border-radius:12px;padding:4px 16px;margin:12px 0}
-.note{display:none;margin-top:16px;padding:12px 16px;border-radius:12px;background:var(--bf-amber-soft);color:var(--ink);border:1px dashed var(--bf-amber);font-size:clamp(13px,1.7vw,17px)}
+@keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.kicker-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:4px}
+.kicker{
+  display:inline-block;
+  padding:4px 14px;
+  border-radius:999px;
+  background:var(--soft);
+  border:1px solid var(--line);
+  color:var(--main);
+  font-weight:700;
+  font-size:clamp(12px,1.5vw,14px);
+}
+.badge-pill{
+  display:inline-block;
+  padding:4px 12px;
+  border-radius:999px;
+  background:var(--bf-main-soft);
+  color:var(--main);
+  font-weight:700;
+  font-size:13px;
+}
+h1{font-size:clamp(26px,4.8vw,48px);margin:10px 0 8px;line-height:1.25;letter-spacing:-.5px}
+h2{font-size:clamp(20px,3.2vw,32px);margin:8px 0 12px;color:var(--main);line-height:1.3}
+p,li{font-size:clamp(14px,1.8vw,19px);line-height:1.65}
+ul,ol{padding-left:1.3em;margin:6px 0}
+li{margin:5px 0}
+.lead{color:var(--sub);font-size:clamp(14px,1.85vw,19px);margin:6px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:12px}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:12px}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px}
+.box{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:15px 18px;
+  background:var(--soft);
+  position:relative;
+}
+.box h3{margin:0 0 6px;font-size:clamp(16px,2.1vw,21px);display:flex;align-items:center;gap:6px}
+.box p,.box li{font-size:clamp(13.5px,1.65vw,17px);margin:4px 0;line-height:1.58}
+.step{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  background:var(--main);
+  color:#fff;
+  font-weight:800;
+  font-size:15px;
+  flex-shrink:0;
+}
+.flow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin:14px 0}
+.node{
+  padding:12px 16px;
+  border-radius:14px;
+  background:var(--soft);
+  border:2px solid var(--main);
+  font-weight:700;
+  text-align:center;
+  font-size:clamp(13.5px,1.75vw,18px);
+  min-width:135px;
+}
+.node small{display:block;font-weight:500;color:var(--sub);font-size:12.5px;margin-top:3px}
+.arrow{font-size:24px;color:var(--pink);font-weight:900}
+.prompt-wrap{position:relative;margin:10px 0}
+.prompt{
+  white-space:pre-wrap;
+  background:#111d27;
+  color:#e6f4ee;
+  border-radius:14px;
+  padding:14px 16px;
+  font-family:var(--bf-font-mono);
+  font-size:clamp(12.5px,1.55vw,16px);
+  line-height:1.6;
+  border-left:6px solid var(--pink);
+  margin:0;
+  overflow-x:auto;
+}
+.copy-btn{
+  position:absolute;
+  top:8px;
+  right:8px;
+  background:rgba(255,255,255,.15);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:8px;
+  padding:4px 10px;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+.copy-btn:hover{background:rgba(255,255,255,.3)}
+.term-window{
+  background:#0d1520;
+  color:#d9e7f5;
+  border-radius:14px;
+  border:1px solid #2a3b52;
+  overflow:hidden;
+  margin:12px 0;
+  font-family:var(--bf-font-mono);
+}
+.term-head{
+  background:#1b2838;
+  padding:7px 14px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:12.5px;
+  color:#9fb3c8;
+  border-bottom:1px solid #2a3b52;
+}
+.dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+.dot.r{background:#ff5f56}
+.dot.y{background:#ffbd2e}
+.dot.g{background:#27c93f}
+.term-body{padding:14px 16px;font-size:clamp(12.5px,1.5vw,15.5px);line-height:1.65;white-space:pre-wrap}
+.term-cmd{color:#4ade80;font-weight:700}
+.term-ans{color:#facc15;font-weight:700}
+.term-comment{color:#94a3b8}
+.term-code{
+  display:inline-block;
+  background:#2563eb;
+  color:#fff;
+  padding:2px 10px;
+  border-radius:6px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+.metaphor-stage{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin:14px 0;
+}
+@media (max-width:760px){.metaphor-stage{grid-template-columns:1fr}}
+.stage-card{
+  border:2px solid var(--line);
+  border-radius:18px;
+  padding:16px;
+  background:var(--soft);
+  text-align:center;
+  position:relative;
+}
+.stage-card.active-stage{border-color:var(--main);background:var(--bf-main-soft)}
+.stage-icon{font-size:38px;display:block;margin-bottom:6px}
+.stage-title{font-weight:800;font-size:18px;color:var(--main);margin-bottom:4px}
+.stage-cmd{
+  display:inline-block;
+  background:#111d27;
+  color:#4ade80;
+  font-family:var(--bf-font-mono);
+  padding:3px 10px;
+  border-radius:8px;
+  font-size:13px;
+  margin:6px 0;
+}
+.warn{
+  border-left:6px solid var(--bf-amber);
+  background:var(--bf-amber-soft);
+  color:var(--ink);
+  border-radius:12px;
+  padding:10px 16px;
+  margin:10px 0;
+  font-size:clamp(13.5px,1.65vw,17px);
+}
+.ok{
+  border-left:6px solid var(--main);
+  background:var(--bf-main-soft);
+  color:var(--ink);
+  border-radius:12px;
+  padding:10px 16px;
+  margin:10px 0;
+  font-size:clamp(13.5px,1.65vw,17px);
+}
+.note{
+  display:none;
+  margin-top:14px;
+  padding:12px 16px;
+  border-radius:12px;
+  background:var(--bf-amber-soft);
+  color:var(--ink);
+  border:1px dashed var(--bf-amber);
+  font-size:clamp(13px,1.6vw,16px);
+}
 body.notes .note{display:block}
-table{border-collapse:collapse;width:100%;font-size:clamp(13px,1.8vw,18px);margin-top:10px}
-th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
-th{background:var(--soft);color:var(--main)}
-.bar{position:fixed;left:0;right:0;bottom:0;height:54px;display:flex;align-items:center;gap:10px;padding:0 14px;background:rgba(8,20,40,.55);backdrop-filter:blur(8px);color:#fff}
-.bar button{border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:7px 14px;font:inherit;cursor:pointer}
+table{border-collapse:collapse;width:100%;font-size:clamp(13px,1.6vw,16.5px);margin-top:10px}
+th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:var(--soft);color:var(--main);font-weight:700}
+kbd{
+  display:inline-block;
+  padding:2px 7px;
+  font-size:.88em;
+  font-family:var(--bf-font-mono);
+  font-weight:700;
+  color:var(--ink);
+  background:var(--card);
+  border:1px solid var(--line);
+  border-bottom-width:2px;
+  border-radius:6px;
+}
+.tab-bar{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.tab-btn{
+  border:1.5px solid var(--line);
+  background:var(--soft);
+  color:var(--ink);
+  padding:7px 14px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:14px;
+  cursor:pointer;
+}
+.tab-btn.on{background:var(--main);color:#fff;border-color:var(--main)}
+.tab-pane{display:none}
+.tab-pane.on{display:block}
+.bar{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:56px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:0 14px;
+  background:rgba(8,20,40,.65);
+  backdrop-filter:blur(8px);
+  color:#fff;
+  z-index:50;
+}
+.bar button,.bar select{
+  border:1px solid rgba(255,255,255,.45);
+  background:rgba(255,255,255,.14);
+  color:#fff;
+  border-radius:10px;
+  padding:6px 12px;
+  font:inherit;
+  font-size:13.5px;
+  cursor:pointer;
+}
+.bar select option{background:#0f2a44;color:#fff}
 .bar button:hover{background:rgba(255,255,255,.28)}
 .prog{flex:1;height:6px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden}
 .prog i{display:block;height:100%;width:0;background:var(--pink);transition:width .3s}
-.cnt{min-width:64px;text-align:center;font-weight:700}
+.cnt{min-width:62px;text-align:center;font-weight:800;font-size:14px}
 a{color:var(--main)}
-.back{color:#fff;text-decoration:none;font-size:14px;white-space:nowrap}
-.src{font-size:13px;color:var(--sub);margin-top:14px}
-@media (max-width:640px){.bar{gap:6px;padding:0 8px}.bar button{padding:6px 9px;font-size:13px}.cnt{min-width:48px;font-size:13px}.back{font-size:12px}}
-@media print{body{overflow:visible;background:#fff}.deck{display:block;padding:0;height:auto}.slide{display:block!important;box-shadow:none;border-radius:0;page-break-after:always;max-height:none;animation:none}.bar{display:none}.note{display:block}}
+.back{color:#fff;text-decoration:none;font-size:14px;white-space:nowrap;font-weight:700}
+@media (max-width:680px){
+  .bar{gap:5px;padding:0 8px}
+  .bar button{padding:5px 8px;font-size:12px}
+  .bar select{display:none}
+  .cnt{min-width:46px;font-size:12px}
+  .back{font-size:12px}
+}
+@media print{
+  body{overflow:visible;background:#fff}
+  .deck{display:block;padding:0;height:auto}
+  .slide{display:block!important;box-shadow:none;border:1px solid #ccc;border-radius:0;page-break-after:always;max-height:none;animation:none;margin-bottom:20px}
+  .bar{display:none}
+  .note{display:block}
+  .tab-pane{display:block!important;margin-bottom:10px}
+}
 </style>
 </head>
 <body>
@@ -75,7 +332,8 @@ a{color:var(--main)}
     </a>
     <div class='bf-nav'>
       <a href='../../index.html'>🏠 홈</a>
-      <a class='active' href='index.html'>💻 수업 자료</a>
+      <a href='../../index.html#sims'>🧪 시뮬레이션</a>
+      <a class='active' href='../../index.html#coding'>💻 프로그램 수업</a>
       <a href='worksheet.html'>📄 학생 활동지</a>
       <button type='button' class='bf-theme-toggle' id='themeToggle' aria-label='다크 모드 전환' title='테마 전환'>
         <span id='themeIcon' aria-hidden='true'>🌙</span>
@@ -86,213 +344,478 @@ a{color:var(--main)}
 
 <div class='deck'>
 
-<!-- 슬라이드 1 -->
-<section class='slide on'>
-<span class='kicker'>미래 가치와 프로그램 수업</span>
-<h1>내가 즐거워하는 일로<br>미래의 부가가치를 만드는 법</h1>
-<p class='lead'>어른들이 말하던 뻔한 성공 방식에서 벗어나, AI와 함께 새로운 가치를 만들고 전 세계에 공유하는 바이브 코딩 수업입니다.</p>
-<div class='grid'>
-<div class='box'><h3>💡 핵심 주제</h3><p>내가 정말 좋아하는 분야 찾기 & 나누기</p></div>
-<div class='box'><h3>🤖 AI 활용</h3><p>어른들의 방식이 아닌 전혀 새로운 AI 도구 사용</p></div>
-<div class='box'><h3>🚀 배포 실습</h3><p>VS Code와 GitHub CLI로 세상에 공개하기</p></div>
-</div>
-<p style='margin-top:20px;'><a href='worksheet.html' target='_blank'>📄 학생용 활동지 열기</a></p>
-<div class='note'>교사 메모: 방향키(←, →)로 슬라이드를 넘기고, N 키를 누르면 교사 메모가 보입니다. F 키는 전체화면입니다.</div>
+<!-- 슬라이드 1: 표지 -->
+<section class='slide on' data-title='1. 수업 소개'>
+  <div class='kicker-row'>
+    <span class='kicker'>미래 가치와 프로그램 수업</span>
+    <span class='badge-pill'>중학교 정보·과학 융합 (2차시)</span>
+  </div>
+  <h1>내가 즐거워하는 일로<br>미래의 부가가치를 만드는 법 🚀</h1>
+  <p class='lead'>어른들이 말하던 뻔한 암기식 공부에서 벗어나, <strong>VS Code Copilot(AI)</strong>과 대화하며 나만의 웹사이트를 만들고 <strong>GitHub CLI</strong>로 전 세계에 배포하는 <strong>바이브 코딩(Vibe Coding)</strong> 수업입니다.</p>
+  <div class='grid'>
+    <div class='box'>
+      <h3>💡 1교시: 미래 가치 & 기획</h3>
+      <p>내가 시간 가는 줄 모르고 몰입하는 '덕질·관심사'를 찾고, 다른 사람과 나누는 웹사이트를 기획합니다.</p>
+    </div>
+    <div class='box'>
+      <h3>🤖 2교시 전반: AI 바이브 코딩</h3>
+      <p>코드를 외우지 않아도 OK! VS Code Copilot에게 원하는 느낌(Vibe)을 말로 지휘해 웹페이지를 완성합니다.</p>
+    </div>
+    <div class='box'>
+      <h3>🌍 2교시 후반: 세이브 & 우주 발사</h3>
+      <p>GitHub CLI(<code>gh</code>)와 <code>git</code> 명령어 3줄로 내 작품을 인터넷 주소로 전 세계에 공개합니다.</p>
+    </div>
+  </div>
+  <div class='ok' style='margin-top:16px;'>
+    <strong>📄 오늘의 준비물:</strong> VS Code, GitHub 계정, 그리고 <strong>내가 진짜 좋아하는 이야기 한 가지!</strong> 👉 <a href='worksheet.html' target='_blank' rel='noopener'><strong>학생용 활동지 열기 (클릭)</strong></a>
+  </div>
+  <div class='note'>교사 메모: 방향키(←, →) 또는 스페이스바로 슬라이드를 넘기고, N 키를 누르면 교사 메모가 켜집니다. F 키는 전체화면입니다. 수업 시작 전 학생들에게 활동지(worksheet.html)를 안내하세요.</div>
 </section>
 
-<!-- 슬라이드 2 -->
-<section class='slide'>
-<span class='kicker'>미래의 성공 공식</span>
-<h2>내가 즐거워하는 분야를 나누어 가치 만들기</h2>
-<div class='grid'>
-<div class='box'>
-<h3>1. 즐거움 찾기 (Passion)</h3>
-<p>내가 시간 가는 줄 모르게 몰입하고 즐거워하는 분야는 무엇인가요? 게임, 그림, 음악, 과학, 요리 등 무엇이든 좋습니다.</p>
-</div>
-<div class='box'>
-<h3>2. 나누어 주기 (Sharing)</h3>
-<p>혼자만 알고 있는 것이 아니라, 내가 만든 결과물과 지식을 다른 사람들과 나누는 것이 미래 부가가치의 시작입니다.</p>
-</div>
-<div class='box'>
-<h3>3. 보상과 가치 (Value)</h3>
-<p>타인에게 도움이 되고 즐거움을 주는 과정에서 자연스럽게 돈, 명예, 그리고 멋진 커리어가 따라오게 됩니다.</p>
-</div>
-</div>
-<p class='lead' style='margin-top:16px;'>"내가 즐거운 일로 다른 사람을 행복하게 만드는 사람, 그것이 미래 사회가 원하는 인재입니다."</p>
-<div class='note'>교사 메모: 학생들이 공부나 성적 중심의 사고에서 벗어나 '내가 정말 좋아하는 것'이 무엇인지 짧게 생각해보게 유도하세요.</div>
+<!-- 슬라이드 2: 미래의 성공 공식 -->
+<section class='slide' data-title='2. 미래의 성공 공식'>
+  <div class='kicker-row'>
+    <span class='kicker'>마인드셋 업그레이드</span>
+    <span class='badge-pill'>Why? 왜 배우나요?</span>
+  </div>
+  <h2>내가 즐거워하는 분야를 나누어 가치 만들기</h2>
+  <p class='lead'>AI가 문제 풀이와 단순 코딩을 대신해 주는 시대! 앞으로는 <strong>"내가 무엇을 좋아하고, 사람들에게 어떤 즐거움을 줄 수 있는가?"</strong>가 진짜 경쟁력이 됩니다.</p>
+  <div class='grid'>
+    <div class='box'>
+      <h3><span class='step'>1</span>즐거움 찾기 (Passion)</h3>
+      <p>내가 시간 가는 줄 모르게 빠져드는 것은 무엇인가요? 게임 공략, K-POP 아이돌, 웹툰, 축구 전술, 우주 과학, 베이킹 등 무엇이든 보물이 됩니다.</p>
+    </div>
+    <div class='box'>
+      <h3><span class='step'>2</span>나누어 주기 (Sharing)</h3>
+      <p>혼자만 알고 끝내지 않고, 보기 쉬운 웹사이트·미니 게임·도감으로 만들어 친구들과 전 세계 사람들에게 공유합니다.</p>
+    </div>
+    <div class='box'>
+      <h3><span class='step'>3</span>부가가치 탄생 (Value)</h3>
+      <p>내 웹사이트를 본 사람들이 "우와, 재밌다! 도움이 됐어!"라고 느끼는 순간, 그것이 바로 미래 사회의 가치(영향력·커리어·수익)가 됩니다.</p>
+    </div>
+  </div>
+  <div class='grid-4' style='margin-top:14px;'>
+    <div class='box'><h3>🎮 게임 덕후라면?</h3><p>마인크래프트 건축 갤러리 & 초보자 꿀팁 도감 사이트</p></div>
+    <div class='box'><h3>🎵 음악·아이돌 팬?</h3><p>기분별 K-POP 플레이리스트 추천 & 응원봉 색상 체험 웹</p></div>
+    <div class='box'><h3>⚽ 스포츠 매니아?</h3><p>우리 반 풋살 리그 대진표 & 좋아하는 선수 스탯 비교표</p></div>
+    <div class='box'><h3>🔬 과학·우주 탐험가?</h3><p>블랙홀·태양계 행성 크기 비교 인터랙티브 미니 사전</p></div>
+  </div>
+  <div class='note'>교사 메모: 학생들이 '수행평가용 딱딱한 주제'가 아니라 진짜 자기가 좋아하는 취미나 관심사를 고르도록 격려해 주세요. 몰입도가 200% 달라집니다!</div>
 </section>
 
-<!-- 슬라이드 3 -->
-<section class='slide'>
-<span class='kicker'>새로운 시대의 도구</span>
-<h2>어른들의 방식이 아닌, 전혀 새로운 AI 활용</h2>
-<div class='grid'>
-<div class='box'>
-<h3>❌ 과거 어른들의 방식</h3>
-<p>남들이 시키는 대로 억지로 외우고, 정해진 정답만 맞추는 획일적인 공부와 노력</p>
-</div>
-<div class='box'>
-<h3>⭕️ 새로운 AI 시대의 방식</h3>
-<p>내가 상상하고 기획한 것을 <strong>AI(인공지능)</strong>와 대화하며 감각적으로 완성하는 <strong>바이브 코딩(Vibe Coding)</strong></p>
-</div>
-</div>
-<div class='ok' style='margin-top:16px;'>
-<strong>바이브 코딩이란?</strong> 코드를 한 줄씩 타이핑하는 법을 몰라도, AI(ChatGPT, Copilot 등)와 느낌과 분위기(Vibe)를 주고받으며 내가 원하는 프로그램을 순식간에 만들어내는 새로운 방식입니다!
-</div>
-<div class='note'>교사 메모: 코딩 문법을 몰라도 아이디어가 중요한 시대가 되었음을 강조해주세요.</div>
+<!-- 슬라이드 3: 바이브 코딩이란? -->
+<section class='slide' data-title='3. 바이브 코딩이란?'>
+  <div class='kicker-row'>
+    <span class='kicker'>새로운 시대의 도구</span>
+    <span class='badge-pill'>Vibe Coding</span>
+  </div>
+  <h2>어른들의 방식이 아닌, 전혀 새로운 AI 바이브 코딩!</h2>
+  <div class='grid-2'>
+    <div class='box'>
+      <h3>❌ 과거 어른들의 코딩 공부</h3>
+      <ul>
+        <li>영어로 된 어려운 명령어와 문법부터 수개월 동안 암기하기</li>
+        <li>세미콜론(<code>;</code>)이나 오타 하나 때문에 2시간 동안 에러 찾기</li>
+        <li>만들고 싶은 아이디어를 펼쳐 보기도 전에 지쳐서 포기하기 😢</li>
+      </ul>
+    </div>
+    <div class='box' style='border:2px solid var(--main);background:var(--bf-main-soft);'>
+      <h3>⭕️ 우리의 AI 바이브 코딩 (Vibe Coding)</h3>
+      <ul>
+        <li>내가 상상한 화면과 분위기(<strong>Vibe</strong>)를 우리말로 설명하기</li>
+        <li><strong>AI(Copilot)</strong>가 수백 줄의 HTML·CSS·JS 코드를 10초 만에 작성!</li>
+        <li>나는 <strong>영화감독(Director)</strong>처럼 결과를 보고 "여긴 이렇게 고쳐줘!" 지휘하기 🎬</li>
+      </ul>
+    </div>
+  </div>
+  <div class='flow' style='margin-top:16px;'>
+    <div class='node'>🧑 1. 상상 & 기획<small>"이런 사이트 만들래!"</small></div>
+    <span class='arrow'>→</span>
+    <div class='node'>💬 2. 프롬프트 전달<small>VS Code Copilot에 요청</small></div>
+    <span class='arrow'>→</span>
+    <div class='node'>👀 3. 화면 바로 확인<small>브라우저에서 디자인 체크</small></div>
+    <span class='arrow'>→</span>
+    <div class='node'>✨ 4. 대화로 업그레이드<small>"버튼을 네온 빛으로 바꿔줘"</small></div>
+  </div>
+  <div class='ok'>
+    <strong>💡 바이브 코딩 핵심 비결:</strong> 코딩 문법은 AI가 다 알고 있습니다. 여러분은 <strong>"누구에게 어떤 재미와 감동을 줄까?"</strong>에만 집중하세요!
+  </div>
+  <div class='note'>교사 메모: 안드레이 카파시(Andrej Karpathy) 등 세계적인 AI 연구자들도 주목하는 '바이브 코딩' 개념을 소개하며, 학생들에게 자신감을 심어주세요.</div>
 </section>
 
-<!-- 슬라이드 4 -->
-<section class='slide'>
-<span class='kicker'>오늘의 실습 목표</span>
-<h2>AI로 만든 내 창작물을 세상에 공유하기</h2>
-<div class='flow'>
-<div class='node'>1. VS Code 열기</div>
-<span class='arrow'>→</span>
-<div class='node'>2. GitHub CLI 설치</div>
-<span class='arrow'>→</span>
-<div class='node'>3. Copilot 창에서 코딩</div>
-<span class='arrow'>→</span>
-<div class='node'>4. 커밋 & 푸시로 배포!</div>
-</div>
-<p class='lead'>오늘 우리는 VS Code에서 GitHub CLI를 활용해, 내 컴퓨터에서 만든 멋진 웹사이트를 터미널 명령어 몇 번으로 인터넷 세상에 뚝딱 배포해 볼 것입니다.</p>
-<div class='note'>교사 메모: 학생들이 긴장하지 않도록 VS Code와 GitHub CLI가 무엇인지 차근차근 설명해 나갑니다.</div>
+<!-- 슬라이드 4: 커밋과 푸시 시각적 비유 -->
+<section class='slide' data-title='4. 커밋과 푸시 쉬운 비유'>
+  <div class='kicker-row'>
+    <span class='kicker'>핵심 개념 완벽 이해</span>
+    <span class='badge-pill'>장바구니 → 세이브 → 우주 발사</span>
+  </div>
+  <h2>Git 삼총사: 담기(Add) · 세이브(Commit) · 발사(Push)</h2>
+  <p class='lead'>개발자들이 매일 쓰는 <code>git</code> 명령어 3가지는 사실 <strong>게임 세이브</strong>와 <strong>우주 정거장 전송</strong>과 똑같습니다!</p>
+
+  <div class='metaphor-stage'>
+    <div class='stage-card'>
+      <span class='stage-icon'>🛒</span>
+      <div class='stage-title'>1단계: 장바구니 담기 (Add)</div>
+      <div class='stage-cmd'>git add .</div>
+      <p>내 방 책상(컴퓨터)에서 새로 만들거나 고친 파일들을 <strong>"이것들을 저장할 거야!"</strong> 하고 포털 장바구니에 모두 골라 담는 단계예요.</p>
+      <p style='font-size:13px;color:var(--sub);'>💡 뒤에 붙은 점(<code>.</code>)은 <strong>"폴더 안의 모든 파일"</strong>이라는 뜻!</p>
+    </div>
+    <div class='stage-card active-stage'>
+      <span class='stage-icon'>🎮💾</span>
+      <div class='stage-title'>2단계: 게임 세이브 (Commit)</div>
+      <div class='stage-cmd'>git commit -m "메시지"</div>
+      <p>보스전을 앞두고 <strong>세이브 포인트</strong>에 도장을 쾅 찍는 거예요! 나중에 코드가 망가져도 언제든 이 세이브 지점으로 되돌아갈 수 있어요.</p>
+      <p style='font-size:13px;color:var(--sub);'>💡 <code>-m</code> 뒤에는 <strong>"무엇을 만들었는지"</strong> 메모를 남겨요!</p>
+    </div>
+    <div class='stage-card'>
+      <span class='stage-icon'>🚀🛰️</span>
+      <div class='stage-title'>3단계: 우주 정거장 발사 (Push)</div>
+      <div class='stage-cmd'>git push origin main</div>
+      <p>내 컴퓨터에만 있던 세이브 파일을 인터넷 우주 정거장(<strong>GitHub</strong>)으로 <strong>"슝~" 밀어 올려서(Push)</strong> 전 세계 친구들이 접속하게 해요!</p>
+      <p style='font-size:13px;color:var(--sub);'>💡 Push를 해야 인터넷 주소에 진짜 반영돼요!</p>
+    </div>
+  </div>
+
+  <div class='warn'>
+    <strong>❓ 자주 헷갈리는 질문:</strong> "선생님, VS Code에서 <code>Ctrl + S</code>(파일 저장)를 눌렀는데 왜 인터넷 주소는 안 바뀌나요?"<br>
+    👉 <code>Ctrl + S</code>는 내 컴퓨터 공책에만 적은 거예요! 반드시 <strong>Add(담기) → Commit(세이브 도장) → Push(우주 발사)</strong> 3단계를 거쳐야 인터넷에 올라갑니다.
+  </div>
+  <div class='note'>교사 메모: 이 슬라이드의 3단계(🛒 장바구니 → 🎮 세이브 포인트 → 🚀 우주 정거장) 비유를 칠판에 적어두면 실습 내내 학생들이 명령어 순서를 절대 잊어버리지 않습니다.</div>
 </section>
 
-<!-- 슬라이드 5 -->
-<section class='slide'>
-<span class='kicker'>핵심 개념 이해하기 (1)</span>
-<h2>커밋(Commit)이란? 🎮 게임 세이브 포인트!</h2>
-<div class='grid'>
-<div class='box'>
-<h3>🕹️ 게임 속 세이브 포인트</h3>
-<p>게임을 하다가 어려운 보스를 깨거나 중요한 아이템을 얻었을 때, 게임을 안전하게 저장하려고 <strong>'세이브(Save)'</strong>를 하죠?</p>
-</div>
-<div class='box'>
-<h3>💾 깃(Git)의 커밋(Commit)</h3>
-<p>프로그래밍을 하다가 "여기까지 기능이 아주 잘 작동해!" 하고 내가 만든 변경사항에 <strong>'도장을 쾅 찍어서 기록을 남기는 것'</strong>이 바로 <strong>커밋</strong>입니다!</p>
-</div>
-</div>
-<div class='prompt'>
-<strong>💡 쉬운 비유:</strong>
-"오늘 만든 홈페이지에 예쁜 버튼을 추가했어! 이 상태를 기억해 줘!" 하고 타임캡슐에 담아 이름표를 붙여두는 것과 같아요.
-</div>
-<div class='note'>교사 메모: 게임 세이브 개념을 활용하면 중학생들이 커밋의 의미를 직관적으로 이해합니다.</div>
+<!-- 슬라이드 5: 실습 1단계 - GitHub CLI 설치 및 터미널 열기 -->
+<section class='slide' data-title='5. GitHub CLI 설치 가이드'>
+  <div class='kicker-row'>
+    <span class='kicker'>실습 1단계 (준비)</span>
+    <span class='badge-pill'>VS Code & GitHub CLI 설치</span>
+  </div>
+  <h2>VS Code 터미널 열기 & GitHub CLI(<code>gh</code>) 설치하기</h2>
+  <p class='lead'><strong>GitHub CLI(<code>gh</code>)</strong>는 마우스로 복잡하게 웹사이트를 클릭하지 않고, 터미널 명령어로 GitHub 로그인과 배포를 한 방에 처리해 주는 마법 리모컨입니다.</p>
+
+  <div class='grid-2'>
+    <div class='box'>
+      <h3><span class='step'>1</span>VS Code에서 터미널 열기</h3>
+      <ul>
+        <li>VS Code 실행 후 상단 메뉴 <strong>[터미널(Terminal)] → [새 터미널(New Terminal)]</strong> 클릭!</li>
+        <li>단축키: <kbd>Ctrl</kbd> + <kbd>`</kbd> (숫자 1 왼쪽의 물결표 키)</li>
+        <li>아래쪽에 검은색(또는 흰색) 명령어 입력창이 나타나면 성공!</li>
+      </ul>
+    </div>
+    <div class='box'>
+      <h3><span class='step'>2</span>설치 여부 확인하기</h3>
+      <p>터미널에 아래 명령어를 치고 <kbd>Enter</kbd>를 눌러 보세요.</p>
+      <div class='prompt-wrap'>
+        <pre class='prompt'>gh --version</pre>
+      </div>
+      <p><code>gh version 2.x.x...</code>라고 숫자가 나오면 이미 설치 완료! 오류가 나면 아래 표대로 설치하세요.</p>
+    </div>
+  </div>
+
+  <table>
+    <tr>
+      <th style='width:22%'>운영체제 (OS)</th>
+      <th>초간단 설치 방법 (터미널에 복사해서 붙여넣기)</th>
+      <th style='width:28%'>설치 후 필수 팁!</th>
+    </tr>
+    <tr>
+      <td><strong>🪟 Windows (윈도우)</strong></td>
+      <td><code>winget install --id GitHub.cli</code> 입력 후 엔터!<br><span style='font-size:13px;color:var(--sub);'>(또는 인터넷에서 <strong>cli.github.com</strong> 접속 후 설치 파일 다운로드)</span></td>
+      <td rowspan='2'>설치가 끝나면 <strong>VS Code를 한 번 껐다가 다시 켜야(재시작)</strong> 터미널이 <code>gh</code> 명령어를 인식합니다! 🔄</td>
+    </tr>
+    <tr>
+      <td><strong>🍎 macOS (맥북)</strong></td>
+      <td><code>brew install gh</code> 입력 후 엔터!</td>
+    </tr>
+  </table>
+  <div class='note'>교사 메모: 학교 컴퓨터실 PC에 Git과 GitHub CLI가 미리 설치되어 있다면 `gh --version` 확인만 하고 바로 다음 슬라이드(로그인)로 넘어가세요. 설치 직후 `'gh'은(는) 내부 또는 외부 명령... 이 아닙니다` 오류가 뜨면 VS Code를 껐다 켜도록 안내하세요.</div>
 </section>
 
-<!-- 슬라이드 6 -->
-<section class='slide'>
-<span class='kicker'>핵심 개념 이해하기 (2)</span>
-<h2>푸시(Push)란? 🚀 우주 정거장으로 슝 날리기!</h2>
-<div class='grid'>
-<div class='box'>
-<h3>🏠 내 방 안의 공책 (로컬 컴퓨터)</h3>
-<p>내 컴퓨터 안에서 코드를 수정하고 저장하는 것은 온전히 내 방 책상 위에 일기를 쓰는 것과 같아요. 다른 친구들은 볼 수 없죠.</p>
-</div>
-<div class='box'>
-<h3>☁️ 인터넷 우주 정거장 (GitHub)</h3>
-<p>내 컴퓨터에만 있던 커밋(세이브 파일)들을 인터넷 세상의 공유 공간(GitHub 저장소)으로 <strong>"슝~" 밀어 올려서(Push)</strong> 전 세계 사람들이 볼 수 있게 하는 것입니다!</p>
-</div>
-</div>
-<div class='ok' style='margin-top:16px;'>
-<strong>Commit + Push =</strong> 내 컴퓨터에서 세이브(Commit)하고, 인터넷에 업로드(Push)하면 끝!
-</div>
-<div class='note'>교사 메모: 로컬과 원격(GitHub)의 개념을 방 안 책상과 우주 정거장 비유로 설명해주세요.</div>
+<!-- 슬라이드 6: 실습 1단계 상세 - gh auth login 따라하기 -->
+<section class='slide' data-title='6. GitHub CLI 로그인 상세 가이드'>
+  <div class='kicker-row'>
+    <span class='kicker'>실습 1단계 (로그인)</span>
+    <span class='badge-pill'>gh auth login 완전 정복</span>
+  </div>
+  <h2><code>gh auth login</code> 질문에 당황하지 않고 로그인하기!</h2>
+  <p class='lead'>터미널에 <code>gh auth login</code>을 입력하면 영어 질문이 차례대로 나옵니다. <strong>방향키(↑/↓)와 <kbd>Enter</kbd> 키</strong>만 눌러 아래 순서대로 따라오세요!</p>
+
+  <div class='term-window'>
+    <div class='term-head'>
+      <span class='dot r'></span><span class='dot y'></span><span class='dot g'></span>
+      <span>VS Code Terminal — PowerShell / bash</span>
+    </div>
+    <div class='term-body'><span class='term-cmd'>$ gh auth login</span>
+? What account do you want to log into?  <span class='term-ans'>&gt; GitHub.com</span>          <span class='term-comment'>👈 1. 그냥 Enter!</span>
+? What is your preferred protocol for Git operations?  <span class='term-ans'>&gt; HTTPS</span>   <span class='term-comment'>👈 2. 그냥 Enter!</span>
+? Authenticate Git with your GitHub credentials? (Y/n)  <span class='term-ans'>Y</span>        <span class='term-comment'>👈 3. Y 누르고 Enter!</span>
+? How would you like to authenticate GitHub CLI?  <span class='term-ans'>&gt; Login with a web browser</span> <span class='term-comment'>👈 4. 그냥 Enter!</span>
+
+! First copy your one-time code: <span class='term-code'>A1B2-C3D4</span>                    <span class='term-comment'>👈 5. 이 8자리 인증 번호를 기억(복사)!</span>
+Press Enter to open github.com in your browser...                <span class='term-comment'>👈 6. Enter를 누르면 인터넷 창이 열려요!</span>
+✓ Authentication complete.
+✓ Logged in as <span class='term-cmd'>my-github-id</span>                                     <span class='term-comment'>👈 로그인 대성공! 🎉</span></div>
+  </div>
+
+  <div class='grid'>
+    <div class='box'>
+      <h3>🔑 핵심 포인트 1: 8자리 코드</h3>
+      <p>화면에 뜬 <code>XXXX-XXXX</code> 모양의 일회용 번호를 복사한 뒤 <kbd>Enter</kbd>를 누르면 웹브라우저가 자동으로 열립니다.</p>
+    </div>
+    <div class='box'>
+      <h3>🌐 핵심 포인트 2: 초록색 버튼</h3>
+      <p>브라우저에 8자리 코드를 입력하고 초록색 <strong>[Authorize github]</strong> 버튼을 누르면 터미널에 <code>✓ Logged in</code>이 뜹니다!</p>
+    </div>
+    <div class='box'>
+      <h3>🧹 공용 PC 보안 약속</h3>
+      <p>수업이 끝나고 자리에서 일어나기 전에는 <code>gh auth logout</code>으로 내 계정을 안전하게 로그아웃하세요.</p>
+    </div>
+  </div>
+  <div class='note'>교사 메모: 학생들이 가장 많이 멈추는 구간이 5번(8자리 원타임 코드 복사 후 엔터)입니다. 터미널에서 Ctrl+C를 누르면 명령어가 취소되므로, 마우스로 드래그 우클릭 복사하거나 그냥 눈으로 보고 브라우저에 타이핑하라고 알려주시면 훨씬 수월합니다!</div>
 </section>
 
-<!-- 슬라이드 7 -->
-<section class='slide'>
-<span class='kicker'>실습 1단계</span>
-<h2>VS Code에서 GitHub CLI 설치 및 로그인</h2>
-<ol>
-<li><strong>VS Code 실행하기:</strong> 컴퓨터에서 Visual Studio Code를 실행합니다.</li>
-<li><strong>GitHub CLI 설치 확인 및 설치:</strong> 터미널 창을 열고 `gh --version`을 입력해 봅니다. (설치가 필요하면 안내에 따라 설치)</li>
-<li><strong>로그인하기 (`gh auth login`):</strong>
-<div class='prompt'>gh auth login</div>
-화면의 안내에 따라 웹브라우저에서 로그인을 완료하고 인증 코드를 연결합니다.</li>
-</ol>
-<div class='warn'>주의: 학교 계정이나 본인 개인 GitHub 계정으로 안전하게 로그인하세요.</div>
-<div class='note'>교사 메모: 학생들이 `gh auth login` 명령어 실행 시 브라우저 연동 창에서 막히지 않도록 교사가 순회하며 도와주세요.</div>
+<!-- 슬라이드 7: 실습 2단계 - VS Code Copilot 구체적 프롬프트 예시 -->
+<section class='slide' data-title='7. Copilot 프롬프트 예시 모음'>
+  <div class='kicker-row'>
+    <span class='kicker'>실습 2단계 (바이브 코딩)</span>
+    <span class='badge-pill'>복사해서 바로 쓰는 프롬프트 레시피</span>
+  </div>
+  <h2>VS Code Copilot 창에서 AI와 대화하며 만들기 💬</h2>
+  <p class='lead'>VS Code에서 새 폴더를 열고, <strong>Copilot Chat</strong>(<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> 또는 상단 말풍선 아이콘 💬)이나 <strong>인라인 챗</strong>(<kbd>Ctrl</kbd>+<kbd>I</kbd>)을 열어 아래 탭 중 내 마음에 드는 주제를 골라 요청해 보세요!</p>
+
+  <div class='tab-bar'>
+    <button type='button' class='tab-btn on' data-tab='p1'>🎮 1. 게임·취미 도감</button>
+    <button type='button' class='tab-btn' data-tab='p2'>🎵 2. K-POP·최애 추천</button>
+    <button type='button' class='tab-btn' data-tab='p3'>🔬 3. 과학·우주 퀴즈</button>
+    <button type='button' class='tab-btn' data-tab='p4'>⚽ 4. 스포츠·동아리 홍보</button>
+  </div>
+
+  <div class='tab-pane on' id='p1'>
+    <div class='prompt-wrap'>
+      <button type='button' class='copy-btn' data-copy='prompt-p1'>📋 프롬프트 복사</button>
+      <pre class='prompt' id='prompt-p1'>내가 좋아하는 '마인크래프트 건축 & 생존 꿀팁'을 소개하는 원페이지 웹사이트를 index.html 파일 하나로 만들어줘.
+- 디자인 분위기(Vibe): 어두운 다크 모드 배경에 에메랄드빛 네온 포인트가 들어간 게이밍 스타일, 둥근 카드 레이아웃
+- 꼭 들어갈 구성:
+  1) 상단 히어로 배너: 멋진 제목과 '랜덤 건축 아이디어 뽑기' 버튼 (클릭할 때마다 새로운 건축 미션이 화면에 뜨게 해줘!)
+  2) 내가 추천하는 건축 테마 카드 3개 (중세 성, 해저 기지, 공중 정원 - 이모지와 난이도 별점 표시)
+  3) 초보자를 위한 생존 필수 꿀팁 퀴즈 (O/X 버튼을 누르면 정답 여부가 바로 뜨는 인터랙티브 기능)
+- 조건: 외부 이미지 없이 예쁜 이모지와 CSS 그라데이션만 사용하고, 스마트폰에서도 안 깨지게 반응형으로 만들어줘.</pre>
+    </div>
+  </div>
+
+  <div class='tab-pane' id='p2'>
+    <div class='prompt-wrap'>
+      <button type='button' class='copy-btn' data-copy='prompt-p2'>📋 프롬프트 복사</button>
+      <pre class='prompt' id='prompt-p2'>친구들의 기분에 맞춰 내가 좋아하는 K-POP 노래를 추천해 주는 웹페이지를 index.html 파일 하나로 만들어줘.
+- 디자인 분위기(Vibe): 파스텔 핑크와 보라색 그라데이션 배경, 하이틴 다이어리처럼 통통 튀고 귀여운 디자인
+- 꼭 들어갈 구성:
+  1) '오늘 내 기분은?' 선택 버튼 4개 (🔥 신날 때, 🌧️ 우울할 때, ✏️ 공부할 때, 🏃 운동할 때)
+  2) 버튼을 클릭하면 그 기분에 딱 맞는 노래 제목, 가수, 내 한 줄 감상평이 부드러운 애니메이션으로 나타나게 해줘!
+  3) 화면 아래에는 '나만의 응원봉 컬러 바꾸기' 버튼을 넣어서 페이지 포인트 색상이 바뀌는 재미있는 기능을 넣어줘.</pre>
+    </div>
+  </div>
+
+  <div class='tab-pane' id='p3'>
+    <div class='prompt-wrap'>
+      <button type='button' class='copy-btn' data-copy='prompt-p3'>📋 프롬프트 복사</button>
+      <pre class='prompt' id='prompt-p3'>중학생 친구들에게 신비로운 우주와 블랙홀을 쉽고 재미있게 알려주는 인터랙티브 과학 웹페이지를 index.html로 만들어줘.
+- 디자인 분위기(Vibe): 별이 반짝이는 깊은 우주 밤하늘(다크 네이비) 배경과 사이버틱한 민트색 강조 글씨
+- 꼭 들어갈 구성:
+  1) 태양계 행성이나 별의 온도를 조절해 보는 슬라이더 (슬라이더를 움직이면 별의 색깔이 붉은색→노란색→파란색으로 바뀌게 해줘!)
+  2) 내가 뽑은 가장 신기한 우주 미스터리 카드 3개 (마우스를 올리면 카드가 살짝 떠오르는 효과)
+  3) 3문제짜리 우주 상식 미니 퀴즈와 점수 계산기</pre>
+    </div>
+  </div>
+
+  <div class='tab-pane' id='p4'>
+    <div class='prompt-wrap'>
+      <button type='button' class='copy-btn' data-copy='prompt-p4'>📋 프롬프트 복사</button>
+      <pre class='prompt' id='prompt-p4'>우리 학교 스포츠 클럽(또는 내가 좋아하는 축구팀)을 소개하고 포지션별 전술을 보여주는 웹사이트를 index.html 하나로 만들어줘.
+- 디자인 분위기(Vibe): 잔디 구장을 닮은 초록색과 화이트 조합의 스포티하고 역동적인 에너지
+- 꼭 들어갈 구성:
+  1) 상단에 멋진 팀 슬로건과 다음 경기 카운트다운(또는 응원 클릭 카운터 버튼: 누를 때마다 응원 횟수가 올라가고 폭죽 이모지가 터지게 해줘!)
+  2) 대표 선수(또는 포지션) 소개 카드 3개와 능력치 막대그래프(스피드, 패스, 슛)
+  3) 친구들이 나에게 가장 잘 맞는 포지션을 찾아보는 간단한 미니 테스트</pre>
+    </div>
+  </div>
+
+  <div class='ok'>
+    <strong>💡 프로 바이브 코더의 공식 (4요소):</strong> <strong>① 주제/목적</strong> + <strong>② 디자인 분위기(색상·느낌)</strong> + <strong>③ 들어갈 내용 3가지</strong> + <strong>④ 클릭·슬라이더 같은 인터랙티브 기능</strong>을 함께 말하면 10배 더 멋진 사이트가 나옵니다!
+  </div>
+  <div class='note'>교사 메모: 학생들이 상단 탭을 눌러 예시를 구경하고, [📋 프롬프트 복사] 버튼을 눌러 자기 관심사에 맞게 단어만 살짝 바꿔서 Copilot에 붙여넣어 보게 하세요.</div>
 </section>
 
-<!-- 슬라이드 8 -->
-<section class='slide'>
-<span class='kicker'>실습 2단계</span>
-<h2>VS Code Copilot 창에서 AI와 대화하며 만들기</h2>
-<div class='grid'>
-<div class='box'>
-<h3>🤖 Copilot Chat 열기</h3>
-<p>VS Code 왼쪽 메뉴나 단축키(Ctrl+I 또는 Cmd+I 등)를 이용해 GitHub Copilot 창을 엽니다.</p>
-</div>
-<div class='box'>
-<h3>💬 말로 설명하기 (바이브 코딩)</h3>
-<p>"내가 좋아하는 음악과 취미를 소개하는 원페이지 웹사이트를 HTML로 예쁘게 만들어줘. 파란색 계열의 세련된 디자인으로 해줘."</p>
-</div>
-</div>
-<div class='ok' style='margin-top:16px;'>
-AI가 순식간에 코드를 작성해 줍니다. 코드를 직접 짜지 않고 내가 원하는 바이브(느낌)를 대화로 전달하는 것이 핵심입니다!
-</div>
-<div class='note'>교사 메모: 학생들이 각자 자신이 좋아하는 주제(게임, 축구, 음악, 그림 등)를 프롬프트에 녹여내도록 격려하세요.</div>
+<!-- 슬라이드 8: 실습 2단계 심화 - AI와 티키타카 업그레이드 -->
+<section class='slide' data-title='8. AI와 대화하며 업그레이드하기'>
+  <div class='kicker-row'>
+    <span class='kicker'>실습 2단계 (업그레이드)</span>
+    <span class='badge-pill'>바이브 코딩 심화 팁</span>
+  </div>
+  <h2>첫 결과물이 아쉬울 때? AI에게 이렇게 후속 주문하세요! 🎨</h2>
+  <p class='lead'>바이브 코딩은 <strong>한 번에 끝내는 것이 아니라, 화면을 보면서 AI와 티키타카 대화하며 다듬는 과정</strong>입니다. 한 번에 하나씩 구체적으로 요청해 보세요!</p>
+
+  <table>
+    <tr>
+      <th style='width:24%'>이런 점이 아쉬워요 🤔</th>
+      <th>❌ 아쉬운 프롬프트</th>
+      <th>⭕️ AI가 찰떡같이 알아듣는 마법 프롬프트</th>
+    </tr>
+    <tr>
+      <td><strong>디자인이 너무 밋밋해요</strong></td>
+      <td>"좀 더 예쁘게 바꿔줘."</td>
+      <td>"배경에 은은한 보라색~파란색 그라데이션을 넣고, 카드에 그림자와 마우스를 올렸을 때 살짝 커지는 호버(hover) 효과를 넣어줘."</td>
+    </tr>
+    <tr>
+      <td><strong>재미있는 기능을 넣고 싶어요</strong></td>
+      <td>"기능 좀 추가해줘."</td>
+      <td>"화면 오른쪽 위에 🌙 다크모드/☀️ 라이트모드 전환 버튼을 만들고, 클릭할 때마다 배경과 글자색이 부드럽게 바뀌게 해줘."</td>
+    </tr>
+    <tr>
+      <td><strong>클릭하는 손맛을 주고 싶어요</strong></td>
+      <td>"버튼 재밌게 해줘."</td>
+      <td>"하단에 '👍 좋아요 응원하기' 버튼을 만들고, 누를 때마다 숫자가 1씩 올라가면서 화면에 축하 이모지(🎉, 💖)가 떠오르게 해줘."</td>
+    </tr>
+    <tr>
+      <td><strong>스마트폰에서 글씨가 잘려요</strong></td>
+      <td>"화면이 이상해. 고쳐줘."</td>
+      <td>"폭 360px 스마트폰 화면에서도 가로 스크롤이 생기지 않고, 카드들이 세로로 한 줄씩 깔끔하게 정렬되게 반응형 CSS를 고쳐줘."</td>
+    </tr>
+  </table>
+
+  <div class='warn'>
+    <strong>🛡️ 공개 전 개인정보 안전 체크:</strong> 전 세계 누구나 볼 수 있는 웹사이트입니다! 내 <strong>실명(본명), 전화번호, 집 주소, 친구들의 얼굴 사진</strong>은 절대 넣지 말고 멋진 <strong>닉네임(별명)과 캐릭터 이모지</strong>를 사용하세요.
+  </div>
+  <div class='note'>교사 메모: 만든 `index.html` 파일을 파일 탐색기에서 더블클릭(또는 VS Code Live Preview)으로 열어 브라우저에서 바로 확인하면서 2~3회 수정 대화를 나누도록 지도하세요.</div>
 </section>
 
-<!-- 슬라이드 9 -->
-<section class='slide'>
-<span class='kicker'>실습 3단계</span>
-<h2>커밋(Commit)하고 푸시(Push)해서 배포하기</h2>
-<p>VS Code 터미널 창에 아래 명령어를 차례대로 입력해 봅시다.</p>
-<div class='prompt'>
-# 1. 수정한 파일을 모두 담기 (장바구니에 담기)
+<!-- 슬라이드 9: 실습 3단계 - 커밋 & 푸시 및 GitHub Pages 배포 -->
+<section class='slide' data-title='9. 커밋 & 푸시로 배포하기'>
+  <div class='kicker-row'>
+    <span class='kicker'>실습 3단계 (세상에 공개!)</span>
+    <span class='badge-pill'>Commit & Push 실전</span>
+  </div>
+  <h2>터미널 명령어로 세이브(Commit)하고 우주로 발사(Push)하기 🚀</h2>
+  <p class='lead'>내 컴퓨터에서 완성한 <code>index.html</code>을 이제 인터넷 우주 정거장(GitHub)으로 쏘아 올릴 시간입니다!</p>
+
+  <div class='grid-2'>
+    <div class='box'>
+      <h3>🅰️ 이미 연결된 저장소 폴더일 때 (기본 3단 콤보)</h3>
+      <div class='prompt-wrap'>
+        <button type='button' class='copy-btn' data-copy='cmd-git3'>📋 명령어 복사</button>
+        <pre class='prompt' id='cmd-git3'># 1. 장바구니에 모든 파일 담기
 git add .
 
-# 2. 세이브 포인트 도장 쾅 찍기 (커밋)
-git commit -m "내 멋진 홈페이지 첫 번째 완성!"
+# 2. 게임 세이브 포인트 도장 찍기
+git commit -m "나만의 첫 번째 바이브 코딩 웹사이트 완성!"
 
-# 3. 인터넷 우주 정거장으로 슝 날리기 (푸시)
-git push origin main
-</div>
-<p class='lead' style='margin-top:10px;'>이제 GitHub 저장소 설정에서 <strong>GitHub Pages</strong>를 켜면, 나만의 웹사이트 주소가 뚝딱 만들어집니다!</p>
-<div class='note'>교사 메모: git 명령어의 의미를 앞서 배운 세이브(Commit)와 우주로 보내기(Push) 비유와 다시 연결해 주세요.</div>
+# 3. GitHub 우주 정거장으로 발사!
+git push origin main</pre>
+      </div>
+    </div>
+    <div class='box'>
+      <h3>🅱️ 새 폴더에서 처음 저장소까지 한 방에 만들 때 (<code>gh</code> 마법)</h3>
+      <div class='prompt-wrap'>
+        <button type='button' class='copy-btn' data-copy='cmd-ghnew'>📋 명령어 복사</button>
+        <pre class='prompt' id='cmd-ghnew'># Git 시작 + 담기 + 세이브
+git init
+git branch -M main
+git add .
+git commit -m "첫 웹사이트 탄생!"
+
+# GitHub에 공개 저장소 만들고 바로 푸시까지 한 번에!
+gh repo create my-vibe-web --public --source=. --remote=origin --push</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class='box' style='margin-top:12px;'>
+    <h3>🌐 마지막 스위치 켜기: GitHub Pages로 진짜 인터넷 주소 만들기</h3>
+    <ol style='margin:4px 0;'>
+      <li>GitHub 내 저장소 페이지 상단의 <strong>⚙️ [Settings(설정)]</strong> 클릭 → 왼쪽 메뉴에서 <strong>[Pages]</strong> 클릭!</li>
+      <li><strong>Branch(브랜치)</strong> 항목에서 <code>None</code>을 <strong><code>main</code></strong>으로 바꾸고 옆의 <strong>[Save]</strong> 버튼 클릭!</li>
+      <li>약 1~2분 뒤 새로고침하면 상단에 <strong><code>https://내아이디.github.io/저장소이름/</code></strong> 주소가 짠! 하고 나타납니다 🎉</li>
+    </ol>
+  </div>
+  <div class='note'>교사 메모: `git commit` 실행 시 `Author identity unknown` 메시지가 뜨는 학생이 있다면 다음 슬라이드의 응급처치 명령어를 보여주시면 10초 만에 해결됩니다!</div>
 </section>
 
-<!-- 슬라이드 10 -->
-<section class='slide'>
-<span class='kicker'>수업 마무리</span>
-<h2>나만의 홈페이지 공유와 자기 평가</h2>
-<div class='grid'>
-<div class='box'>
-<h3>🌐 주소 공유하기</h3>
-<p>완성된 GitHub Pages 주소를 친구들에게 공유하고 서로 구경해 봅시다.</p>
-</div>
-<div class='box'>
-<h3>📝 활동지 작성</h3>
-<p>내가 즐거워하는 분야와 AI로 만든 소감을 활동지에 적어봅니다.</p>
-</div>
-</div>
-<div class='ok' style='margin-top:16px;'>
-<strong>오늘의 깨달음:</strong> 내가 좋아하는 것에 AI라는 강력한 날개를 달고, GitHub로 세상에 공유하면 누구나 미래의 부가가치를 만들 수 있습니다! 수고하셨습니다 🌸
-</div>
-<div class='note'>교사 메모: 수업 종료 전 학생들이 GitHub Pages 주소로 접속되는지 최종 확인하고, 활동지 제출을 안내하세요.</div>
+<!-- 슬라이드 10: 막혔을 때 보는 SOS 응급처치 & 마무리 -->
+<section class='slide' data-title='10. SOS 응급처치 & 마무리'>
+  <div class='kicker-row'>
+    <span class='kicker'>SOS 문제 해결 & 수업 마무리</span>
+    <span class='badge-pill'>당황하지 마세요!</span>
+  </div>
+  <h2>🛠️ 에러가 났을 때 보는 1분 응급처치 & 오늘의 성취</h2>
+
+  <table>
+    <tr>
+      <th style='width:28%'>터미널/화면 증상 🚨</th>
+      <th>원인과 10초 해결 방법 💡</th>
+    </tr>
+    <tr>
+      <td><code>Author identity unknown</code><br>(누구인지 알려달라고 해요)</td>
+      <td>컴퓨터에 내 이름표가 처음이라 그래요! 아래 두 줄을 치고 다시 커밋하세요.<br>
+      <code>git config --global user.name "내닉네임"</code><br>
+      <code>git config --global user.email "내이메일@example.com"</code></td>
+    </tr>
+    <tr>
+      <td>주소에 접속했는데<br><strong>404 Not Found</strong>가 떠요</td>
+      <td>① 파일 이름이 정확히 소문자 <strong><code>index.html</code></strong>인지 확인하세요.<br>
+      ② Push 후 우주 정거장이 홈페이지를 조립하는 데 <strong>1~3분</strong> 걸려요! 잠시 후 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>로 새로고침!</td>
+    </tr>
+    <tr>
+      <td>코드를 고치고 다시 올리고 싶어요!</td>
+      <td>언제든 파일을 수정하고 <strong>3단 콤보</strong>만 다시 치면 1분 뒤 홈페이지가 업데이트됩니다!<br>
+      <code>git add .</code> 👉 <code>git commit -m "디자인 업그레이드"</code> 👉 <code>git push origin main</code></td>
+    </tr>
+  </table>
+
+  <div class='grid' style='margin-top:14px;'>
+    <div class='box'>
+      <h3>🌐 1. 내 작품 공유하기</h3>
+      <p>완성된 나의 GitHub Pages 주소를 짝꿍과 친구들에게 공유하고 서로의 사이트를 체험해 봅시다!</p>
+    </div>
+    <div class='box'>
+      <h3>📝 2. 활동지 기록 & 인쇄</h3>
+      <p><a href='worksheet.html' target='_blank' rel='noopener'><strong>📄 학생 활동지</strong></a>에 내가 쓴 프롬프트와 커밋 메시지, 소감을 적고 PDF로 저장(인쇄)하세요.</p>
+    </div>
+  </div>
+
+  <div class='ok' style='margin-top:12px;'>
+    <strong>🌸 오늘의 핵심 깨달음:</strong> 내가 진짜 즐거워하는 관심사에 <strong>AI 바이브 코딩</strong>이라는 날개를 달고, <strong>GitHub</strong>로 전 세계와 나누면 누구나 멋진 미래 가치를 만드는 창작자가 될 수 있습니다! 모두 수고 많으셨습니다 👏
+  </div>
+  <div class='note'>교사 메모: 수업 종료 전 학생들이 서로의 URL에 접속해 칭찬 한마디씩 나누게 하고, 공용 PC의 경우 GitHub 로그아웃 여부를 점검해 주세요.</div>
 </section>
 
 </div>
 
 <nav class='bar' aria-label='슬라이드 제어'>
-  <a class='back' href='../../index.html'>🏠 홈</a>
+  <a class='back' href='../../index.html#coding'>🏠 홈</a>
   <button type='button' id='prevBtn'>◀ 이전</button>
+  <select id='slideSelect' aria-label='슬라이드 바로 이동'></select>
   <div class='prog'><i id='progBar'></i></div>
   <span class='cnt' id='slideCnt'>1 / 10</span>
   <button type='button' id='nextBtn'>다음 ▶</button>
+  <button type='button' id='noteBtn' title='교사 메모 켜기/끄기 (단축키 N)'>📝 메모(N)</button>
+  <button type='button' id='fsBtn' title='전체화면 전환 (단축키 F)'>⛶ 전체화면</button>
 </nav>
 
 <script>
 (function(){
-  var slides = document.querySelectorAll('.slide');
+  var slides = Array.from(document.querySelectorAll('.slide'));
   var cur = 0;
   var total = slides.length;
   var progBar = document.getElementById('progBar');
   var slideCnt = document.getElementById('slideCnt');
+  var slideSelect = document.getElementById('slideSelect');
   var themeToggle = document.getElementById('themeToggle');
   var themeIcon = document.getElementById('themeIcon');
+
+  slides.forEach(function(s, idx){
+    var opt = document.createElement('option');
+    opt.value = String(idx);
+    opt.textContent = s.getAttribute('data-title') || ((idx + 1) + '쪽');
+    slideSelect.appendChild(opt);
+  });
 
   function show(n){
     if(n < 0) n = 0;
@@ -302,12 +825,23 @@ git push origin main
     slides[cur].classList.add('on');
     progBar.style.width = ((cur + 1) / total * 100) + '%';
     slideCnt.textContent = (cur + 1) + ' / ' + total;
+    slideSelect.value = String(cur);
   }
 
   document.getElementById('prevBtn').addEventListener('click', function(){ show(cur - 1); });
   document.getElementById('nextBtn').addEventListener('click', function(){ show(cur + 1); });
+  slideSelect.addEventListener('change', function(){ show(Number(slideSelect.value)); });
+
+  document.getElementById('noteBtn').addEventListener('click', function(){
+    document.body.classList.toggle('notes');
+  });
+  document.getElementById('fsBtn').addEventListener('click', function(){
+    if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  });
 
   window.addEventListener('keydown', function(e){
+    if(['INPUT','SELECT','TEXTAREA','BUTTON'].includes(e.target.tagName)) return;
     if(e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
       if(cur < total - 1) { e.preventDefault(); show(cur + 1); }
     } else if(e.key === 'ArrowLeft' || e.key === 'PageUp') {
@@ -320,12 +854,48 @@ git push origin main
     }
   });
 
+  // 탭 전환 (슬라이드 7 프롬프트 예시)
+  document.querySelectorAll('.tab-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var targetId = btn.getAttribute('data-tab');
+      document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('on'); });
+      document.querySelectorAll('.tab-pane').forEach(function(p){ p.classList.remove('on'); });
+      btn.classList.add('on');
+      var pane = document.getElementById(targetId);
+      if(pane) pane.classList.add('on');
+    });
+  });
+
+  // 프롬프트/명령어 복사 버튼
+  document.querySelectorAll('.copy-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var id = btn.getAttribute('data-copy');
+      var el = document.getElementById(id);
+      if(!el) return;
+      var text = el.textContent;
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(function(){
+          var orig = btn.textContent;
+          btn.textContent = '✅ 복사 완료!';
+          setTimeout(function(){ btn.textContent = orig; }, 1600);
+        });
+      }
+    });
+  });
+
+  function syncThemeIcon(){
+    var isDark = document.documentElement.classList.contains('bf-theme-dark');
+    themeIcon.textContent = isDark ? '☀️' : '🌙';
+  }
+  syncThemeIcon();
+
   themeToggle.addEventListener('click', function(){
     var isDark = document.documentElement.classList.toggle('bf-theme-dark');
     document.documentElement.classList.toggle('bf-theme-light', !isDark);
     var theme = isDark ? 'dark' : 'light';
-    localStorage.setItem('bf-theme', theme);
-    themeIcon.textContent = isDark ? '☀️' : '🌙';
+    document.documentElement.setAttribute('data-bf-theme', theme);
+    try { localStorage.setItem('bf-theme', theme); } catch(e) {}
+    syncThemeIcon();
   });
 
   show(0);
