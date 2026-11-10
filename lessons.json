@@ -2,6 +2,20 @@
   {
     "type": "발표 자료",
     "level": "중학교 1학년",
+    "title": "AI 바이브 코딩과 GitHub CLI 배포",
+    "desc": "내가 즐거워하는 분야와 미래 가치, VS Code와 GitHub CLI를 이용한 배포 수업 슬라이드",
+    "url": "programming/ai-vibe-coding-deploy/index.html"
+  },
+  {
+    "type": "학생 활동지",
+    "level": "중학교 1학년",
+    "title": "AI 바이브 코딩과 GitHub CLI 배포 활동지",
+    "desc": "관심사 구상, AI 프롬프트 작성, 커밋·푸시 실습 기록 및 자기 평가",
+    "url": "programming/ai-vibe-coding-deploy/worksheet.html"
+  },
+  {
+    "type": "발표 자료",
+    "level": "중학교 1학년",
     "title": "ChatGPT와 GitHub로 내 홈페이지 바이브 코딩하기",
     "desc": "2차시 90분 발표 자료(15장), 교사 메모와 계정·공개 안전 안내 포함",
     "url": "programming/chatgpt-github-vibe/index.html"

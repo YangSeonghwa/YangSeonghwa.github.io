@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>AI 바이브 코딩과 GitHub CLI 배포 | 미래 가치와 프로그램 수업</title>
+<meta name='description' content='내가 즐거워하는 분야와 AI 바이브 코딩, VS Code와 GitHub CLI를 이용한 배포 수업 발표 자료'>
+<link rel='stylesheet' href='../../assets/css/beflower.css'>
+<script>
+(function(){
+  try {
+    var saved = localStorage.getItem('bf-theme');
+    var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = saved || (sysDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-bf-theme', theme);
+    if (theme === 'dark') document.documentElement.classList.add('bf-theme-dark');
+    else document.documentElement.classList.add('bf-theme-light');
+  } catch(e) {}
+})();
+</script>
+<style>
+:root{--ink:var(--bf-ink);--sub:var(--bf-sub);--main:var(--bf-main);--pink:var(--bf-pink);--line:var(--bf-line);--card:var(--bf-surface);--soft:var(--bf-surface-soft)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:var(--bf-font-sans);background:linear-gradient(135deg,var(--bf-navy),var(--bf-main) 70%);color:var(--ink);overflow:hidden}
+.deck{position:relative;height:100%;display:flex;align-items:center;justify-content:center;padding:68px 18px 70px}
+.slide{display:none;width:min(1100px,100%);max-height:100%;overflow:auto;background:var(--card);border-radius:24px;padding:clamp(20px,4vw,48px);box-shadow:0 20px 60px rgba(0,0,0,.35);animation:in .35s ease}
+.slide.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.kicker{display:inline-block;padding:4px 14px;border-radius:999px;background:var(--soft);border:1px solid var(--line);color:var(--main);font-weight:700;font-size:clamp(12px,1.6vw,15px)}
+h1{font-size:clamp(28px,5.4vw,54px);margin:14px 0 10px;line-height:1.25;letter-spacing:-.5px}
+h2{font-size:clamp(22px,3.6vw,36px);margin:12px 0 14px;color:var(--main);line-height:1.3}
+p,li{font-size:clamp(15px,2.1vw,22px);line-height:1.7}
+ul,ol{padding-left:1.3em;margin:8px 0}
+li{margin:6px 0}
+.lead{color:var(--sub)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:14px}
+.box{border:1px solid var(--line);border-radius:16px;padding:16px 18px;background:var(--soft)}
+.box h3{margin:0 0 6px;font-size:clamp(17px,2.4vw,24px)}
+.box p,.box li{font-size:clamp(14px,1.9vw,19px);margin:4px 0}
+.step{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:var(--main);color:#fff;font-weight:800;margin-right:8px}
+.flow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin:18px 0}
+.node{padding:14px 18px;border-radius:14px;background:var(--soft);border:2px solid var(--main);font-weight:700;text-align:center;font-size:clamp(14px,2vw,20px)}
+.arrow{font-size:28px;color:var(--pink)}
+.prompt{white-space:pre-wrap;background:#14222c;color:#e6f4ee;border-radius:14px;padding:16px 18px;font-size:clamp(13px,1.8vw,18px);line-height:1.65;border-left:6px solid var(--pink);margin:12px 0}
+.warn{border-left:6px solid var(--bf-amber);background:var(--bf-amber-soft);color:var(--ink);border-radius:12px;padding:4px 16px;margin:12px 0}
+.ok{border-left:6px solid var(--main);background:var(--bf-main-soft);color:var(--ink);border-radius:12px;padding:4px 16px;margin:12px 0}
+.note{display:none;margin-top:16px;padding:12px 16px;border-radius:12px;background:var(--bf-amber-soft);color:var(--ink);border:1px dashed var(--bf-amber);font-size:clamp(13px,1.7vw,17px)}
+body.notes .note{display:block}
+table{border-collapse:collapse;width:100%;font-size:clamp(13px,1.8vw,18px);margin-top:10px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--soft);color:var(--main)}
+.bar{position:fixed;left:0;right:0;bottom:0;height:54px;display:flex;align-items:center;gap:10px;padding:0 14px;background:rgba(8,20,40,.55);backdrop-filter:blur(8px);color:#fff}
+.bar button{border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:7px 14px;font:inherit;cursor:pointer}
+.bar button:hover{background:rgba(255,255,255,.28)}
+.prog{flex:1;height:6px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--pink);transition:width .3s}
+.cnt{min-width:64px;text-align:center;font-weight:700}
+a{color:var(--main)}
+.back{color:#fff;text-decoration:none;font-size:14px;white-space:nowrap}
+.src{font-size:13px;color:var(--sub);margin-top:14px}
+@media (max-width:640px){.bar{gap:6px;padding:0 8px}.bar button{padding:6px 9px;font-size:13px}.cnt{min-width:48px;font-size:13px}.back{font-size:12px}}
+@media print{body{overflow:visible;background:#fff}.deck{display:block;padding:0;height:auto}.slide{display:block!important;box-shadow:none;border-radius:0;page-break-after:always;max-height:none;animation:none}.bar{display:none}.note{display:block}}
+</style>
+</head>
+<body>
+<nav class='bf-topbar bf-topbar-fixed bf-topbar-dark' aria-label='전역 상단 네비게이션'>
+  <div class='bf-topbar-inner'>
+    <a class='bf-brand' href='../../index.html'>
+      <span class='bf-brand-logo' aria-hidden='true'>🌸</span>
+      <span class='bf-brand-text'>
+        <span class='bf-brand-title'>Beflower의 과학 시뮬레이션 랩</span>
+        <span class='bf-brand-sub'>AI 바이브 코딩과 GitHub CLI 배포 수업</span>
+      </span>
+    </a>
+    <div class='bf-nav'>
+      <a href='../../index.html'>🏠 홈</a>
+      <a class='active' href='index.html'>💻 수업 자료</a>
+      <a href='worksheet.html'>📄 학생 활동지</a>
+      <button type='button' class='bf-theme-toggle' id='themeToggle' aria-label='다크 모드 전환' title='테마 전환'>
+        <span id='themeIcon' aria-hidden='true'>🌙</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class='deck'>
+
+<!-- 슬라이드 1 -->
+<section class='slide on'>
+<span class='kicker'>미래 가치와 프로그램 수업</span>
+<h1>내가 즐거워하는 일로<br>미래의 부가가치를 만드는 법</h1>
+<p class='lead'>어른들이 말하던 뻔한 성공 방식에서 벗어나, AI와 함께 새로운 가치를 만들고 전 세계에 공유하는 바이브 코딩 수업입니다.</p>
+<div class='grid'>
+<div class='box'><h3>💡 핵심 주제</h3><p>내가 정말 좋아하는 분야 찾기 & 나누기</p></div>
+<div class='box'><h3>🤖 AI 활용</h3><p>어른들의 방식이 아닌 전혀 새로운 AI 도구 사용</p></div>
+<div class='box'><h3>🚀 배포 실습</h3><p>VS Code와 GitHub CLI로 세상에 공개하기</p></div>
+</div>
+<p style='margin-top:20px;'><a href='worksheet.html' target='_blank'>📄 학생용 활동지 열기</a></p>
+<div class='note'>교사 메모: 방향키(←, →)로 슬라이드를 넘기고, N 키를 누르면 교사 메모가 보입니다. F 키는 전체화면입니다.</div>
+</section>
+
+<!-- 슬라이드 2 -->
+<section class='slide'>
+<span class='kicker'>미래의 성공 공식</span>
+<h2>내가 즐거워하는 분야를 나누어 가치 만들기</h2>
+<div class='grid'>
+<div class='box'>
+<h3>1. 즐거움 찾기 (Passion)</h3>
+<p>내가 시간 가는 줄 모르게 몰입하고 즐거워하는 분야는 무엇인가요? 게임, 그림, 음악, 과학, 요리 등 무엇이든 좋습니다.</p>
+</div>
+<div class='box'>
+<h3>2. 나누어 주기 (Sharing)</h3>
+<p>혼자만 알고 있는 것이 아니라, 내가 만든 결과물과 지식을 다른 사람들과 나누는 것이 미래 부가가치의 시작입니다.</p>
+</div>
+<div class='box'>
+<h3>3. 보상과 가치 (Value)</h3>
+<p>타인에게 도움이 되고 즐거움을 주는 과정에서 자연스럽게 돈, 명예, 그리고 멋진 커리어가 따라오게 됩니다.</p>
+</div>
+</div>
+<p class='lead' style='margin-top:16px;'>"내가 즐거운 일로 다른 사람을 행복하게 만드는 사람, 그것이 미래 사회가 원하는 인재입니다."</p>
+<div class='note'>교사 메모: 학생들이 공부나 성적 중심의 사고에서 벗어나 '내가 정말 좋아하는 것'이 무엇인지 짧게 생각해보게 유도하세요.</div>
+</section>
+
+<!-- 슬라이드 3 -->
+<section class='slide'>
+<span class='kicker'>새로운 시대의 도구</span>
+<h2>어른들의 방식이 아닌, 전혀 새로운 AI 활용</h2>
+<div class='grid'>
+<div class='box'>
+<h3>❌ 과거 어른들의 방식</h3>
+<p>남들이 시키는 대로 억지로 외우고, 정해진 정답만 맞추는 획일적인 공부와 노력</p>
+</div>
+<div class='box'>
+<h3>⭕️ 새로운 AI 시대의 방식</h3>
+<p>내가 상상하고 기획한 것을 <strong>AI(인공지능)</strong>와 대화하며 감각적으로 완성하는 <strong>바이브 코딩(Vibe Coding)</strong></p>
+</div>
+</div>
+<div class='ok' style='margin-top:16px;'>
+<strong>바이브 코딩이란?</strong> 코드를 한 줄씩 타이핑하는 법을 몰라도, AI(ChatGPT, Copilot 등)와 느낌과 분위기(Vibe)를 주고받으며 내가 원하는 프로그램을 순식간에 만들어내는 새로운 방식입니다!
+</div>
+<div class='note'>교사 메모: 코딩 문법을 몰라도 아이디어가 중요한 시대가 되었음을 강조해주세요.</div>
+</section>
+
+<!-- 슬라이드 4 -->
+<section class='slide'>
+<span class='kicker'>오늘의 실습 목표</span>
+<h2>AI로 만든 내 창작물을 세상에 공유하기</h2>
+<div class='flow'>
+<div class='node'>1. VS Code 열기</div>
+<span class='arrow'>→</span>
+<div class='node'>2. GitHub CLI 설치</div>
+<span class='arrow'>→</span>
+<div class='node'>3. Copilot 창에서 코딩</div>
+<span class='arrow'>→</span>
+<div class='node'>4. 커밋 & 푸시로 배포!</div>
+</div>
+<p class='lead'>오늘 우리는 VS Code에서 GitHub CLI를 활용해, 내 컴퓨터에서 만든 멋진 웹사이트를 터미널 명령어 몇 번으로 인터넷 세상에 뚝딱 배포해 볼 것입니다.</p>
+<div class='note'>교사 메모: 학생들이 긴장하지 않도록 VS Code와 GitHub CLI가 무엇인지 차근차근 설명해 나갑니다.</div>
+</section>
+
+<!-- 슬라이드 5 -->
+<section class='slide'>
+<span class='kicker'>핵심 개념 이해하기 (1)</span>
+<h2>커밋(Commit)이란? 🎮 게임 세이브 포인트!</h2>
+<div class='grid'>
+<div class='box'>
+<h3>🕹️ 게임 속 세이브 포인트</h3>
+<p>게임을 하다가 어려운 보스를 깨거나 중요한 아이템을 얻었을 때, 게임을 안전하게 저장하려고 <strong>'세이브(Save)'</strong>를 하죠?</p>
+</div>
+<div class='box'>
+<h3>💾 깃(Git)의 커밋(Commit)</h3>
+<p>프로그래밍을 하다가 "여기까지 기능이 아주 잘 작동해!" 하고 내가 만든 변경사항에 <strong>'도장을 쾅 찍어서 기록을 남기는 것'</strong>이 바로 <strong>커밋</strong>입니다!</p>
+</div>
+</div>
+<div class='prompt'>
+<strong>💡 쉬운 비유:</strong>
+"오늘 만든 홈페이지에 예쁜 버튼을 추가했어! 이 상태를 기억해 줘!" 하고 타임캡슐에 담아 이름표를 붙여두는 것과 같아요.
+</div>
+<div class='note'>교사 메모: 게임 세이브 개념을 활용하면 중학생들이 커밋의 의미를 직관적으로 이해합니다.</div>
+</section>
+
+<!-- 슬라이드 6 -->
+<section class='slide'>
+<span class='kicker'>핵심 개념 이해하기 (2)</span>
+<h2>푸시(Push)란? 🚀 우주 정거장으로 슝 날리기!</h2>
+<div class='grid'>
+<div class='box'>
+<h3>🏠 내 방 안의 공책 (로컬 컴퓨터)</h3>
+<p>내 컴퓨터 안에서 코드를 수정하고 저장하는 것은 온전히 내 방 책상 위에 일기를 쓰는 것과 같아요. 다른 친구들은 볼 수 없죠.</p>
+</div>
+<div class='box'>
+<h3>☁️ 인터넷 우주 정거장 (GitHub)</h3>
+<p>내 컴퓨터에만 있던 커밋(세이브 파일)들을 인터넷 세상의 공유 공간(GitHub 저장소)으로 <strong>"슝~" 밀어 올려서(Push)</strong> 전 세계 사람들이 볼 수 있게 하는 것입니다!</p>
+</div>
+</div>
+<div class='ok' style='margin-top:16px;'>
+<strong>Commit + Push =</strong> 내 컴퓨터에서 세이브(Commit)하고, 인터넷에 업로드(Push)하면 끝!
+</div>
+<div class='note'>교사 메모: 로컬과 원격(GitHub)의 개념을 방 안 책상과 우주 정거장 비유로 설명해주세요.</div>
+</section>
+
+<!-- 슬라이드 7 -->
+<section class='slide'>
+<span class='kicker'>실습 1단계</span>
+<h2>VS Code에서 GitHub CLI 설치 및 로그인</h2>
+<ol>
+<li><strong>VS Code 실행하기:</strong> 컴퓨터에서 Visual Studio Code를 실행합니다.</li>
+<li><strong>GitHub CLI 설치 확인 및 설치:</strong> 터미널 창을 열고 `gh --version`을 입력해 봅니다. (설치가 필요하면 안내에 따라 설치)</li>
+<li><strong>로그인하기 (`gh auth login`):</strong>
+<div class='prompt'>gh auth login</div>
+화면의 안내에 따라 웹브라우저에서 로그인을 완료하고 인증 코드를 연결합니다.</li>
+</ol>
+<div class='warn'>주의: 학교 계정이나 본인 개인 GitHub 계정으로 안전하게 로그인하세요.</div>
+<div class='note'>교사 메모: 학생들이 `gh auth login` 명령어 실행 시 브라우저 연동 창에서 막히지 않도록 교사가 순회하며 도와주세요.</div>
+</section>
+
+<!-- 슬라이드 8 -->
+<section class='slide'>
+<span class='kicker'>실습 2단계</span>
+<h2>VS Code Copilot 창에서 AI와 대화하며 만들기</h2>
+<div class='grid'>
+<div class='box'>
+<h3>🤖 Copilot Chat 열기</h3>
+<p>VS Code 왼쪽 메뉴나 단축키(Ctrl+I 또는 Cmd+I 등)를 이용해 GitHub Copilot 창을 엽니다.</p>
+</div>
+<div class='box'>
+<h3>💬 말로 설명하기 (바이브 코딩)</h3>
+<p>"내가 좋아하는 음악과 취미를 소개하는 원페이지 웹사이트를 HTML로 예쁘게 만들어줘. 파란색 계열의 세련된 디자인으로 해줘."</p>
+</div>
+</div>
+<div class='ok' style='margin-top:16px;'>
+AI가 순식간에 코드를 작성해 줍니다. 코드를 직접 짜지 않고 내가 원하는 바이브(느낌)를 대화로 전달하는 것이 핵심입니다!
+</div>
+<div class='note'>교사 메모: 학생들이 각자 자신이 좋아하는 주제(게임, 축구, 음악, 그림 등)를 프롬프트에 녹여내도록 격려하세요.</div>
+</section>
+
+<!-- 슬라이드 9 -->
+<section class='slide'>
+<span class='kicker'>실습 3단계</span>
+<h2>커밋(Commit)하고 푸시(Push)해서 배포하기</h2>
+<p>VS Code 터미널 창에 아래 명령어를 차례대로 입력해 봅시다.</p>
+<div class='prompt'>
+# 1. 수정한 파일을 모두 담기 (장바구니에 담기)
+git add .
+
+# 2. 세이브 포인트 도장 쾅 찍기 (커밋)
+git commit -m "내 멋진 홈페이지 첫 번째 완성!"
+
+# 3. 인터넷 우주 정거장으로 슝 날리기 (푸시)
+git push origin main
+</div>
+<p class='lead' style='margin-top:10px;'>이제 GitHub 저장소 설정에서 <strong>GitHub Pages</strong>를 켜면, 나만의 웹사이트 주소가 뚝딱 만들어집니다!</p>
+<div class='note'>교사 메모: git 명령어의 의미를 앞서 배운 세이브(Commit)와 우주로 보내기(Push) 비유와 다시 연결해 주세요.</div>
+</section>
+
+<!-- 슬라이드 10 -->
+<section class='slide'>
+<span class='kicker'>수업 마무리</span>
+<h2>나만의 홈페이지 공유와 자기 평가</h2>
+<div class='grid'>
+<div class='box'>
+<h3>🌐 주소 공유하기</h3>
+<p>완성된 GitHub Pages 주소를 친구들에게 공유하고 서로 구경해 봅시다.</p>
+</div>
+<div class='box'>
+<h3>📝 활동지 작성</h3>
+<p>내가 즐거워하는 분야와 AI로 만든 소감을 활동지에 적어봅니다.</p>
+</div>
+</div>
+<div class='ok' style='margin-top:16px;'>
+<strong>오늘의 깨달음:</strong> 내가 좋아하는 것에 AI라는 강력한 날개를 달고, GitHub로 세상에 공유하면 누구나 미래의 부가가치를 만들 수 있습니다! 수고하셨습니다 🌸
+</div>
+<div class='note'>교사 메모: 수업 종료 전 학생들이 GitHub Pages 주소로 접속되는지 최종 확인하고, 활동지 제출을 안내하세요.</div>
+</section>
+
+</div>
+
+<nav class='bar' aria-label='슬라이드 제어'>
+  <a class='back' href='../../index.html'>🏠 홈</a>
+  <button type='button' id='prevBtn'>◀ 이전</button>
+  <div class='prog'><i id='progBar'></i></div>
+  <span class='cnt' id='slideCnt'>1 / 10</span>
+  <button type='button' id='nextBtn'>다음 ▶</button>
+</nav>
+
+<script>
+(function(){
+  var slides = document.querySelectorAll('.slide');
+  var cur = 0;
+  var total = slides.length;
+  var progBar = document.getElementById('progBar');
+  var slideCnt = document.getElementById('slideCnt');
+  var themeToggle = document.getElementById('themeToggle');
+  var themeIcon = document.getElementById('themeIcon');
+
+  function show(n){
+    if(n < 0) n = 0;
+    if(n >= total) n = total - 1;
+    slides[cur].classList.remove('on');
+    cur = n;
+    slides[cur].classList.add('on');
+    progBar.style.width = ((cur + 1) / total * 100) + '%';
+    slideCnt.textContent = (cur + 1) + ' / ' + total;
+  }
+
+  document.getElementById('prevBtn').addEventListener('click', function(){ show(cur - 1); });
+  document.getElementById('nextBtn').addEventListener('click', function(){ show(cur + 1); });
+
+  window.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+      if(cur < total - 1) { e.preventDefault(); show(cur + 1); }
+    } else if(e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      if(cur > 0) { e.preventDefault(); show(cur - 1); }
+    } else if(e.key.toLowerCase() === 'n') {
+      document.body.classList.toggle('notes');
+    } else if(e.key.toLowerCase() === 'f') {
+      if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+
+  themeToggle.addEventListener('click', function(){
+    var isDark = document.documentElement.classList.toggle('bf-theme-dark');
+    document.documentElement.classList.toggle('bf-theme-light', !isDark);
+    var theme = isDark ? 'dark' : 'light';
+    localStorage.setItem('bf-theme', theme);
+    themeIcon.textContent = isDark ? '☀️' : '🌙';
+  });
+
+  show(0);
+})();
+</script>
+</body>
+</html>
