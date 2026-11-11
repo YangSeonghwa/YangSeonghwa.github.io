@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="ko" class="bf-theme-dark" data-bf-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>성간 물질, 성운과 성단 | 중학교 2학년 과학 · Beflower</title>
+<meta name="description" content="성간 물질, 방출성운·반사성운·암흑성운, 산개성단·구상성단의 특성과 우리은하 내 위치 분포를 탐구하는 중학교 2학년 과학 인터랙티브 시뮬레이션 및 수업 프레젠테이션">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="../../assets/css/beflower.css">
+<style>
+:root,
+html.bf-theme-dark,
+body.bf-theme-dark {
+  color-scheme: dark;
+  --bg-deep: #050814;
+  --bg-card: #0f172a;
+  --bg-soft: #1e293b;
+  --bg-glass: rgba(15, 23, 42, 0.9);
+  --bf-ink: #f8fafc;
+  --bf-sub: #cbd5e1;
+  --ink: #f8fafc;
+  --sub: #cbd5e1;
+  --gold: #fbbf24;
+  --gold-soft: rgba(251, 191, 36, 0.16);
+  --sky: #38bdf8;
+  --sky-soft: rgba(56, 189, 248, 0.16);
+  --pink: #f472b6;
+  --pink-soft: rgba(244, 114, 182, 0.16);
+  --red-glow: #f87171;
+  --red-soft: rgba(248, 113, 113, 0.16);
+  --mint: #34d399;
+  --mint-soft: rgba(52, 211, 153, 0.16);
+  --purple: #c084fc;
+  --purple-soft: rgba(192, 132, 252, 0.16);
+  --line: #33477c;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; padding: 0; }
+body {
+  font-family: var(--bf-font-sans);
+  background: radial-gradient(ellipse at top, #0f172a 0%, #050814 80%);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Background Stars */
+.stars-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 28% 42%, rgba(251,191,36,0.7), transparent),
+    radial-gradient(2px 2px at 45% 15%, rgba(56,189,248,0.7), transparent),
+    radial-gradient(1.5px 1.5px at 62% 78%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 78% 22%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(2px 2px at 85% 65%, rgba(251,191,36,0.6), transparent),
+    radial-gradient(1px 1px at 18% 88%, rgba(56,189,248,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 94% 12%, rgba(255,255,255,0.8), transparent);
+}
+
+/* Top Navigation Bar */
+.top-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: rgba(5, 8, 20, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  gap: 12px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand a.home-link {
+  color: var(--sky);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 4px 12px;
+  border-radius: var(--bf-radius-pill);
+  background: var(--sky-soft);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  font-weight: 700;
+  transition: all 0.2s;
+}
+.brand a.home-link:hover {
+  background: rgba(56, 189, 248, 0.3);
+}
+.brand-title {
+  font-weight: 800;
+  font-size: 16px;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+.unit-badge {
+  background: var(--purple-soft);
+  border: 1px solid rgba(192, 132, 252, 0.4);
+  color: #e9d5ff;
+  padding: 4px 10px;
+  border-radius: var(--bf-radius-pill);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.nav-mode-btns {
+  display: flex;
+  gap: 6px;
+}
+.nav-mode-btn {
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  color: var(--sub);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.nav-mode-btn:hover {
+  border-color: var(--sky);
+  color: var(--sky);
+}
+.nav-mode-btn.active {
+  background: var(--bf-main);
+  border-color: var(--bf-main);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(31, 138, 112, 0.4);
+}
+
+/* Page Layout */
+.main-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+  flex: 1;
+}
+
+.hero-banner {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.7) 100%);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+.hero-banner h1 {
+  font-size: 24px;
+  font-weight: 900;
+  margin: 0 0 6px;
+  background: linear-gradient(120deg, #38bdf8, #c084fc, #f472b6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero-banner p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--sub);
+}
+.hero-stats {
+  display: flex;
+  gap: 12px;
+}
+.hero-stat-pill {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 14px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--sub);
+}
+.hero-stat-pill strong {
+  display: block;
+  font-size: 16px;
+  color: var(--gold);
+}
+
+/* Tab Sections */
+.tab-section {
+  display: none;
+}
+.tab-section.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Section 1: Milky Way Galaxy Location Map Explorer */
+.sim-grid-container {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 20px;
+}
+@media (max-width: 900px) {
+  .sim-grid-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.canvas-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.canvas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.canvas-title {
+  font-weight: 800;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.view-toggle-group {
+  display: flex;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 2px;
+}
+.view-btn {
+  background: transparent;
+  border: none;
+  color: var(--sub);
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.view-btn.active {
+  background: var(--sky);
+  color: #050814;
+}
+
+.galaxy-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: #02040a;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+canvas.sim-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+}
+
+/* Category Filter Bar */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.filter-btn {
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  color: var(--sub);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+.filter-btn:hover {
+  border-color: var(--sky);
+  color: #fff;
+}
+.filter-btn.active {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: var(--sky);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+.filter-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Controls & Info Panel */
+.info-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.info-card h3 {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.object-detail-box {
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+}
+.object-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.object-tag {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.object-desc {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--sub);
+  margin-bottom: 12px;
+}
+.loc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(251, 191, 36, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  color: var(--gold);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.control-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--sub);
+  display: flex;
+  justify-content: space-between;
+}
+.control-slider {
+  width: 100%;
+  accent-color: var(--sky);
+  cursor: pointer;
+}
+
+/* Feature Grid Cards */
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+.concept-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px;
+  transition: all 0.2s;
+}
+.concept-card:hover {
+  border-color: var(--sky);
+  transform: translateY(-2px);
+}
+.concept-card-icon {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+.concept-card h4 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 800;
+}
+.concept-card p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--sub);
+  line-height: 1.5;
+}
+
+/* Section 2: Nebula Interactive Lab */
+.nebula-lab-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 860px) {
+  .nebula-lab-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Section 3: Star Cluster Interactive Lab */
+.cluster-lab-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 860px) {
+  .cluster-lab-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Comparison Table */
+.comparison-table-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 20px;
+  overflow-x: auto;
+}
+.comp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  text-align: left;
+}
+.comp-table th, .comp-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.comp-table th {
+  background: var(--bg-soft);
+  color: var(--gold);
+  font-weight: 800;
+}
+.comp-table tr:hover td {
+  background: rgba(255,255,255,0.02);
+}
+
+/* Section 4: Presentation Slide Deck Mode */
+.slide-deck-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.slide-viewport {
+  aspect-ratio: 16 / 9;
+  position: relative;
+  background: #060919;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+.slide-content {
+  display: none;
+  width: 100%;
+  max-width: 900px;
+  animation: fadeIn 0.4s ease;
+}
+.slide-content.active {
+  display: block;
+}
+.slide-title {
+  font-size: clamp(22px, 3.5vw, 36px);
+  font-weight: 900;
+  margin-0 0 16px;
+  background: linear-gradient(120deg, var(--sky), var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.slide-body {
+  font-size: clamp(14px, 2vw, 18px);
+  line-height: 1.7;
+  color: var(--sub);
+}
+.slide-controls-bar {
+  background: var(--bg-soft);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+}
+.slide-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid var(--line);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.slide-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Teacher Notes Overlay */
+.teacher-note-box {
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px dashed var(--gold);
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--gold);
+  display: none;
+}
+.teacher-note-box.show {
+  display: block;
+}
+
+/* Section 5: Quiz Module */
+.quiz-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px;
+}
+.quiz-card {
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.quiz-q {
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.quiz-opt-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 10px 14px;
+  border-radius: 8px;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.quiz-opt-btn:hover {
+  border-color: var(--sky);
+  background: rgba(56, 189, 248, 0.1);
+}
+.quiz-opt-btn.correct {
+  background: rgba(52, 211, 153, 0.2) !important;
+  border-color: var(--mint) !important;
+  color: #a7f3d0 !important;
+  font-weight: 700;
+}
+.quiz-opt-btn.wrong {
+  background: rgba(248, 113, 113, 0.2) !important;
+  border-color: var(--red-glow) !important;
+  color: #fca5a5 !important;
+}
+.quiz-exp {
+  margin-top: 10px;
+  padding: 10px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--sky);
+  display: none;
+}
+
+/* Responsive Footer */
+.bf-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  background: rgba(5, 8, 20, 0.95);
+  padding: 20px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--sub);
+}
+.bf-footer a {
+  color: var(--sky);
+  text-decoration: none;
+  margin: 0 8px;
+}
+
+/* Print CSS */
+@media print {
+  .top-header, .nav-mode-btns, .filter-bar, .slide-controls-bar, .bf-footer { display: none !important; }
+  body { background: #fff !important; color: #000 !important; }
+  .canvas-card, .info-card, .quiz-wrapper { border: 1px solid #ccc !important; background: #fff !important; color: #000 !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="stars-bg"></div>
+
+<!-- 1. Top Header Navigation Bar -->
+<header class="top-header">
+  <div class="brand">
+    <a class="home-link" href="../../index.html">🌸 홈으로</a>
+    <span class="brand-title">성간 물질, 성운과 성단 시뮬레이션</span>
+    <span class="unit-badge">중2 과학 · 지구과학 (천문)</span>
+  </div>
+
+  <nav class="nav-mode-btns" aria-label="메인 탐구 모드">
+    <button type="button" class="nav-mode-btn active" onclick="switchTab('mapTab', this)">🌌 우리은하 위치 탐구</button>
+    <button type="button" class="nav-mode-btn" onclick="switchTab('nebulaTab', this)">🔬 성운 형성 실험실</button>
+    <button type="button" class="nav-mode-btn" onclick="switchTab('clusterTab', this)">✨ 성단 구조 실험실</button>
+    <button type="button" class="nav-mode-btn" onclick="switchTab('slideTab', this)">📊 수업 발표 슬라이드</button>
+    <button type="button" class="nav-mode-btn" onclick="switchTab('quizTab', this)">💡 개념 확인 퀴즈</button>
+  </nav>
+</header>
+
+<!-- Main Container -->
+<main class="main-container">
+
+  <!-- Banner -->
+  <section class="hero-banner">
+    <div>
+      <h1>성간 물질 · 성운과 성단 인터랙티브 실험실</h1>
+      <p>우주 공간을 채우고 있는 성간 물질과 빛의 작용에 따른 성운(방출·반사·암흑), 별들의 무리인 성단(산개·구상)의 특성 및 우리은하 내 분포를 직접 조작해 보세요.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat-pill">성운 3종류<strong>방출 / 반사 / 암흑</strong></div>
+      <div class="hero-stat-pill">성단 2종류<strong>산개 / 구상</strong></div>
+      <div class="hero-stat-pill">우리은하 위치<strong>은하면 vs 팽대부/헤일로</strong></div>
+    </div>
+  </section>
+
+  <!-- TAB 1: MILKY WAY GALAXY LOCATION MAP EXPLORER -->
+  <section id="mapTab" class="tab-section active">
+    <div class="sim-grid-container">
+      <!-- Left: Interactive Canvas Map -->
+      <div class="canvas-card">
+        <div class="canvas-header">
+          <div class="canvas-title">
+            <span>🌌 우리은하 천체 분포 지도</span>
+            <span style="font-size:12px; color:var(--sub); font-weight:normal;">(마우스 클릭으로 천체 탐색)</span>
+          </div>
+          <div class="view-toggle-group">
+            <button type="button" class="view-btn active" id="btnTopView" onclick="setGalaxyView('top')">위에서 본 모습 (Top)</button>
+            <button type="button" class="view-btn" id="btnSideView" onclick="setGalaxyView('side')">옆에서 본 모습 (Side)</button>
+          </div>
+        </div>
+
+        <div class="galaxy-canvas-wrapper">
+          <canvas id="galaxyCanvas" width="700" height="437"></canvas>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <button type="button" class="filter-btn active" onclick="filterGalaxy('all', this)">
+            <span class="filter-dot" style="background:#fff;"></span> 전체 보기
+          </button>
+          <button type="button" class="filter-btn" onclick="filterGalaxy('interstellar', this)">
+            <span class="filter-dot" style="background:var(--mint);"></span> 성간물질
+          </button>
+          <button type="button" class="filter-btn" onclick="filterGalaxy('emission', this)">
+            <span class="filter-dot" style="background:var(--red-glow);"></span> 방출성운
+          </button>
+          <button type="button" class="filter-btn" onclick="filterGalaxy('reflection', this)">
+            <span class="filter-dot" style="background:var(--sky);"></span> 반사성운
+          </button>
+          <button type="button" class="filter-btn" onclick="filterGalaxy('dark', this)">
+            <span class="filter-dot" style="background:#475569;"></span> 암흑성운
+          </button>
+          <button type="button" class="filter-btn" onclick="filterGalaxy('openCluster', this)">
+            <span class="filter-dot" style="background:#60a5fa;"></span> 산개성단
+          </button>
+          <button type="button" class="filter-btn" onclick="filterGalaxy('globularCluster', this)">
+            <span class="filter-dot" style="background:var(--gold);"></span> 구상성단
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: Object Information Detail Card -->
+      <div class="info-card">
+        <h3>🔍 선택 천체 상세 탐구</h3>
+        
+        <div class="object-detail-box" id="detailBox">
+          <div class="object-detail-header">
+            <h4 id="detTitle" style="font-size:18px; margin:0; color:#fff;">천체를 클릭해 보세요</h4>
+            <span class="object-tag" id="detTag" style="background:var(--purple-soft); color:#e9d5ff;">안내</span>
+          </div>
+          <p class="object-desc" id="detDesc">
+            지도 상의 천체를 클릭하거나 하단 필터 버튼을 누르면 해당 천체의 발광/반사/차단 원리 및 우리은하 내 분포 위치를 상세히 확인할 수 있습니다.
+          </p>
+          <div class="loc-badge" id="detLoc">
+            📍 위치: 은하면(나선팔) 또는 팽대부/헤일로
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>은하 회전 속도</span>
+            <span id="speedVal">1.0x</span>
+          </div>
+          <input type="range" class="control-slider" min="0" max="3" step="0.2" value="1" oninput="setGalaxySpeed(this.value)">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>성간 물질(가스/먼지) 표시 농도</span>
+            <span id="densityVal">보통</span>
+          </div>
+          <input type="range" class="control-slider" min="0.2" max="2" step="0.2" value="1" oninput="setGasDensity(this.value)">
+        </div>
+
+        <!-- Quick Summary List -->
+        <div style="background:var(--bg-soft); border-radius:10px; padding:12px; font-size:12.5px; color:var(--sub);">
+          <strong style="color:var(--gold); display:block; margin-bottom:4px;">💡 교과서 핵심 포인트</strong>
+          • <strong>은하면(나선팔)</strong>: 성간물질 풍부 → 방출성운, 반사성운, 암흑성운, <strong>산개성단</strong> 분포<br>
+          • <strong>은하 중심부(팽대부) & 헤일로</strong>: 성간물질 희박 → 늙은 별로 이루어진 <strong>구상성단</strong> 분포
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 Concepts Overview Cards -->
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="concept-card-icon">🌫️</div>
+        <h4>성간 물질 (Interstellar Matter)</h4>
+        <p>별과 별 사이의 우주 공간을 채우고 있는 수소·헬륨 가스(약 99%)와 미세한 먼지 입자(약 1%). 별이 탄생하는 소중한 재료입니다.</p>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-icon">🔴</div>
+        <h4>방출성운 (Emission Nebula)</h4>
+        <p>주위 고온의 별(O, B형)이 내뿜는 강한 에너지를 받아 성간 가스가 직접 과열되어 <strong>붉은색 빛</strong>을 방출하는 성운. (예: 오리온성운)</p>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-icon">🔵</div>
+        <h4>반사성운 (Reflection Nebula)</h4>
+        <p>성간 먼지가 주위 별빛을 반사·산란시켜 밝게 보이는 성운. 파장이 짧은 <strong>푸른색 빛</strong>이 잘 산란되어 푸르게 보임. (예: 플레이아데스 성운)</p>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-icon">⬛</div>
+        <h4>암흑성운 (Dark Nebula)</h4>
+        <p>두꺼운 성간 먼지 구름이 뒤쪽에서 들어오는 별빛이나 밝은 성운의 빛을 가려 <strong>검은 실루엣</strong>으로 보이는 성운. (예: 말머리성운)</p>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-icon">🔷</div>
+        <h4>산개성단 (Open Cluster)</h4>
+        <p>수십~수천 개의 <strong>푸르고 젊은 고온의 별들</strong>이 헐겁게 모여 있는 무리. 우리은하의 <strong>은하면(나선팔)</strong>에 분포.</p>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-icon">🟡</div>
+        <h4>구상성단 (Globular Cluster)</h4>
+        <p>수만~수십만 개의 <strong>붉고 노란 늙은 별들</strong>이 빽빽하게 <strong>공 모양(구형)</strong>으로 모여 있는 무리. 우리은하 <strong>팽대부 및 헤일로</strong>에 분포.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: NEBULA MECHANISM LAB -->
+  <section id="nebulaTab" class="tab-section">
+    <div class="nebula-lab-container">
+      <div class="canvas-card">
+        <div class="canvas-header">
+          <div class="canvas-title">🧪 성운 빛 작용 인터랙티브 실험실</div>
+          <span style="font-size:12px; color:var(--sky);">가스 여기 / 빛 산란 / 차단 원리</span>
+        </div>
+        <div class="galaxy-canvas-wrapper">
+          <canvas id="nebulaCanvas" width="600" height="380"></canvas>
+        </div>
+        <div style="font-size:13px; color:var(--sub); text-align:center;">
+          현재 조작 성운 유형: <strong id="nebulaTypeLabel" style="color:var(--gold);">방출성운 (Emission)</strong>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h3>🎛️ 성운 물리 변인 조작</h3>
+        
+        <div class="view-toggle-group" style="width:100%;">
+          <button type="button" class="view-btn active" style="flex:1;" onclick="setNebulaSimMode('emission')">🔴 방출성운</button>
+          <button type="button" class="view-btn" style="flex:1;" onclick="setNebulaSimMode('reflection')">🔵 반사성운</button>
+          <button type="button" class="view-btn" style="flex:1;" onclick="setNebulaSimMode('dark')">⬛ 암흑성운</button>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>주변 광원 별의 온도 (에너지)</span>
+            <span id="starTempVal">30,000 K (고온)</span>
+          </div>
+          <input type="range" class="control-slider" min="3000" max="40000" step="1000" value="30000" id="starTempSlider" oninput="updateNebulaSim()">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>성간 먼지 및 가스 밀도</span>
+            <span id="dustDensityVal">높음</span>
+          </div>
+          <input type="range" class="control-slider" min="10" max="100" step="5" value="70" id="dustDensitySlider" oninput="updateNebulaSim()">
+        </div>
+
+        <div class="object-detail-box">
+          <h4 id="nebExpTitle" style="font-size:15px; margin:0 0 6px; color:var(--gold);">방출성운의 상호작용 원리</h4>
+          <p id="nebExpText" style="font-size:13px; margin:0; color:var(--sub); line-height:1.6;">
+            중심 또는 주변에 위치한 표면온도가 매우 높은(약 30,000K 이상) 별이 강력한 자외선을 방출하면, 성간 가스(수소)의 전자가 에너지 준위를 이동하며 붉은색의 H-알파 파장 빛(656.3nm)을 스스로 방출합니다.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: STAR CLUSTER LAB -->
+  <section id="clusterTab" class="tab-section">
+    <div class="cluster-lab-container">
+      <div class="canvas-card">
+        <div class="canvas-header">
+          <div class="canvas-title">✨ 성단 구조 및 중력 밀집도 비교</div>
+          <span style="font-size:12px; color:var(--gold);">산개성단 vs 구상성단</span>
+        </div>
+        <div class="galaxy-canvas-wrapper">
+          <canvas id="clusterCanvas" width="600" height="380"></canvas>
+        </div>
+        <div style="font-size:13px; color:var(--sub); text-align:center;">
+          현재 조작 성단: <strong id="clusterTypeLabel" style="color:var(--sky);">산개성단 (Open Cluster)</strong>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h3>🎛️ 성단 구조 변인 조작</h3>
+
+        <div class="view-toggle-group" style="width:100%;">
+          <button type="button" class="view-btn active" style="flex:1;" onclick="setClusterSimMode('open')">🔷 산개성단</button>
+          <button type="button" class="view-btn" style="flex:1;" onclick="setClusterSimMode('globular')">🟡 구상성단</button>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>구성 별의 개수</span>
+            <span id="starCountVal">300 개</span>
+          </div>
+          <input type="range" class="control-slider" min="50" max="3000" step="50" value="300" id="starCountSlider" oninput="updateClusterSim()">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>중력 집속도 (중심 밀집도)</span>
+            <span id="gravityVal">낮음 (헐거운 무리)</span>
+          </div>
+          <input type="range" class="control-slider" min="1" max="10" step="1" value="2" id="gravitySlider" oninput="updateClusterSim()">
+        </div>
+
+        <div class="object-detail-box">
+          <h4 id="clusterExpTitle" style="font-size:15px; margin:0 0 6px; color:var(--sky);">산개성단의 특징</h4>
+          <p id="clusterExpText" style="font-size:13px; margin:0; color:var(--sub); line-height:1.6;">
+            수십~수천 개의 별들이 규칙적인 모양 없이 헐겁게 모여 있습니다. 최근에 형성되어 표면 온도가 높은 고온의 푸른 별들이 많으며, 우리은하의 나선팔(은하면)에 분포합니다.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed Comparison Table -->
+    <div class="comparison-table-wrapper">
+      <h3 style="margin:0 0 12px; font-size:17px; color:#fff;">📊 산개성단 vs 구상성단 한눈에 비교하기</h3>
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>구분</th>
+            <th>산개성단 (Open Cluster)</th>
+            <th>구상성단 (Globular Cluster)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>모양 및 집속도</strong></td>
+            <td>규칙적이지 않고 헐겁게 흩어진 무리</td>
+            <td>공 모양(구형)으로 빽빽하게 뭉쳐진 무리</td>
+          </tr>
+          <tr>
+            <td><strong>구성 별의 개수</strong></td>
+            <td>수십 ~ 수천 개</td>
+            <td>수만 ~ 수십만 개</td>
+          </tr>
+          <tr>
+            <td><strong>별의 나이 및 색깔</strong></td>
+            <td>젊은 별 (고온, <strong>푸른색</strong>)</td>
+            <td>늙은 별 (저온, <strong>붉은색·노란색</strong>)</td>
+          </tr>
+          <tr>
+            <td><strong>우리은하 내 위치</strong></td>
+            <td><strong>은하면 (나선팔)</strong> 부근</td>
+            <td><strong>은하 중심부 (팽대부) 및 헤일로</strong></td>
+          </tr>
+          <tr>
+            <td><strong>대표적 천체</strong></td>
+            <td>플레이아데스 성단, 히아데스 성단</td>
+            <td>M13 (헤르쿨레스자리 구상성단), M3</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- TAB 4: PRESENTATION SLIDE DECK -->
+  <section id="slideTab" class="tab-section">
+    <div class="slide-deck-wrapper">
+      <div class="slide-viewport">
+        
+        <!-- Slide 1 -->
+        <div class="slide-content active" data-slide="1">
+          <span class="loc-badge" style="margin-bottom:12px;">Slide 1 / 7</span>
+          <h2 class="slide-title">1. 우주의 재료, 성간 물질 (Interstellar Matter)</h2>
+          <div class="slide-body">
+            <ul>
+              <li><strong>정의:</strong> 별과 별 사이의 광활한 우주 공간에 분포하는 가스와 먼지.</li>
+              <li><strong>성분 비율:</strong> 기체 가스(수소 약 99%, 헬륨) + 미세 먼지 입자(탄소, 규소 등 약 1%).</li>
+              <li><strong>중요성:</strong> 성간 물질이 중력으로 모여 별과 성운, 성단을 탄생시키는 근원이 됨.</li>
+            </ul>
+          </div>
+          <div class="teacher-note-box">
+            📌 <strong>교사용 수업 팁:</strong> 우주는 완전한 진공이 아니라 별 사이 공간에 매우 옅은 가스와 먼지가 존재한다는 점을 강조하세요. (단위 부피당 입자 수는 작지만 우주 전체 면적으로는 막대한 양입니다.)
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide-content" data-slide="2">
+          <span class="loc-badge" style="margin-bottom:12px;">Slide 2 / 7</span>
+          <h2 class="slide-title">2. 방출성운 (Emission Nebula) — 스스로 빛나는 성운</h2>
+          <div class="slide-body">
+            <ul>
+              <li><strong>원리:</strong> 성간 가스가 주변 고온의 별(O, B형)로부터 강한 자외선 에너지를 흡수하여 heated.</li>
+              <li><strong>특징적인 색:</strong> 수소 이온화에 의해 구름 전체가 <strong>붉은색 빛</strong>을 스스로 방출.</li>
+              <li><strong>대표 천체:</strong> 오리온성운(M42), 장미성운, 삼렬성운.</li>
+            </ul>
+          </div>
+          <div class="teacher-note-box">
+            📌 <strong>교사용 수업 팁:</strong> 네온사인이 전기를 받아 붉은 빛을 내듯, 성간 가스가 고온의 별빛을 받아 붉게 빛나는 원리입니다.
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide-content" data-slide="3">
+          <span class="loc-badge" style="margin-bottom:12px;">Slide 3 / 7</span>
+          <h2 class="slide-title">3. 반사성운 (Reflection Nebula) — 별빛을 튕겨내는 성운</h2>
+          <div class="slide-body">
+            <ul>
+              <li><strong>원리:</strong> 성간 먼지가 주위 별들의 빛을 반사하고 산란시킴.</li>
+              <li><strong>특징적인 색:</strong> 파장이 짧은 <strong>푸른색 빛</strong>이 먼지에 의해 훨씬 잘 산란되므로 <strong>푸른색</strong>으로 보임.</li>
+              <li><strong>대표 천체:</strong> 플레이아데스 성운, 마녀머리 성운.</li>
+            </ul>
+          </div>
+          <div class="teacher-note-box">
+            📌 <strong>교사용 수업 팁:</strong> 지구 하늘이 푸른 이유(레이클 산란)와 같은 원리로 푸른빛이 산란되어 우리 눈에 들어옵니다.
+          </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="slide-content" data-slide="4">
+          <span class="loc-badge" style="margin-bottom:12px;">Slide 4 / 7</span>
+          <h2 class="slide-title">4. 암흑성운 (Dark Nebula) — 뒤쪽 빛을 가리는 성운</h2>
+          <div class="slide-body">
+            <ul>
+              <li><strong>원리:</strong> 성간 먼지가 매우 빽빽하게 모여 있어 뒤편의 별빛이나 밝은 성운 빛을 막음.</li>
+              <li><strong>특징적인 모습:</strong> 검은 구름 실루엣이나 검은 구멍처럼 어둡게 관찰됨.</li>
+              <li><strong>대표 천체:</strong> 말머리성운, 뱀성운.</li>
+            </ul>
+          </div>
+          <div class="teacher-note-box">
+            📌 <strong>교사용 수업 팁:</strong> 암흑성운은 별이 없는 빈 공간이 아니라, 가스/먼지가 너무 빽빽해서 빛을 차단하고 있다는 사실을 명심하게 합니다.
+          </div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="slide-content" data-slide="5">
+          <span class="loc-badge" style="margin-bottom:12px;">Slide 5 / 7</span>
+          <h2 class="slide-title">5. 산개성단 (Open Cluster) vs 구상성단 (Globular Cluster)</h2>
+          <div class="slide-body">
+            <ul>
+              <li><strong>산개성단:</strong> 수십~수천 개의 <strong>젊은 별(푸른색)</strong>이 헐겁게 모임.</li>
+              <li><strong>구상성단:</strong> 수만~수십만 개의 <strong>늙은 별(붉은색/노란색)</strong>이 빽빽하게 공 모양으로 모임.</li>
+            </ul>
+          </div>
+          <div class="teacher-note-box">
+            📌 <strong>교사용 수업 팁:</strong> 성단의 색깔은 별의 표면 온도와 나이를 반영합니다. 푸른 별 = 고온·젊음, 붉은 별 = 저온·늙음.
+          </div>
+        </div>
+
+        <!-- Slide 6 -->
+        <div class="slide-content" data-slide="6">
+          <span class="loc-badge" style="margin-bottom:12px;">Slide 6 / 7</span>
+          <h2 class="slide-title">6. 우리은하 내 천체 위치 분포 규칙</h2>
+          <div class="slide-body">
+            <ul>
+              <li><strong>은하면 (나선팔):</strong> 성간 물질 풍부 ➔ 성운(방출·반사·암흑)과 <strong>산개성단</strong> 분포!</li>
+              <li><strong>은하 중심부(팽대부) & 헤일로:</strong> 성간 물질 희박 ➔ 늙은 별들의 <strong>구상성단</strong>이 은하 전체를 구형으로 둘러쌈!</li>
+            </ul>
+          </div>
+          <div class="teacher-note-box">
+            📌 <strong>교사용 수업 팁:</strong> 테스트에 자주 출제되는 우리은하 구조와 천체 위치 결합 개념입니다.
+          </div>
+        </div>
+
+        <!-- Slide 7 -->
+        <div class="slide-content" data-slide="7">
+          <span class="loc-badge" style="margin-bottom:12px;">Slide 7 / 7</span>
+          <h2 class="slide-title">7. 핵심 요약 정리</h2>
+          <div class="slide-body">
+            <ol>
+              <li>성간물질 = 수소 가스 + 먼지</li>
+              <li>성운 = 방출(붉은색, 가스 과열), 반사(푸른색, 먼지 산란), 암흑(검은색, 빛 차단)</li>
+              <li>성단 = 산개(푸른 젊은 별, 은하면), 구상(붉은 늙은 별, 헤일로/팽대부)</li>
+            </ol>
+          </div>
+          <div class="teacher-note-box">
+            📌 <strong>교사용 수업 팁:</strong> 퀴즈 탭으로 이동하여 학생들과 형성평가를 실시하세요!
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Controls -->
+      <div class="slide-controls-bar">
+        <button type="button" class="slide-btn" id="prevSlideBtn" onclick="moveSlide(-1)">← 이전 슬라이드</button>
+        <span style="font-size:13px; color:var(--sub);" id="slideCounterText">슬라이드 1 / 7 (키보드 ← → 사용 가능)</span>
+        <button type="button" class="slide-btn" onclick="toggleTeacherNotes()">🔑 교사용 노트 (N)</button>
+        <button type="button" class="slide-btn" id="nextSlideBtn" onclick="moveSlide(1)">다음 슬라이드 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 5: CONCEPT QUIZ -->
+  <section id="quizTab" class="tab-section">
+    <div class="quiz-wrapper">
+      <h3 style="margin:0 0 16px; font-size:20px; color:var(--gold);">💡 중2 과학 개념 확인 퀴즈</h3>
+
+      <!-- Q1 -->
+      <div class="quiz-card" data-q="1">
+        <div class="quiz-q">Q1. 주위 고온 별의 에너지를 받아 성간 가스가 직접 붉은색 빛을 내는 성운은?</div>
+        <div class="quiz-options">
+          <button type="button" class="quiz-opt-btn" onclick="checkQuiz(1, 0, this)">① 반사성운</button>
+          <button type="button" class="quiz-opt-btn" onclick="checkQuiz(1, 1, this)">② 방출성운 (발광성운)</button>
+          <button type="button" class="quiz-opt-btn" onclick="checkQuiz(1, 2, this)">③ 암흑성운</button>
+          <button type="button" class="quiz-opt-btn" onclick="checkQuiz(1, 3, this)">④ 행성상성운</button>
+        </div>
+        <div class="quiz-exp" id="exp1">정답: ② 방출성운. 성간 가스(수소)가 주변 고온 별의 자외선을 받아 수소 발광을 하며 붉게 빛납니다.</div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-card" data-q="2">
+        <div class="quiz-q">Q2. 반사성운이 주로 푸른색을 띠는 주요 이유는 무엇인가요?</div>
+        <div class="quiz-options">
+          <button type="button" class="quiz-opt-btn" onclick="checkQuiz(2, 0, this)">① 성간 가스가 푸른 불꽃을 내며 연소하기 때문에</button>
+          <button type="button" class="quiz-opt-btn" onclick="checkQuiz(2, 1, this)">② 성간 먼지가 파장이 짧은 푸른 빛을 더 잘 반사·산란시키기 때문에</button>
+          <button type="button" class="quiz-opt-btn" onclick="checkQuiz(2, 2, this)">③ 성운 내부의 별들이 모두 노란색 늙은 별이기 때문에</button>
+          <button type="button" class="quiz-opt-btn" onclick="checkQuiz(2, 3, this)">④ 뒤쪽 별빛이 성운을 통과하면서 푸르게 변하기 때문에</button>
+        </div>
+        <div class="quiz-exp" id="exp2">정답: ②. 성간 먼지에 의한 빛의 산란은 파장이 짧은 푸른색 빛에서 강하게 일어나므로 푸르게 보입니다.</div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-card" data-q="3">
+        <div class="quiz-q">Q3. 우리은하의 '은하면(나선팔)' 부근에 주로 위치하는 천체들의 조합으로 옳은 것은?</div>
+        <div class="quiz-options">
+          <button type="button" class="quiz-opt-btn" onclick="checkQuiz(3, 0, this)">① 성간물질, 방출성운, 반사성운, 암흑성운, 산개성단</button>
+          <button type="button" class="quiz-opt-btn" onclick="checkQuiz(3, 1, this)">② 구상성단, 블랙홀, 암흑물질만 존재</button>
+          <button type="button" class="quiz-opt-btn" onclick="checkQuiz(3, 2, this)">③ 구상성단과 암흑성운만 존재</button>
+          <button type="button" class="quiz-opt-btn" onclick="checkQuiz(3, 3, this)">④ 은하면에는 별이 존재하지 않음</button>
+        </div>
+        <div class="quiz-exp" id="exp3">정답: ①. 은하면에는 성간물질이 집중되어 있어 각종 성운과 젊은 별들로 이루어진 산개성단이 주로 위치합니다.</div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-card" data-q="4">
+        <div class="quiz-q">Q4. 구상성단에 관한 설명으로 옳지 않은 것은?</div>
+        <div class="quiz-options">
+          <button type="button" class="quiz-opt-btn" onclick="checkQuiz(4, 0, this)">① 수만~수십만 개의 별이 공 모양으로 빽빽하게 모여 있다.</button>
+          <button type="button" class="quiz-opt-btn" onclick="checkQuiz(4, 1, this)">② 늙은 별들이 많아 주로 붉은색이나 노란색을 띤다.</button>
+          <button type="button" class="quiz-opt-btn" onclick="checkQuiz(4, 2, this)">③ 우리은하의 중앙 팽대부와 헤일로에 주로 분포한다.</button>
+          <button type="button" class="quiz-opt-btn" onclick="checkQuiz(4, 3, this)">④ 최근에 새로 태어난 푸르고 온도가 높은 별들로 이루어져 있다.</button>
+        </div>
+        <div class="quiz-exp" id="exp4">정답: ④. 푸르고 온도가 높은 젊은 별들로 구성된 성단은 '산개성단'입니다. 구상성단은 늙은 별로 구성됩니다.</div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="bf-footer">
+  <div>🌸 Beflower의 과학 시뮬레이션 랩 · <a href="../../index.html">홈으로 돌아가기</a></div>
+</footer>
+
+<script>
+/* Global Canvas and State Variables */
+let currentView = 'top'; // 'top' or 'side'
+let currentFilter = 'all';
+let galaxySpeed = 1.0;
+let gasDensityMult = 1.0;
+let animFrameId = null;
+let currentSlide = 1;
+const totalSlides = 7;
+
+/* Galaxy Celestial Objects Data */
+const celestialObjects = [
+  { id: 'gas1', type: 'interstellar', name: '오리온 성간 구름', x: 120, y: 80, z: 0, r: 45, color: 'rgba(52,211,153,0.25)', desc: '은하면 나선팔에 분포하는 대규모 수소 가스 및 먼지 지대입니다.', loc: '은하면 (나선팔)' },
+  { id: 'em1', type: 'emission', name: '오리온성운 (M42)', x: 140, y: 90, z: 5, r: 25, color: '#f87171', desc: '주변 고온 별의 강한 자외선을 받아 수소 가스가 붉게 발광하는 방출성운입니다.', loc: '은하면 (오리온 나선팔)' },
+  { id: 'ref1', type: 'reflection', name: '플레이아데스 성운', x: -110, y: 130, z: -8, r: 22, color: '#38bdf8', desc: '성간 먼지가 주위 푸른 별빛을 반사/산란시켜 밝은 푸른색으로 보이는 성운입니다.', loc: '은하면 (나선팔)' },
+  { id: 'dark1', type: 'dark', name: '말머리성운 (IC 434)', x: 160, y: 70, z: 2, r: 18, color: '#334155', desc: '두꺼운 성간 먼지가 뒤쪽 방출성운의 빛을 막아 말 머리 모양 실루엣을 만드는 암흑성운입니다.', loc: '은하 원반부' },
+  { id: 'open1', type: 'openCluster', name: '플레이아데스 산개성단', x: -100, y: 140, z: 0, r: 20, color: '#60a5fa', desc: '수백 개의 푸르고 젊은 별들이 헐겁게 무리 지어 있는 대표적 산개성단입니다.', loc: '은하면 (나선팔)' },
+  { id: 'glob1', type: 'globularCluster', name: '헤르쿨레스 구상성단 (M13)', x: 40, y: 30, z: 120, r: 16, color: '#fbbf24', desc: '수십만 개의 늙은 붉은 별들이 공 모양으로 빽빽하게 결합된 구상성단입니다.', loc: '은하 헤일로 (Halo)' },
+  { id: 'glob2', type: 'globularCluster', name: 'M3 구상성단', x: -60, y: -40, z: -140, r: 15, color: '#f59e0b', desc: '은하 중심부 외곽 헤일로 영역에 위치한 고밀도 구상성단입니다.', loc: '은하 헤일로 (Halo)' },
+  { id: 'em2', type: 'emission', name: '장미성운', x: -150, y: -90, z: -4, r: 24, color: '#fb7185', desc: '장미 꽃잎 모양으로 활발하게 빛나는 대표적인 붉은 방출성운입니다.', loc: '은하면 (나선팔)' }
+];
+
+/* Initialize Canvas */
+const galaxyCanvas = document.getElementById('galaxyCanvas');
+const ctxG = galaxyCanvas.getContext('2d');
+let rotationAngle = 0;
+
+function drawMilkyWay() {
+  const w = galaxyCanvas.width;
+  const h = galaxyCanvas.height;
+  const cx = w / 2;
+  const cy = h / 2;
+
+  ctxG.clearRect(0, 0, w, h);
+
+  // Background Grid / Guide lines
+  ctxG.strokeStyle = 'rgba(255,255,255,0.05)';
+  ctxG.lineWidth = 1;
+  ctxG.beginPath();
+  ctxG.arc(cx, cy, 80, 0, Math.PI * 2);
+  ctxG.arc(cx, cy, 160, 0, Math.PI * 2);
+  ctxG.arc(cx, cy, 230, 0, Math.PI * 2);
+  ctxG.stroke();
+
+  if (currentView === 'top') {
+    // TOP VIEW - SPIRAL ARMS
+    // Central Bulge
+    const gradBulge = ctxG.createRadialGradient(cx, cy, 5, cx, cy, 65);
+    gradBulge.addColorStop(0, 'rgba(254, 243, 199, 0.95)');
+    gradBulge.addColorStop(0.4, 'rgba(251, 191, 36, 0.4)');
+    gradBulge.addColorStop(1, 'rgba(251, 191, 36, 0)');
+    ctxG.fillStyle = gradBulge;
+    ctxG.beginPath();
+    ctxG.arc(cx, cy, 65, 0, Math.PI * 2);
+    ctxG.fill();
+
+    // Render Spiral Arms (Gas / Dust)
+    const armCount = 2;
+    for (let a = 0; a < armCount; a++) {
+      const baseAngle = a * Math.PI + rotationAngle;
+      ctxG.beginPath();
+      for (let r = 20; r < 240; r += 4) {
+        const theta = baseAngle + r * 0.018;
+        const ax = cx + Math.cos(theta) * r;
+        const ay = cy + Math.sin(theta) * r;
+
+        // Render interstellar gas particles along arms
+        if (currentFilter === 'all' || currentFilter === 'interstellar') {
+          ctxG.fillStyle = `rgba(56, 189, 248, ${0.15 * gasDensityMult})`;
+          ctxG.beginPath();
+          ctxG.arc(ax, ay, 12 * gasDensityMult, 0, Math.PI * 2);
+          ctxG.fill();
+        }
+      }
+    }
+
+    // Solar system marker
+    const sunAngle = rotationAngle + 1.2;
+    const sunR = 150;
+    const sunX = cx + Math.cos(sunAngle) * sunR;
+    const sunY = cy + Math.sin(sunAngle) * sunR;
+    ctxG.fillStyle = '#fbbf24';
+    ctxG.beginPath();
+    ctxG.arc(sunX, sunY, 4, 0, Math.PI * 2);
+    ctxG.fill();
+    ctxG.fillStyle = '#fef08a';
+    ctxG.font = '10px Pretendard';
+    ctxG.fillText('☀️ 태양계 (약 8.5kpc)', sunX + 8, sunY + 3);
+
+    // Plot Objects
+    celestialObjects.forEach(obj => {
+      if (currentFilter !== 'all' && currentFilter !== obj.type) return;
+
+      const cosA = Math.cos(rotationAngle * 0.5);
+      const sinA = Math.sin(rotationAngle * 0.5);
+      const rx = obj.x * cosA - obj.y * sinA;
+      const ry = obj.x * sinA + obj.y * cosA;
+      const px = cx + rx;
+      const py = cy + ry;
+
+      // Draw Glow & Dot
+      ctxG.shadowColor = obj.color;
+      ctxG.shadowBlur = 10;
+      ctxG.fillStyle = obj.color;
+      ctxG.beginPath();
+      ctxG.arc(px, py, obj.type.includes('Cluster') ? 6 : 8, 0, Math.PI * 2);
+      ctxG.fill();
+      ctxG.shadowBlur = 0;
+
+      // Label
+      ctxG.fillStyle = '#ffffff';
+      ctxG.font = '11px Pretendard';
+      ctxG.fillText(obj.name, px + 10, py + 4);
+    });
+
+  } else {
+    // SIDE VIEW - DISK & HALO
+    // Galactic Disk Line
+    ctxG.fillStyle = `rgba(56, 189, 248, ${0.2 * gasDensityMult})`;
+    ctxG.beginPath();
+    ctxG.ellipse(cx, cy, 260, 18, 0, 0, Math.PI * 2);
+    ctxG.fill();
+
+    // Central Bulge Side
+    const gradBulgeSide = ctxG.createRadialGradient(cx, cy, 4, cx, cy, 50);
+    gradBulgeSide.addColorStop(0, 'rgba(254, 243, 199, 0.95)');
+    gradBulgeSide.addColorStop(1, 'rgba(251, 191, 36, 0)');
+    ctxG.fillStyle = gradBulgeSide;
+    ctxG.beginPath();
+    ctxG.ellipse(cx, cy, 45, 35, 0, 0, Math.PI * 2);
+    ctxG.fill();
+
+    // Halo Boundary Circle
+    ctxG.strokeStyle = 'rgba(192, 132, 252, 0.25)';
+    ctxG.setLineDash([4, 4]);
+    ctxG.beginPath();
+    ctxG.arc(cx, cy, 170, 0, Math.PI * 2);
+    ctxG.stroke();
+    ctxG.setLineDash([]);
+
+    ctxG.fillStyle = 'rgba(192, 132, 252, 0.7)';
+    ctxG.font = '11px Pretendard';
+    ctxG.fillText('은하 헤일로 (Halo)', cx + 110, cy - 130);
+    ctxG.fillText('은하면 (Galactic Disk)', cx + 140, cy + 26);
+
+    // Plot Objects on Side View
+    celestialObjects.forEach(obj => {
+      if (currentFilter !== 'all' && currentFilter !== obj.type) return;
+
+      const px = cx + obj.x * 1.3;
+      // If disk-bound object, keep near cy, if halo object use z
+      const py = obj.type === 'globularCluster' ? cy - obj.z * 0.9 : cy + obj.z * 0.2;
+
+      ctxG.shadowColor = obj.color;
+      ctxG.shadowBlur = 12;
+      ctxG.fillStyle = obj.color;
+      ctxG.beginPath();
+      ctxG.arc(px, py, obj.type === 'globularCluster' ? 7 : 6, 0, Math.PI * 2);
+      ctxG.fill();
+      ctxG.shadowBlur = 0;
+
+      ctxG.fillStyle = '#e2e8f0';
+      ctxG.font = '11px Pretendard';
+      ctxG.fillText(obj.name, px + 8, py + 3);
+    });
+  }
+
+  rotationAngle += 0.005 * galaxySpeed;
+  animFrameId = requestAnimationFrame(drawMilkyWay);
+}
+
+/* Galaxy Interaction Functions */
+function setGalaxyView(view) {
+  currentView = view;
+  document.getElementById('btnTopView').classList.toggle('active', view === 'top');
+  document.getElementById('btnSideView').classList.toggle('active', view === 'side');
+}
+
+function filterGalaxy(type, btn) {
+  currentFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const objMap = {
+    'all': { title: '우리은하 전체 관찰', tag: '전체', desc: '성간물질과 성운, 성단들이 우리은하에 어떻게 분포해 있는지 관찰하세요.', loc: '은하면 & 팽대부/헤일로' },
+    'interstellar': { title: '성간 물질 (가스/먼지)', tag: '가스·먼지', desc: '은하면(나선팔)에 조밀하게 모여 있어 새로운 별이 태어나는 원료가 됩니다.', loc: '은하면 (나선팔)' },
+    'emission': { title: '방출성운 (Emission Nebula)', tag: '붉은 발광', desc: '고온의 별빛을 받아 수소 가스가 붉은색 빛을 방출하는 성운입니다.', loc: '은하면 (나선팔)' },
+    'reflection': { title: '반사성운 (Reflection Nebula)', tag: '푸른 산란', desc: '성간 먼지가 주변 별빛을 반사/산란하여 푸르게 보입니다.', loc: '은하면 (나선팔)' },
+    'dark': { title: '암흑성운 (Dark Nebula)', tag: '빛 차단', desc: '두꺼운 먼지층이 뒤편의 별빛을 가려 검은 실루엣으로 관찰됩니다.', loc: '은하면 (나선팔)' },
+    'openCluster': { title: '산개성단 (Open Cluster)', tag: '젊은 푸른 별', desc: '수십~수천 개의 푸른 젊은 별들이 헐겁게 모여 은하면에 위치합니다.', loc: '은하면 (나선팔)' },
+    'globularCluster': { title: '구상성단 (Globular Cluster)', tag: '늙은 붉은 별', desc: '수만~수십만 개의 붉은 늙은 별들이 공 모양으로 헤일로와 팽대부에 위치합니다.', loc: '은하 팽대부 및 헤일로' }
+  };
+
+  const info = objMap[type] || objMap['all'];
+  document.getElementById('detTitle').textContent = info.title;
+  document.getElementById('detTag').textContent = info.tag;
+  document.getElementById('detDesc').textContent = info.desc;
+  document.getElementById('detLoc').textContent = `📍 위치: ${info.loc}`;
+}
+
+function setGalaxySpeed(val) {
+  galaxySpeed = parseFloat(val);
+  document.getElementById('speedVal').textContent = `${val}x`;
+}
+
+function setGasDensity(val) {
+  gasDensityMult = parseFloat(val);
+  document.getElementById('densityVal').textContent = val > 1 ? '높음' : val < 1 ? '낮음' : '보통';
+}
+
+/* Tab Switching */
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-section').forEach(sec => sec.classList.remove('active'));
+  document.querySelectorAll('.nav-mode-btn').forEach(b => b.classList.remove('active'));
+
+  document.getElementById(tabId).classList.add('active');
+  btn.classList.add('active');
+
+  if (tabId === 'nebulaTab') updateNebulaSim();
+  if (tabId === 'clusterTab') updateClusterSim();
+}
+
+/* Nebula Lab Simulator Canvas */
+let nebulaSimMode = 'emission';
+const nebulaCanvas = document.getElementById('nebulaCanvas');
+const ctxN = nebulaCanvas.getContext('2d');
+
+function setNebulaSimMode(mode) {
+  nebulaSimMode = mode;
+  document.querySelectorAll('#nebulaTab .view-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  updateNebulaSim();
+}
+
+function updateNebulaSim() {
+  const temp = parseInt(document.getElementById('starTempSlider').value);
+  const density = parseInt(document.getElementById('dustDensitySlider').value);
+
+  document.getElementById('starTempVal').textContent = `${temp.toLocaleString()} K (${temp > 20000 ? '고온 O/B형 별' : '저온 별'})`;
+  document.getElementById('dustDensityVal').textContent = `${density}% (${density > 60 ? '농밀함' : '희박함'})`;
+
+  const w = nebulaCanvas.width;
+  const h = nebulaCanvas.height;
+  ctxN.clearRect(0, 0, w, h);
+
+  if (nebulaSimMode === 'emission') {
+    document.getElementById('nebulaTypeLabel').textContent = '방출성운 (Emission Nebula)';
+    document.getElementById('nebExpTitle').textContent = '방출성운 발광 메커니즘';
+    document.getElementById('nebExpText').textContent = '표면온도 20,000K 이상의 고온의 별이 주변 수소 가스를 과열(이온화)시켜 붉은색 H-알파 빛을 방출합니다.';
+
+    // Central Hot Star
+    const starColor = temp > 25000 ? '#93c5fd' : temp > 10000 ? '#ffffff' : '#fcd34d';
+    ctxN.shadowColor = starColor;
+    ctxN.shadowBlur = 30;
+    ctxN.fillStyle = starColor;
+    ctxN.beginPath();
+    ctxN.arc(w / 2, h / 2, 16, 0, Math.PI * 2);
+    ctxN.fill();
+
+    // Surrounding Red Glowing Gas Nebulae
+    const glowRadius = Math.min(220, (temp / 40000) * 200 + density);
+    const grad = ctxN.createRadialGradient(w / 2, h / 2, 15, w / 2, h / 2, glowRadius);
+    grad.addColorStop(0, 'rgba(248, 113, 113, 0.8)');
+    grad.addColorStop(0.5, 'rgba(225, 29, 72, 0.4)');
+    grad.addColorStop(1, 'rgba(225, 29, 72, 0)');
+
+    ctxN.fillStyle = grad;
+    ctxN.beginPath();
+    ctxN.arc(w / 2, h / 2, glowRadius, 0, Math.PI * 2);
+    ctxN.fill();
+    ctxN.shadowBlur = 0;
+
+  } else if (nebulaSimMode === 'reflection') {
+    document.getElementById('nebulaTypeLabel').textContent = '반사성운 (Reflection Nebula)';
+    document.getElementById('nebExpTitle').textContent = '반사성운 산란 메커니즘';
+    document.getElementById('nebExpText').textContent = '성간 먼지가 주변 별빛을 반사합니다. 파장이 짧은 푸른색 빛이 먼지 입자에 의해 훨씬 잘 산란되어 푸른색으로 보입니다.';
+
+    // Star
+    ctxN.shadowColor = '#38bdf8';
+    ctxN.shadowBlur = 25;
+    ctxN.fillStyle = '#e0f2fe';
+    ctxN.beginPath();
+    ctxN.arc(150, h / 2, 18, 0, Math.PI * 2);
+    ctxN.fill();
+
+    // Scattered Blue Rays
+    const gradRef = ctxN.createRadialGradient(150, h / 2, 20, 300, h / 2, 220);
+    gradRef.addColorStop(0, 'rgba(56, 189, 248, 0.7)');
+    gradRef.addColorStop(1, 'rgba(56, 189, 248, 0)');
+    ctxN.fillStyle = gradRef;
+    ctxN.beginPath();
+    ctxN.arc(300, h / 2, 180, 0, Math.PI * 2);
+    ctxN.fill();
+    ctxN.shadowBlur = 0;
+
+  } else {
+    document.getElementById('nebulaTypeLabel').textContent = '암흑성운 (Dark Nebula)';
+    document.getElementById('nebExpTitle').textContent = '암흑성운 차단 메커니즘';
+    document.getElementById('nebExpText').textContent = '뒤편의 수많은 별빛이 진하게 밀집된 성간 먼지 구름을 통과하지 못하고 차단되어 검은 형태(실루엣)로 보입니다.';
+
+    // Background Stars
+    for (let i = 0; i < 250; i++) {
+      const rx = (i * 37) % w;
+      const ry = (i * 59) % h;
+      ctxN.fillStyle = '#ffffff';
+      ctxN.beginPath();
+      ctxN.arc(rx, ry, 1.2, 0, Math.PI * 2);
+      ctxN.fill();
+    }
+
+    // Dense Blocking Dark Cloud Silhouette
+    ctxN.fillStyle = `rgba(15, 23, 42, ${density / 100})`;
+    ctxN.beginPath();
+    ctxN.ellipse(w / 2, h / 2, 140, 90, 0.2, 0, Math.PI * 2);
+    ctxN.fill();
+  }
+}
+
+/* Star Cluster Lab Simulator Canvas */
+let clusterSimMode = 'open';
+const clusterCanvas = document.getElementById('clusterCanvas');
+const ctxC = clusterCanvas.getContext('2d');
+
+function setClusterSimMode(mode) {
+  clusterSimMode = mode;
+  document.querySelectorAll('#clusterTab .view-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  if (mode === 'open') {
+    document.getElementById('starCountSlider').value = 300;
+    document.getElementById('gravitySlider').value = 2;
+  } else {
+    document.getElementById('starCountSlider').value = 1500;
+    document.getElementById('gravitySlider').value = 8;
+  }
+  updateClusterSim();
+}
+
+function updateClusterSim() {
+  const count = parseInt(document.getElementById('starCountSlider').value);
+  const grav = parseInt(document.getElementById('gravitySlider').value);
+
+  document.getElementById('starCountVal').textContent = `${count.toLocaleString()} 개`;
+  document.getElementById('gravityVal').textContent = grav > 5 ? '매우 높음 (밀집한 공 모양)' : '낮음 (헐거운 구조)';
+
+  const w = clusterCanvas.width;
+  const h = clusterCanvas.height;
+  const cx = w / 2;
+  const cy = h / 2;
+  ctxC.clearRect(0, 0, w, h);
+
+  if (clusterSimMode === 'open') {
+    document.getElementById('clusterTypeLabel').textContent = '산개성단 (Open Cluster)';
+    document.getElementById('clusterExpTitle').textContent = '산개성단의 특성';
+    document.getElementById('clusterExpText').textContent = '젊은 푸른 별들이 불규칙하고 헐겁게 모여 있습니다. 성간물질이 풍부한 은하면(나선팔)에 위치합니다.';
+
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const dist = Math.random() * 160 + Math.random() * 40;
+      const x = cx + Math.cos(angle) * dist;
+      const y = cy + Math.sin(angle) * dist;
+
+      ctxC.fillStyle = i % 5 === 0 ? '#ffffff' : '#60a5fa';
+      ctxC.shadowColor = '#38bdf8';
+      ctxC.shadowBlur = 6;
+      ctxC.beginPath();
+      ctxC.arc(x, y, Math.random() * 2 + 1.5, 0, Math.PI * 2);
+      ctxC.fill();
+    }
+  } else {
+    document.getElementById('clusterTypeLabel').textContent = '구상성단 (Globular Cluster)';
+    document.getElementById('clusterExpTitle').textContent = '구상성단의 특성';
+    document.getElementById('clusterExpText').textContent = '수만~수십만 개의 늙은 붉은/노란 별들이 중력에 의해 공 모양으로 빽빽하게 모여 은하 팽대부와 헤일로에 분포합니다.';
+
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      // Gaussian distribution for spherical cluster
+      const rFactor = (Math.random() + Math.random() + Math.random()) / 3;
+      const dist = rFactor * (180 / (grav * 0.4));
+      const x = cx + Math.cos(angle) * dist;
+      const y = cy + Math.sin(angle) * dist;
+
+      ctxC.fillStyle = i % 4 === 0 ? '#fbbf24' : i % 3 === 0 ? '#f87171' : '#fef08a';
+      ctxC.shadowColor = '#fbbf24';
+      ctxC.shadowBlur = 4;
+      ctxC.beginPath();
+      ctxC.arc(x, y, Math.random() * 1.8 + 1, 0, Math.PI * 2);
+      ctxC.fill();
+    }
+  }
+}
+
+/* Slide Deck Controls */
+function moveSlide(dir) {
+  currentSlide += dir;
+  if (currentSlide < 1) currentSlide = 1;
+  if (currentSlide > totalSlides) currentSlide = totalSlides;
+  updateSlideDisplay();
+}
+
+function updateSlideDisplay() {
+  document.querySelectorAll('.slide-content').forEach(s => s.classList.remove('active'));
+  const activeSlide = document.querySelector(`.slide-content[data-slide="${currentSlide}"]`);
+  if (activeSlide) activeSlide.classList.add('active');
+
+  document.getElementById('slideCounterText').textContent = `슬라이드 ${currentSlide} / ${totalSlides} (키보드 ← → 사용 가능)`;
+  document.getElementById('prevSlideBtn').disabled = currentSlide === 1;
+  document.getElementById('nextSlideBtn').disabled = currentSlide === totalSlides;
+}
+
+function toggleTeacherNotes() {
+  document.querySelectorAll('.teacher-note-box').forEach(box => box.classList.toggle('show'));
+}
+
+/* Keyboard Event Listener for Slides */
+document.addEventListener('keydown', e => {
+  if (document.getElementById('slideTab').classList.contains('active')) {
+    if (e.key === 'ArrowRight' || e.key === 'Space') moveSlide(1);
+    if (e.key === 'ArrowLeft') moveSlide(-1);
+    if (e.key.toLowerCase() === 'n') toggleTeacherNotes();
+  }
+});
+
+/* Quiz Checker */
+function checkQuiz(qNum, optIdx, btn) {
+  const answers = { 1: 1, 2: 1, 3: 0, 4: 3 };
+  const card = document.querySelector(`.quiz-card[data-q="${qNum}"]`);
+  const buttons = card.querySelectorAll('.quiz-opt-btn');
+
+  buttons.forEach(b => {
+    b.disabled = true;
+    b.classList.remove('correct', 'wrong');
+  });
+
+  if (optIdx === answers[qNum]) {
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    buttons[answers[qNum]].classList.add('correct');
+  }
+
+  const exp = document.getElementById(`exp${qNum}`);
+  if (exp) exp.style.display = 'block';
+}
+
+/* On Load Initialization */
+window.addEventListener('load', () => {
+  drawMilkyWay();
+});
+</script>
+</body>
+</html>
