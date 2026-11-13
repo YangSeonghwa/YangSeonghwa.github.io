@@ -49,6 +49,7 @@ projects/yangseonghwa.github.io/
   grade2/star-color-distance/index.html ← 중2 천체의 색깔과 별까지의 거리 판별 수업 발표(10장) + 색깔·절대등급·10pc 거리 시뮬레이션
   grade2/milky-way/index.html           ← 중2 우리은하의 구조와 크기 수업 발표(10장) + 위/옆 입체 구조·여름/겨울 은하수 시뮬레이션
   grade2/nebula-cluster/index.html      ← 중2 성간 물질, 성운(방출·반사·암흑)과 성단(산개·구상) 수업 발표(7장) + 빛 작용 원리·우리은하 위치 분포 시뮬레이션
+  grade2/deep-sky-observation/index.html ← 중2 5대 성운·성단(초승달·마귀할멈·측상어·M44·M5) 프로그램 관측 활동 + 관측 일지 + 수업 발표(9장)
   programming/chatgpt-github-vibe/index.html     ← ChatGPT+GitHub 바이브 코딩 수업 발표(15장)
   programming/chatgpt-github-vibe/worksheet.html ← 학생 활동지(인쇄 가능)
   games/whack-a-mole/index.html                  ← 수박 터뜨리기 미니게임
