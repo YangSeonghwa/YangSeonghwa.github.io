@@ -590,6 +590,7 @@ table.sky-table tr:hover td {
     <button type="button" class="nav-mode-btn" onclick="switchTab('logTab', this)">📝 관측 일지 정리</button>
     <button type="button" class="nav-mode-btn" onclick="switchTab('slidesTab', this)">📊 수업 발표 (9장)</button>
     <button type="button" class="nav-mode-btn" onclick="switchTab('quizTab', this)">💡 확인 퀴즈</button>
+    <button type="button" class="nav-mode-btn" onclick="switchTab('classroomTab', this)">📤 구글 클래스룸 제출</button>
   </nav>
 </header>
 
@@ -785,7 +786,6 @@ table.sky-table tr:hover td {
           <p style="margin:0; font-size:13.5px; color:var(--sub);">관측한 내용을 표에 정리해 보세요. 입력한 내용은 브라우저에 자동 저장되며 인쇄/PDF 저장이 가능합니다.</p>
         </div>
         <div style="display:flex; flex-wrap:wrap; gap:8px;">
-          <button type="button" class="ws-btn gold" onclick="fillSampleAnswers()">✨ 예시 답안 채우기</button>
           <button type="button" class="ws-btn" onclick="resetWorksheet()">🗑️ 초기화</button>
           <button type="button" class="ws-btn primary" onclick="window.print()">🖨️ 활동지 인쇄 / PDF</button>
         </div>
@@ -1271,6 +1271,92 @@ table.sky-table tr:hover td {
     </div>
   </section>
 
+  <!-- ==================== TAB 5: 구글 클래스룸 PDF 제출 안내 ==================== -->
+  <section id="classroomTab" class="tab-section">
+    <div class="hero-card">
+      <div class="badge-row">
+        <span class="pill pill-mint">📤 과제 제출 가이드</span>
+        <span class="pill pill-sky">PDF 저장 → 구글 클래스룸 파일 첨부</span>
+      </div>
+      <h1>관측 일지 PDF 저장 및 구글 클래스룸 제출 방법</h1>
+      <p>
+        <strong>[📝 관측 일지 정리]</strong> 탭에서 작성한 내용을 PDF 파일로 저장한 뒤, 구글 클래스룸 과제에 첨부하여 제출하는 순서입니다.
+      </p>
+    </div>
+
+    <div class="lab-grid">
+      <!-- Left: Step 1 & 2 (Save as PDF) -->
+      <div class="panel-card">
+        <div class="badge-row" style="margin-bottom:10px;">
+          <span class="pill pill-gold">1단계 · PDF 파일 만들기</span>
+        </div>
+        <h2 style="margin:0 0 12px; font-size:20px; color:#fff;">🖨️ 관측 일지를 PDF 파일로 저장하기</h2>
+        <ol style="padding-left:20px; margin:0 0 16px; color:#e2e8f0; font-size:14.5px;">
+          <li style="margin-bottom:10px;">
+            <strong>[📝 관측 일지 정리]</strong> 탭으로 이동해 <strong>학년·반·번호·이름</strong>과 5개 천체 관측 내용을 빠짐없이 입력합니다.
+          </li>
+          <li style="margin-bottom:10px;">
+            오른쪽 위의 <strong>[🖨️ 활동지 인쇄 / PDF]</strong> 버튼을 누릅니다. (단축키: <code>Ctrl + P</code> 또는 <code>Cmd + P</code>)
+          </li>
+          <li style="margin-bottom:10px;">
+            인쇄 창이 열리면 <strong>대상(프린터)</strong> 항목을 <strong>「PDF로 저장」</strong>으로 바꿉니다.
+          </li>
+          <li style="margin-bottom:10px;">
+            <strong>[저장]</strong> 버튼을 누르고, 알아보기 쉬운 파일 이름으로 저장합니다.<br>
+            <span style="color:var(--gold); font-size:13px;">예시: <code>2학년3반15번_홍길동_천체관측일지.pdf</code></span>
+          </li>
+        </ol>
+
+        <div class="principle-box" style="margin-bottom:14px;">
+          <strong>💡 미리 확인하세요!</strong><br>
+          저장한 PDF 파일을 한 번 열어서 <strong>이름과 작성한 표 내용이 잘리지 않고 모두 보이는지</strong> 확인하면 안전합니다.
+        </div>
+
+        <button type="button" class="ws-btn primary" style="width:100%; padding:12px;" onclick="switchTab('logTab', document.querySelectorAll('.nav-mode-btn')[1])">
+          📝 관측 일지 정리 탭으로 이동하기 →
+        </button>
+      </div>
+
+      <!-- Right: Step 3, 4, 5 (Google Classroom Upload) -->
+      <div class="panel-card">
+        <div class="badge-row" style="margin-bottom:10px;">
+          <span class="pill pill-sky">2단계 · 구글 클래스룸 제출</span>
+        </div>
+        <h2 style="margin:0 0 12px; font-size:20px; color:#fff;">📤 구글 클래스룸 과제에 PDF 파일 첨부하기</h2>
+        <ol style="padding-left:20px; margin:0 0 16px; color:#e2e8f0; font-size:14.5px;">
+          <li style="margin-bottom:10px;">
+            학교 구글 계정으로 <a href="https://classroom.google.com/" target="_blank" rel="noopener noreferrer" style="color:var(--sky); font-weight:700;">구글 클래스룸(classroom.google.com) ↗</a>에 접속합니다.
+          </li>
+          <li style="margin-bottom:10px;">
+            <strong>과학 수업</strong>에 들어가 상단 <strong>[수업]</strong> 탭에서 오늘의 천체 관측 과제를 클릭한 뒤 <strong>[과제 보기]</strong>를 누릅니다.
+          </li>
+          <li style="margin-bottom:10px;">
+            화면 오른쪽(스마트폰·태블릿은 아래쪽)의 <strong>「내 과제」</strong> 카드에서 <strong>[+ 추가 또는 생성]</strong> 버튼을 누르고 <strong>[파일]</strong>을 선택합니다.
+          </li>
+          <li style="margin-bottom:10px;">
+            <strong>[업로드] → [찾아보기(Browse)]</strong>를 눌러 방금 저장한 PDF 파일(<code>...천체관측일지.pdf</code>)을 선택해 올립니다.
+          </li>
+          <li style="margin-bottom:10px;">
+            파일 첨부가 끝나면 반드시 파란색 <strong>[제출]</strong>(또는 <strong>[다시 제출]</strong>) 버튼을 누릅니다. 과제 상태가 <span style="color:var(--mint); font-weight:800;">「제출됨」</span>으로 바뀌면 완료!
+          </li>
+        </ol>
+
+        <a class="obs-ext-btn esasky" style="width:100%;" href="https://classroom.google.com/" target="_blank" rel="noopener noreferrer">
+          🎓 구글 클래스룸 바로가기 ↗
+        </a>
+      </div>
+    </div>
+
+    <div class="panel-card">
+      <h3 style="margin:0 0 10px; font-size:17px; color:var(--gold);">⚠️ 제출 전 자주 하는 실수 체크리스트</h3>
+      <ul style="margin:0; padding-left:20px; color:#e2e8f0; font-size:14px;">
+        <li style="margin-bottom:6px;"><strong>파일만 올리고 [제출] 버튼을 안 누른 경우:</strong> 상태가 여전히 「할당됨」으로 남아 선생님께 제출되지 않습니다. 꼭 <strong>[제출]</strong> 버튼까지 눌러 주세요.</li>
+        <li style="margin-bottom:6px;"><strong>빈 종이가 저장된 경우:</strong> 다른 탭이 아니라 반드시 <strong>[📝 관측 일지 정리]</strong> 탭을 연 상태에서 <strong>[🖨️ 활동지 인쇄 / PDF]</strong> 버튼을 눌러야 표가 저장됩니다.</li>
+        <li><strong>모바일(아이패드·스마트폰)에서 저장할 때:</strong> 인쇄 미리보기 화면에서 두 손가락으로 화면을 확대(핀치 줌)하거나 공유 버튼을 누르면 <strong>PDF로 저장 / 파일에 저장</strong>을 선택할 수 있습니다.</li>
+      </ul>
+    </div>
+  </section>
+
 </main>
 
 <footer class="bf-footer">
@@ -1590,28 +1676,6 @@ function loadWorksheet() {
       if (data[el.id] !== undefined) el.value = data[el.id];
     });
   } catch (e) {}
-}
-
-function fillSampleAnswers() {
-  const samples = {
-    'ws-type-1': '방출성운', 'ws-color-1': '붉은색 (청록색 포함)', 'ws-const-1': '백조자리',
-    'ws-note-1': '초승달 모양의 껍질 구조. 중심의 뜨거운 별이 방출한 자외선으로 주변 수소 가스가 가열되어 스스로 붉은빛을 냄.',
-    'ws-type-2': '반사성운', 'ws-color-2': '푸른색', 'ws-const-2': '에리다누스자리 (리겔 옆)',
-    'ws-note-2': '마귀할멈 옆모습 모양. 오리온자리 리겔의 빛을 성간 먼지가 반사·산란시켜 푸르게 보임.',
-    'ws-type-3': '암흑성운', 'ws-color-3': '검은색 (어두운 실루엣)', 'ws-const-3': '세페우스자리',
-    'ws-note-3': '상어 모양의 검은 구름. 두꺼운 성간 먼지가 뒤쪽 별빛을 가로막아 어둡게 보임.',
-    'ws-type-4': '산개성단', 'ws-color-4': '청백색 · 흰색', 'ws-const-4': '게자리',
-    'ws-note-4': '비교적 젊은 별들이 불규칙하고 엉성하게 흩어져 모여 있음. 은하면 부근에 분포.',
-    'ws-type-5': '구상성단', 'ws-color-5': '붉은색 · 노란색', 'ws-const-5': '뱀자리',
-    'ws-note-5': '수십만 개의 늙은 별들이 공 모양으로 매우 빽빽하게 모여 있음. 은하 중심부와 헤일로에 분포.',
-    'ws-q1': 'M44(산개성단)는 젊은 푸른 별들이 엉성하고 불규칙하게 모여 은하면에 분포하는 반면, M5(구상성단)는 수십만 개의 늙은 붉은·노란 별들이 공 모양으로 빽빽하게 모여 은하 중심부·헤일로에 분포합니다.',
-    'ws-q2': '초승달 성운은 가스가 에너지를 받아 스스로 빛을 내어 붉게 보이고(방출), 마귀할멈 성운은 먼지가 별빛 중 파장이 짧은 푸른빛을 산란시켜 푸르게 보이며(반사), 측상어 성운은 먼지가 뒤쪽 별빛을 가로막아 검게 보입니다(차단).'
-  };
-  Object.entries(samples).forEach(([id, val]) => {
-    const el = document.getElementById(id);
-    if (el) el.value = val;
-  });
-  saveWorksheet();
 }
 
 function resetWorksheet() {
