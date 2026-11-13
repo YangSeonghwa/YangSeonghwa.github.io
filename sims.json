@@ -7,5 +7,5 @@
   { "grade": 2, "area": "지구과학", "title": "천체의 색깔과 별까지의 거리 판별 (발표 자료 + 시뮬레이션)", "desc": "별의 색깔과 표면 온도, 색깔 기반 절대등급(M) 추정, 겉보기 등급(m)과의 차이(m-M)로 10 pc보다 가까운지 먼지 판별하는 인터랙티브 실험실 및 수업 프레젠테이션", "url": "grade2/star-color-distance/index.html" },
   { "grade": 2, "area": "지구과학", "title": "우리은하의 구조와 크기 (발표 자료 + 시뮬레이션)", "desc": "위·옆에서 본 우리은하(막대나선은하, 지름 30,000 pc, 태양계 위치 8,500 pc, 별 약 2,000억 개)와 여름철·겨울철 밤하늘 은하수 차이를 탐구하는 인터랙티브 실험실 및 수업 프레젠테이션", "url": "grade2/milky-way/index.html" },
   { "grade": 2, "area": "지구과학", "title": "성간 물질, 성운과 성단 (발표 자료 + 시뮬레이션)", "desc": "성간 물질, 방출·반사·암흑성운, 산개·구상성단의 특성 및 빛의 작용 원리, 우리은하 내 분포 위치를 탐구하는 인터랙티브 실험실 및 수업 프레젠테이션", "url": "grade2/nebula-cluster/index.html" },
-  { "grade": 2, "area": "지구과학", "title": "5대 성운·성단 천체 관측 활동 (발표 자료 + 관측 일지)", "desc": "Stellarium Web과 ESASky로 초승달 성운, 마귀할멈 성운, 측상어 성운(상어 성운), M44, M5를 직접 관측하고 비교·정리하는 인터랙티브 탐구 웹페이지 및 수업 프레젠테이션", "url": "grade2/deep-sky-observation/index.html" }
+  { "grade": 2, "area": "지구과학", "title": "5대 성운·성단 천체 관측 활동 (발표 자료 + 관측 일지)", "desc": "Stellarium Web과 Aladin Lite로 초승달 성운, 마귀할멈 성운, 측상어 성운(상어 성운), M44, M5를 직접 관측하고 비교·정리하는 인터랙티브 탐구 웹페이지 및 수업 프레젠테이션", "url": "grade2/deep-sky-observation/index.html" }
 ]
